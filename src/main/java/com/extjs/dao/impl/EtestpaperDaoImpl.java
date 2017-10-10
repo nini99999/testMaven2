@@ -1,0 +1,110 @@
+package com.extjs.dao.impl;
+
+import com.extjs.dao.EtestpaperDao;
+import com.extjs.model.ETestpaper;
+import com.extjs.model.ETestpaperDTO;
+import com.extjs.util.ReflectionUtil;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+/**
+ * Created by jenny on 2017/4/4.
+ */
+@Repository
+@Scope("prototype")
+public class EtestpaperDaoImpl implements EtestpaperDao {
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    @Override
+    public List<ETestpaper> queryEtestPaper(ETestpaperDTO eTestpaperDTO) {
+        StringBuilder sb = new StringBuilder();
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        sb.append("from ETestpaper where 1=1 and creator='" + userDetails.getUsername() + "'");
+        if (null != eTestpaperDTO.getSchoolno() && !"".equals(eTestpaperDTO.getSchoolno())) {
+            sb.append(" and schoolno='" + eTestpaperDTO.getSchoolno() + "'");
+        }
+        if (null != eTestpaperDTO.getGradeno() && !"".equals(eTestpaperDTO.getGradeno())) {
+            sb.append(" and gradeno='" + eTestpaperDTO.getGradeno() + "'");
+        }
+        if (null != eTestpaperDTO.getSubjectno() && !"".equals(eTestpaperDTO.getSubjectno())) {
+            sb.append(" and subjectno='" + eTestpaperDTO.getSubjectno() + "'");
+        }
+        if (null != eTestpaperDTO.getTerm() && !"".equals(eTestpaperDTO.getTerm())) {
+            sb.append(" and term='" + eTestpaperDTO.getTerm() + "'");
+        }
+        if (null != eTestpaperDTO.getExamtype() && !"".equals(eTestpaperDTO.getExamtype())) {
+            sb.append(" and examtype='" + eTestpaperDTO.getExamtype() + "'");
+        }
+        if (null != eTestpaperDTO.getTpno() && !"".equals(eTestpaperDTO.getTpno())) {
+            sb.append(" and tpno='" + eTestpaperDTO.getTpno() + "'");
+        }
+        if (null != eTestpaperDTO.getTpname() && !"".equals(eTestpaperDTO.getTpname())) {
+            sb.append(" and tpname like '%" + eTestpaperDTO.getTpname() + "%'");
+        }
+        sb.append(" order by schoolno,gradeno,term,subjectno,tpno");
+        List<ETestpaper> eTestpaperList = null;
+        Session session = sessionFactory.getCurrentSession();
+        try {
+            Query query = session.createQuery(sb.toString());
+            eTestpaperList = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return eTestpaperList;
+    }
+
+    @Override
+    public ETestpaper getTestPaper(String tpno, String tpname) {
+        ETestpaper result = new ETestpaper();
+        ETestpaperDTO eTestpaperDTO = new ETestpaperDTO();
+        if (null != tpno) {
+            eTestpaperDTO.setTpno(tpno);
+        }
+        if (null != tpname) {
+            eTestpaperDTO.setTpname(tpname);
+        }
+        List<ETestpaper> eTestpaperList = this.queryEtestPaper(eTestpaperDTO);
+
+        for (ETestpaper eTestpaper : eTestpaperList) {
+            result = eTestpaper;
+        }
+        return result;
+    }
+
+    @Override
+    public Integer getSumQuestionNum(String tpno) {
+        String hql = "select sum(questionnum) from EPaperQType where tpno=:str";
+        Session session = sessionFactory.getCurrentSession();
+        Object object = session.createQuery(hql).setString("str", tpno).uniqueResult();
+        return Integer.parseInt(String.valueOf(object));
+    }
+
+    @Override
+    public void modifEtestPaper(ETestpaperDTO eTestpaperDTO) {
+        Session session = sessionFactory.getCurrentSession();
+        ETestpaper eTestpaper = new ETestpaper();
+        ReflectionUtil.copyProperties(eTestpaperDTO, eTestpaper);
+        session.saveOrUpdate(eTestpaper);
+        session.flush();
+    }
+
+    @Override
+    public void delEtestPaper(ETestpaperDTO eTestpaperDTO) {
+        Session session = sessionFactory.getCurrentSession();
+        ETestpaper eTestpaper = new ETestpaper();
+        ReflectionUtil.copyProperties(eTestpaperDTO, eTestpaper);
+        session.delete(eTestpaper);
+        session.flush();
+    }
+}
