@@ -87,15 +87,15 @@ public class EquestionController {
 
     @RequestMapping("/exportQuestions")
     @ResponseBody
-    public Map exportQuestions(HttpServletRequest request, VQuestionandinfo questionandinfo) {
-        String rootPath = request.getSession().getServletContext().getRealPath("/");
-        Map resultMap = new HashMap();
+    public void exportQuestions(HttpServletRequest request, VQuestionandinfo questionandinfo,HttpServletResponse response) {
+       // String rootPath = request.getSession().getServletContext().getRealPath("/");
+       // Map resultMap = new HashMap();
 
-        String path = equestionService.exportToHTML(rootPath, questionandinfo);
-        resultMap.put("data", path);
-        resultMap.put("total", 1);
+        String path = equestionService.exportToHTML(response, questionandinfo);
+       // resultMap.put("data", path);
+       // resultMap.put("total", 1);
 
-        return resultMap;
+        //return resultMap;
     }
 
     //    @RequestMapping(value = "/downloadFile", method = RequestMethod.POST)

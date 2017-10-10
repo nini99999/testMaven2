@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -13,7 +14,7 @@ import java.text.SimpleDateFormat;
  * Created by jenny on 2017/10/2.
  */
 public class ExportToHtml {
-    public String exportToHtml(String rootPath, StringBuilder content) {
+    public String exportToHtml(HttpServletResponse response, StringBuilder content) throws IOException {
         EConstants constants = new EConstants();
 
         StringBuilder stringBuilder = new StringBuilder("");
@@ -22,22 +23,22 @@ public class ExportToHtml {
                 .getPrincipal();
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-
-        String path = rootPath + constants.exportHtmlPath + "/" + userDetails.getUsername() + "export" + formatter.format(date) + ".html";
-
-
-        try {
-            //创建文件
-            File file = new File(path);
+        String fileName=  userDetails.getUsername() + "export" + formatter.format(date) + ".html";
+       // String path = rootPath + constants.exportHtmlPath + "/" + userDetails.getUsername() + "export" + formatter.format(date) + ".html";
 
 
-            if (!file.exists()) {
-
-                file.createNewFile();
-//                file.mkdirs();
-            }
+//        try {
+//            //创建文件
+//            File file = new File(path);
+//
+//
+//            if (!file.exists()) {
+//
+//                file.createNewFile();
+////                file.mkdirs();
+//            }
             //打开文件
-            PrintStream printStream = new PrintStream(new FileOutputStream(path));
+           // PrintStream printStream = new PrintStream(new FileOutputStream(path));
             //输入HTML文件内容
             stringBuilder.append("<html><head>");
             stringBuilder.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
@@ -53,12 +54,13 @@ public class ExportToHtml {
             stringBuilder.append("</body></html>");
 
             //将HTML文件内容写入文件中
-            printStream.println(stringBuilder.toString());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return path;
+           // printStream.println(stringBuilder.toString());
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("multipart/form-data");
+        response.setHeader("Content-Disposition", "attachment;fileName=" +fileName);
+        OutputStream os = response.getOutputStream();
+        os.write(stringBuilder.toString().getBytes());
+        os.close();
+        return fileName;
     }
 }

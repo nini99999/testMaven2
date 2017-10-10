@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 import java.sql.Date;
 
@@ -240,7 +242,7 @@ public class EquestionServiceImpl implements EquestionService {
     }
 
     @Override
-    public String exportToHTML(String rootPath, VQuestionandinfo questionandinfo) {
+    public String exportToHTML(HttpServletResponse response, VQuestionandinfo questionandinfo) {
         List<VQuestionandinfo> questionandinfoList = this.getQuestionAndInfoList(questionandinfo);
         StringBuilder stringBuilder = new StringBuilder("");
         int i = 0;
@@ -249,7 +251,11 @@ public class EquestionServiceImpl implements EquestionService {
             stringBuilder.append("(" + i + ")." + vQuestionandinfo.getQuestion());
         }
         ExportToHtml exportToHtml = new ExportToHtml();
-        return exportToHtml.exportToHtml(rootPath, stringBuilder);
-
+        try {
+            return exportToHtml.exportToHtml(response, stringBuilder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+return null;
     }
 }
