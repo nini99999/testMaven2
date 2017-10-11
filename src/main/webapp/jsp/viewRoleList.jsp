@@ -24,6 +24,7 @@
 <!-- 	<script type="text/javascript" src="extjs/examples/shared/options-toolbar.js"></script> -->
 <script type="text/javascript" src="<%=path%>/extjs/examples/shared/states.js"></script>
 <script type="text/javascript" src="<%=path%>/extjs/locale/ext-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="<%=path%>/bootstrap/jquery.min.js"></script>
 </head>
 <body>
 <script type="text/javascript" >
@@ -35,6 +36,31 @@
 		console.log('value:'+value);
 		<%--window.open("<%=request.getContextPath()%>/permission/viewRoleEdit?roleId="+roleId,"","top=100,left=195,width=800,height=550,toolbar=yes,scrollbars=yes");--%>
 		showWin(value);
+	}
+	function toDelete(value){
+        if (confirm('确认删除该角色？')==true){
+            $.ajax({
+                url: "role/deleteRole?roleId="+value,
+// 数据发送方式
+                type: "post",
+// 接受数据格式
+                dataType: "json",
+// 要传递的数据
+                data: 'data',
+// 回调函数，接受服务器端返回给客户端的值，即result值
+                success: function (data) {
+                    refreshGrid()
+
+                },
+                error: function (data) {
+                    alert("删除失败" + data);
+                }
+            })
+        }else{
+            return false;
+        }
+
+
 	}
 
 	function refreshGrid(){
@@ -56,7 +82,7 @@
 
 		function editTo(value, p, record) {
 			return Ext.String.format(
-					'<a href="javascript:toEdit(\'{0}\');">编辑</a>',
+					'<a href="javascript:toEdit(\'{0}\');">编辑</a>&nbsp;&nbsp;<a href="javascript:toDelete(\'{0}\');">删除</a>',
 					value
 			);
 		}
@@ -209,7 +235,7 @@
 				{ text: '描述', dataIndex: 'roleDescription', flex:1},
 				{ text: '状态', dataIndex: 'roleState' , width: 150,resizable:true},
 				{ text: '菜单', dataIndex: 'menuIds' , width: 150,resizable:true},
-				{ text: '操作', dataIndex: 'roleId' ,renderer:editTo ,width: 70 ,resizable:true},
+				{ text: '操作', dataIndex: 'roleId' ,renderer:editTo ,width:150 ,resizable:true},
 			],
 			store: roleStore,
 
@@ -349,23 +375,7 @@
 					fieldLabel: '角色名',
 					allowBlank: false // 输入校验：不允许为空
 				},
-				{
-					name: 'roleState',
-					fieldLabel: '状态',
-					allowBlank: false ,// 输入校验：不允许为空
-					xtype: 'combobox',
-					store: dataStateStore,
-					id:'dataState_',
-					//typeAhead: true,
-					valueField: 'dictKey',
-					displayField: 'dictValue',
-					editable : false,//可否允许输入
-					//emptyText: '请选择数据状态...'
-					valueNotFoundText:'有效',
-					value:'1'
 
-
-				},
 				{
 					xtype: 'textareafield',
 					name: 'roleDescription',
@@ -376,6 +386,11 @@
 					name: 'menuIds',
 					id: 'menuIds_'
 				},
+				{
+                    xtype: 'hiddenfield',
+                    name: 'roleId',
+                    id: 'roleId'
+                },
 			],
 			buttons: [
 
@@ -384,7 +399,12 @@
 					disabled: true, // 设置该按钮默认不可用
 					text: '保存',
 					handler: function() {
+
 						var form = this.up('form').getForm();
+                       var roleId= Ext.getCmp('roleId').getValue();
+                        form.url='role/addRole'
+                        if(roleId!=null&&roleId!=undefined&&roleId!=''){
+						form.url='role/saveRole';}
 						//var enterpriseId = Ext.getCmp('enterpriseId_').getValue(); //获取文本框值
 						var records = Ext.getCmp("treeFormPanel_").getChecked();
 
@@ -438,7 +458,6 @@
 			]
 		});
 
-
 		//2.定义一个window.Window
 		var win = Ext.create('Ext.window.Window',{
 			title: '新增角色',
@@ -467,6 +486,8 @@
 //			menus=menuIds.split(",");
 
 			editFormPanel.loadRecord(record);
+            //editFormPanel.getform().url='role/saveRole';
+            //editFormPanel.setUrl('role/saveRole');
 		}
 
 		win.show();

@@ -11,4 +11,6 @@ import java.util.List;
 public interface RoleDao {
     List<Role> getRoles(String[]ids);
     String addRole(RoleDTO roleDTO);
+    String saveRole(RoleDTO roleDTO);
+    void deleteRole(String roleId);
 }

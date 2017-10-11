@@ -37,19 +37,34 @@ public class RoleController {
         }
         return resultMap;
     }
-//    @RequestMapping("/saveRole")
-//    @ResponseBody
-//    public Map<String,Object> saveRole(RoleDTO roleDTO){
-//        Map<String,Object> resultMap=new HashMap<String, Object>();
-//        try {
-//            roleService.saveRole(roleDTO);
-//            resultMap.put("success",true);
-//            resultMap.put("msg","保存成功");
-//        } catch (SysException e) {
-//            resultMap.put("success",false);
-//            resultMap.put("msg","保存成功"+e.getMessage());
-//            e.printStackTrace();
-//        }
-//        return resultMap;
-//    }
+    @RequestMapping("/saveRole")
+    @ResponseBody
+    public Map<String,Object> saveRole(RoleDTO roleDTO){
+        Map<String,Object> resultMap=new HashMap<String, Object>();
+        try {
+            roleService.saveRole(roleDTO);
+            resultMap.put("success",true);
+            resultMap.put("msg","保存成功");
+        } catch (SysException e) {
+            resultMap.put("success",false);
+            resultMap.put("msg","保存成功"+e.getMessage());
+            e.printStackTrace();
+        }
+        return resultMap;
+    }
+    @RequestMapping("/deleteRole")
+    @ResponseBody
+    public Map<String,Object> deleteRole(String roleId){
+        Map<String,Object> resultMap=new HashMap<String, Object>();
+        try {
+            roleService.deleteRole(roleId);
+            resultMap.put("success",true);
+            resultMap.put("msg","保存成功");
+        } catch (SysException e) {
+            resultMap.put("success",false);
+            resultMap.put("msg","保存成功"+e.getMessage());
+            e.printStackTrace();
+        }
+        return resultMap;
+    }
 }

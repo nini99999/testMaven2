@@ -1,7 +1,6 @@
 package com.extjs.dao.impl;
 
 import com.extjs.dao.RoleMenuKeyDao;
-import com.extjs.model.Role;
 import com.extjs.model.RoleMenuKey;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -24,6 +23,7 @@ public class RoleMenuKeyDaoImpl implements RoleMenuKeyDao{
     public void addRoleMenuKey(RoleMenuKey roleMenuKey) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(roleMenuKey);
+
     }
 
     @Override
@@ -39,6 +39,13 @@ public class RoleMenuKeyDaoImpl implements RoleMenuKeyDao{
     public void deleteRoleMenuKey(String menuId) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("delete from RoleMenuKey where menuId='" + menuId + "'");
+        query.executeUpdate();
+    }
+
+    @Override
+    public void deleteRoleMenuKeyByRoleId(String roleId) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("delete from RoleMenuKey where roleId='" + roleId + "'");
         query.executeUpdate();
     }
 }

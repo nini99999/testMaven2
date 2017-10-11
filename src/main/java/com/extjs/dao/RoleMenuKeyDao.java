@@ -11,4 +11,5 @@ public interface RoleMenuKeyDao {
     void addRoleMenuKey(RoleMenuKey roleMenuKey);
     List<RoleMenuKey> getRoleMenuKeys(String[] roleIds);
     void deleteRoleMenuKey(String menuId);
+    void deleteRoleMenuKeyByRoleId(String roleId);
 }

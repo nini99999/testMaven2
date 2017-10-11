@@ -40,4 +40,27 @@ public class RoleServiceImpl implements RoleService {
         }
 
     }
+
+    @Transactional(rollbackFor = {Exception.class},propagation = Propagation.REQUIRED)
+    public void saveRole(RoleDTO roleDTO) throws SysException {
+        String pk =roleDao.saveRole(roleDTO);
+        roleMenuKeyDao.deleteRoleMenuKeyByRoleId(pk);
+        if (pk!=null&&!"".equals(pk)){
+            String menuIds = roleDTO.getMenuIds();
+            String[] menus = menuIds.split(",");
+            RoleMenuKey roleMenuKey=null;
+            for (String menu : menus) {
+                roleMenuKey=new RoleMenuKey();
+                roleMenuKey.setRoleId(pk);
+                roleMenuKey.setMenuId(menu);
+                roleMenuKeyDao.addRoleMenuKey(roleMenuKey);
+            }
+        }
+    }
+
+    @Transactional(rollbackFor = {Exception.class},propagation = Propagation.REQUIRED)
+    public void deleteRole(String roleId) throws SysException {
+        roleMenuKeyDao.deleteRoleMenuKeyByRoleId(roleId);
+        roleDao.deleteRole(roleId);
+    }
 }

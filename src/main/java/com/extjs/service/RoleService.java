@@ -8,5 +8,6 @@ import com.extjs.util.SysException;
  */
 public interface RoleService {
     void addRole(RoleDTO roleDTO)throws SysException;
-   // void saveRole(RoleDTO roleDTO)throws SysException;
+    void saveRole(RoleDTO roleDTO)throws SysException;
+    void deleteRole(String roleId)throws SysException;
 }

@@ -39,4 +39,20 @@ public class RoleDaoimpl implements RoleDao{
         String pk=session.save(role)+"";
         return pk;
     }
+
+    @Override
+    public String saveRole(RoleDTO roleDTO) {
+        Session session = sessionFactory.getCurrentSession();
+        Role role=new Role();
+        ReflectionUtil.copyProperties(roleDTO,role);
+        session.saveOrUpdate(role);
+        return roleDTO.getRoleId();
+    }
+
+    @Override
+    public void deleteRole(String roleId) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("delete from Role where roleId='" + roleId + "'");
+        query.executeUpdate();
+    }
 }
