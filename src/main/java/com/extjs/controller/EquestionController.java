@@ -6,8 +6,7 @@ import com.extjs.model.EQuestionsDTO;
 import com.extjs.model.VQuestionandinfo;
 import com.extjs.service.EquestionService;
 import com.extjs.util.EConstants;
-import com.sun.tools.internal.ws.processor.model.Request;
-import jdk.nashorn.internal.ir.RuntimeNode;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -19,9 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLEncoder;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
