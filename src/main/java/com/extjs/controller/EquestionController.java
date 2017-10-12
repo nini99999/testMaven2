@@ -6,8 +6,12 @@ import com.extjs.model.EQuestionsDTO;
 import com.extjs.model.VQuestionandinfo;
 import com.extjs.service.EquestionService;
 import com.extjs.util.EConstants;
+import com.sun.tools.internal.ws.processor.model.Request;
+import jdk.nashorn.internal.ir.RuntimeNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,6 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,13 +94,25 @@ public class EquestionController {
 
     @RequestMapping("/exportQuestions")
     @ResponseBody
-    public void exportQuestions(HttpServletRequest request, VQuestionandinfo questionandinfo,HttpServletResponse response) {
-       // String rootPath = request.getSession().getServletContext().getRealPath("/");
-       // Map resultMap = new HashMap();
+//    public Map exportQuestions(HttpServletRequest request, VQuestionandinfo questionandinfo) {
+//        String rootPath = request.getSession().getServletContext().getRealPath("/");
+//        Map resultMap = new HashMap();
+//
+//        String path = equestionService.exportToHTML(rootPath, questionandinfo);
+//        resultMap.put("data", path);
+//        resultMap.put("total", 1);
+//
+//        return resultMap;
+//    }
 
-        String path = equestionService.exportToHTML(response, questionandinfo);
-       // resultMap.put("data", path);
-       // resultMap.put("total", 1);
+    public void exportQuestions(HttpServletRequest request, VQuestionandinfo questionandinfo, HttpServletResponse response) {
+        // String rootPath = request.getSession().getServletContext().getRealPath("/");
+        // Map resultMap = new HashMap();
+        String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/" + request.getContextPath();
+
+        String path = equestionService.exportToHTML(response, questionandinfo,url);
+        // resultMap.put("data", path);
+        // resultMap.put("total", 1);
 
         //return resultMap;
     }
@@ -167,7 +186,6 @@ public class EquestionController {
             response.setHeader("Content-Disposition",
                     "attachment;  filename=" + new String(fileName.getBytes("GBK"), "ISO-8859-1"));
             //URLEncoder.encode(fileName, "GBK")
-
 
 
             in = new FileInputStream(csvFilePath + "/" + fileName);

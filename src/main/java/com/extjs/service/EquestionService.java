@@ -2,8 +2,9 @@ package com.extjs.service;
 
 import com.extjs.model.*;
 
-import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
 /**
  * Created by jenny on 2017/6/23.
  */
@@ -25,7 +26,7 @@ public interface EquestionService {
 
     void addOneQuestionAndInfo(String question,String gradeNo,String subjectNo,String questionType,Float difficulty);
 
-    String  exportToHTML(HttpServletResponse response ,VQuestionandinfo questionandinfo);//导出至html，返回+html文件名
+    String exportToHTML(HttpServletResponse response , VQuestionandinfo questionandinfo,String url);//导出至html，返回导出路径+html文件名
 
 
 }

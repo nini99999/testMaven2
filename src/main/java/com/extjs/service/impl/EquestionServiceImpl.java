@@ -242,7 +242,24 @@ public class EquestionServiceImpl implements EquestionService {
     }
 
     @Override
-    public String exportToHTML(HttpServletResponse response, VQuestionandinfo questionandinfo) {
+//    public String exportToHTML(HttpServletResponse response , VQuestionandinfo questionandinfo) {
+//        List<VQuestionandinfo> questionandinfoList = this.getQuestionAndInfoList(questionandinfo);
+//        StringBuilder stringBuilder = new StringBuilder("");
+//        int i = 0;
+//        for (VQuestionandinfo vQuestionandinfo : questionandinfoList) {
+//            i++;
+//            stringBuilder.append("(" + i + ")." + vQuestionandinfo.getQuestion());
+//        }
+//        ExportToHtml exportToHtml = new ExportToHtml();
+//        try {
+//            return exportToHtml.exportToHtml(response, stringBuilder);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//
+//    }
+    public String exportToHTML(HttpServletResponse response, VQuestionandinfo questionandinfo,String url) {
         List<VQuestionandinfo> questionandinfoList = this.getQuestionAndInfoList(questionandinfo);
         StringBuilder stringBuilder = new StringBuilder("");
         int i = 0;
@@ -251,11 +268,8 @@ public class EquestionServiceImpl implements EquestionService {
             stringBuilder.append("(" + i + ")." + vQuestionandinfo.getQuestion());
         }
         ExportToHtml exportToHtml = new ExportToHtml();
-        try {
-            return exportToHtml.exportToHtml(response, stringBuilder);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-return null;
+
+        return exportToHtml.exportToHtml(response, stringBuilder,url);
+
     }
 }
