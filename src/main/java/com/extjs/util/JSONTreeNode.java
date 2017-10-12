@@ -15,6 +15,15 @@ public class JSONTreeNode {
     private String menuType;//菜单类型
     private Boolean expanded=true;
     private Boolean checked;
+    private String parentMenuId;
+
+    public String getParentMenuId() {
+        return parentMenuId;
+    }
+
+    public void setParentMenuId(String parentMenuId) {
+        this.parentMenuId = parentMenuId;
+    }
 
     public String getId() {
         return id;

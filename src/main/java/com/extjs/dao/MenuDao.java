@@ -12,6 +12,7 @@ import java.util.List;
 public interface MenuDao {
     List<Menu> selectChildrenMenu(String menuId,String[] menuIds);
     void addMenu(MenuDTO menuDTO);
+    void saveMenu(MenuDTO menuDTO);
     void delMenu(String menuId);
     List<Menu> selectMenus(String[]menuIds);
 

@@ -56,6 +56,15 @@ public class MenuDaoImpl implements MenuDao {
     }
 
     @Override
+    public void saveMenu(MenuDTO menuDTO) {
+        Session session = sessionFactory.getCurrentSession();
+        Menu menu=new Menu();
+        ReflectionUtil.copyProperties(menuDTO,menu);
+        session.saveOrUpdate(menu);
+        session.flush();
+    }
+
+    @Override
     public void delMenu(String menuId) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("delete from Menu where menuId='" + menuId + "'");

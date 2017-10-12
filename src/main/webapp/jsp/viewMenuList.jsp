@@ -44,6 +44,7 @@
 				{name: 'url', type: 'string'},
 				{name: 'description', type: 'string'},
 				{name: 'expanded', type: 'boolean'},
+                {name: 'parentMenuId', type: 'string'},
 				{name: 'checked', type: 'boolean'}
 			]
 		});
@@ -123,7 +124,7 @@
 										},
 										{
 											text: '编辑菜单',
-											handler: function(){
+											handler: function(view , record, item){
 												var records = Ext.getCmp("treepanel_").getChecked();
 
 												var menuId = "";
@@ -140,7 +141,7 @@
 													Ext.Msg.alert('提示', '亲~您不能勾选菜根单节点操作!');
 													return false;
 												}
-												window.open("<%=request.getContextPath()%>/permission/viewMenuEdit?menuId="+menuId,"","top=100,left=195,width=800,height=550,toolbar=yes,scrollbars=yes");
+                                                editWin(record);
 											}},
 										{
 											text: '删除菜单',
@@ -211,7 +212,144 @@
 						// 中间面板的内容：使用一个Ext.tab.Panel
 					]
 				});
+        function editWin(record){
 
+            var dataStateStore = Ext.create('Ext.data.Store',
+                {
+                    // 指定读取数据的name、id字段
+                    fields: ['dictKey' , 'dictValue'],
+                    proxy:
+                        {
+                            type: 'ajax',
+                            url: '<%=request.getContextPath()%>/dict/findDictListByParentKey?parentKey=JFZT',// 向该URL发送Ajax请求
+                            reader: { // 使用Ext.data.reader.Json读取服务器数据
+                                type: 'json',
+                                root: 'data' // 直接读取服务器响应的data数据
+                            }
+                        }
+//						autoLoad: true
+                });
+
+            var editFormPanel = Ext.create('Ext.form.Panel',{
+                url: 'menu/saveMenu',
+                frame: true,
+                width: 640,
+                bodyPadding: 5,
+
+                fieldDefaults: {
+                    labelAlign: 'left',
+                    labelWidth: 120,
+                    anchor: '100%'
+                },
+                items: [
+                    {
+                        xtype: 'textfield',
+                        name: 'menuTitle',
+                        fieldLabel: '菜单名',
+                        allowBlank: false // 输入校验：不允许为空
+                    },
+                    {
+                        xtype: 'hiddenfield',
+                        name: 'parentMenuId'
+                    },
+
+                    {
+                        xtype: 'hiddenfield',
+                        name: 'menuId'
+                    },
+                    {
+                        xtype: 'textfield',
+                        name: 'menuUrl',
+                        fieldLabel: '菜单URL'
+                    },
+                    {
+                        xtype: 'textareafield',
+                        name: 'menuDescription',
+                        fieldLabel: '描述'
+                    }
+
+                ],
+                buttons: [
+
+                    {
+                        formBind: true, // 只有当整个表单输入校验通过时，该按钮才可用
+                        disabled: true, // 设置该按钮默认不可用
+                        text: '保存',
+                        handler: function() {
+                            var form = this.up('form').getForm();
+                            //var enterpriseId = Ext.getCmp('enterpriseId_').getValue(); //获取文本框值
+
+                            if (form.isValid()) {
+                                this.disabled = true;
+                                form.submit({
+                                    success: function(form, action) {
+                                        Ext.Msg.show({
+                                            title:'操作完成',
+                                            msg: action.result.msg,
+                                            buttons: Ext.Msg.YES,
+                                            icon: Ext.MessageBox.QUESTION,
+                                            closable:false,
+                                            fn: function(){
+//												window.opener.refreshGrid();//父页面gird刷新显示
+//												window.close();
+                                                win.close();
+                                                store.reload();
+                                            }
+
+                                        });
+                                        this.disabled = false;
+                                    }
+                                });
+                            }
+                        }
+                    },
+                    {
+                        text: '关闭',
+                        formBind: false, // 只有当整个表单输入校验通过时，该按钮才可用
+                        disabled: false, // 设置该按钮默认不可用
+                        // 单击该按钮的事件处理函数
+                        handler: function() {
+//							window.close();
+//							window.opener.refreshGrid();//父页面gird刷新显示
+                            store.reload();
+                            win.close();
+                        }
+                    }
+                ]
+            });
+
+            var records = Ext.getCmp("treepanel_").getChecked();
+           // editFormPanel.loadRecord(record);
+            editFormPanel.loadRecord(records[0]);
+            var form=editFormPanel.getForm();
+
+            var parentMenuId=form.findField('parentMenuId');
+            var menuTitle=form.findField('menuTitle');
+            var menuId=form.findField('menuId');
+            var menuDescription=form.findField('menuDescription');
+            var menuUrl=form.findField('menuUrl');
+            menuTitle.setValue(records[0].get('text'));
+            menuId.setValue(records[0].get('id'));
+            menuDescription.setValue(records[0].get('description'));
+            menuUrl.setValue(records[0].get('url'));
+            parentMenuId.setValue(records[0].get('parentMenuId'));
+            //2.定义一个window.Window
+            var win = Ext.create('Ext.window.Window',{
+                title: '新增菜单',
+                hight: 800,
+                width:640,
+                //frame: true,
+                hidden: false,
+                layout: 'fit',
+                closable: true,
+                draggable:false,
+                renderTo: Ext.getBody(),
+                //animateTarget:this,
+                items: [editFormPanel]
+
+            });
+            win.show();
+        }
 
 		function showWin(record){
 
@@ -248,22 +386,6 @@
 						name: 'menuTitle',
 						fieldLabel: '菜单名',
 						allowBlank: false // 输入校验：不允许为空
-					},
-					{
-
-						name: 'openFlag',
-						fieldLabel: '状态',
-						allowBlank: false ,// 输入校验：不允许为空
-						xtype: 'combobox',
-						store: dataStateStore,
-						valueField: 'dictKey',
-						displayField: 'dictValue',
-						//typeAhead: true,
-						emptyText: '请选择数据状态...',
-						valueNotFoundText:'有效',
-						value:'1'
-						//editable : false,//可否允许输入
-						//   emptyText: '请选择数据状态...'
 					},
 					{
 						xtype: 'displayfield',

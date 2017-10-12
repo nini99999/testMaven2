@@ -69,7 +69,21 @@ public class MenuController {
         }
         return  resultMap;
     }
-
+    @RequestMapping("/saveMenu")
+    @ResponseBody
+    public Map<String,Object> saveMenu(MenuDTO menuDTO){
+        Map<String,Object> resultMap=new HashMap<String, Object>();
+        try {
+            menuService.saveMenu(menuDTO);
+            resultMap.put("success",true);
+            resultMap.put("msg","保存菜单成功!");
+        } catch (SysException e) {
+            resultMap.put("success",false);
+            resultMap.put("msg","保存菜单失败!"+e.getMessage());
+            e.printStackTrace();
+        }
+        return  resultMap;
+    }
     @RequestMapping("/delMenu")
     @ResponseBody
     public Map<String,Object> delMenu(String menuId){

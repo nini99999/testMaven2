@@ -67,6 +67,7 @@ public class MenuServiceImpl implements MenuService {
                 jsonTreeNode.setDescription(menu.getMenuDescription());
                 jsonTreeNode.setText(menu.getMenuTitle());
                 jsonTreeNode.setUrl(menu.getMenuUrl());
+                jsonTreeNode.setParentMenuId(menu.getParentMenuId());
                 List<JSONTreeNode> nextMenuJSONTreeNode = this.getNextMenuJSONTreeNode(menu.getMenuId(),menuIds);
                 if (nextMenuJSONTreeNode!=null&&nextMenuJSONTreeNode.size()>0){
                     jsonTreeNode.setChildren(nextMenuJSONTreeNode);
@@ -86,6 +87,11 @@ public class MenuServiceImpl implements MenuService {
             menuDTO.setParentMenuId(null);
         }
         menuDao.addMenu(menuDTO);
+    }
+
+    @Override
+    public void saveMenu(MenuDTO menuDTO) throws SysException {
+        menuDao.saveMenu(menuDTO);
     }
 
     @Override
