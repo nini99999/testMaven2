@@ -17,6 +17,7 @@ public interface UserDao {
     List<Role> queryRoleList();
 
     String addUser(UserDTO userDTO);
+    void deleteUser(String userId);
 
     List<User> getUserList(String userName);
 

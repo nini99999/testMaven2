@@ -99,7 +99,22 @@ public class UserController {
         }
         return  resultMap;
     }
+    @RequestMapping(value = "/deleteUser",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> deleteUser(String  userId){
 
+        Map<String,Object> resultMap=new HashMap<String, Object>();
+        try {
+            userService.deleteUser(userId);
+            resultMap.put("success",true);
+            resultMap.put("msg","删除成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("success",false);
+            resultMap.put("msg","删除失败!"+e.getMessage());
+        }
+        return  resultMap;
+    }
     @RequestMapping(value = "/getUserRealName",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> getUserRealName(HttpServletRequest request){

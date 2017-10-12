@@ -95,6 +95,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
+    public void deleteUser(String userId) throws SysException {
+        userRoleKeyDao.deleteUserRole(userId);
+        userDao.deleteUser(userId);
+    }
+
+    @Override
     public List<UserDTO> getUser(String userName) throws SysException {
         List<UserDTO> userDTOList = new ArrayList<UserDTO>();
         List<User> userList = userDao.getUserList(userName);

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="jdbc:oracle:thin:@47.93.78.81:1521:orcl" uuid="837fc439-359d-4c6d-aa22-b0f025225201">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/jdbc:oracle:thin:@47.93.78.81:1521:orcl</jdbc-url>
+      <driver-properties>
+        <property name="enable_load_extension" value="true" />
+      </driver-properties>
+    </data-source>
+    <data-source source="LOCAL" name="@47.93.78.81" uuid="d449bae9-0c02-457c-86a2-8325bbf4aaff">
+      <driver-ref>oracle</driver-ref>
+      <synchronize>true</synchronize>
+      <auto-commit>false</auto-commit>
+      <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
+      <jdbc-url>jdbc:oracle:thin:@47.93.78.81:1521:orcl</jdbc-url>
+      <driver-properties>
+        <property name="c##test" value="123456" />
+      </driver-properties>
+    </data-source>
+  </component>
+</project>

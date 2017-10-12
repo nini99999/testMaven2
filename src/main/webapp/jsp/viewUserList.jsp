@@ -24,9 +24,33 @@
 <!-- 	<script type="text/javascript" src="extjs/examples/shared/options-toolbar.js"></script> -->
 <script type="text/javascript" src="<%=path%>/extjs/examples/shared/states.js"></script>
 <script type="text/javascript" src="<%=path%>/extjs/locale/ext-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="<%=path%>/bootstrap/jquery.min.js"></script>
 </head>
 <body>
 	<script type="text/javascript" >
+        function toDelete(value){
+            if (confirm('确认删除该用户？')==true){
+                $.ajax({
+                    url: "user/deleteUser?userId="+value,
+// 数据发送方式
+                    type: "post",
+// 接受数据格式
+                    dataType: "json",
+// 要传递的数据
+                    data: 'data',
+// 回调函数，接受服务器端返回给客户端的值，即result值
+                    success: function (data) {
+                        refreshGrid()
+
+                    },
+                    error: function (data) {
+                        alert("删除失败" + data);
+                    }
+                })
+            }else{
+                return false;
+            }
+        }
 		Ext.Loader.setConfig({enabled: true});
 		Ext.require([
 			'Ext.form.Panel',
@@ -67,7 +91,12 @@
 						}
 					}
 				});
-		
+        function editTo(value, p, record) {
+            return Ext.String.format(
+                '<a href="javascript:toEdit(\'{0}\');">编11辑</a>&nbsp;&nbsp;<a href="javascript:toDelete(\'{0}\');">删除</a>',
+                value
+            );
+        }
 		var UserGradeStore = Ext.create('Ext.data.Store', 
 				{
 					// 指定读取数据的name、id字段
@@ -143,15 +172,7 @@
 			}
 
 		});
-		
-		 function editTo(value, p, record) {
-		        return Ext.String.format(
-		        	'<a href="javascript:toEdit({0});">编辑</a>',
-		            value
-		        );
-		    }
-		 
-		
+
 		var searchForm = Ext.create('Ext.form.Panel', {
 	//		title: '订单查询',
 			bodyPadding: 5,
@@ -538,6 +559,7 @@
 		Ext.define('User', {
 			extend: 'Ext.data.Model',
 			fields: [
+                {name: 'userId' , type: 'string'},
 				{name: 'userName' , type: 'string'},
 				{name: 'userPassword' , type: 'string'},
 				{name: 'userState', type: 'string'},
@@ -584,39 +606,17 @@
 			title: '用户列表',
 		//	width: 550, // 指定表单宽度
 			renderTo: Ext.getBody(),
-			
-			tbar:[searchForm],
 			viewConfig:{  
 				   enableTextSelection:true  
 				},
 			// 定义该表格包含的所有数据列
 			columns: [
-				{
-					xtype:'actioncolumn',
-					text:'编辑',
-					width:50,
-					locked:true,
-					align:'center',
-					items:[{
-						iconCls: 'grid',
-						tooltip: '编辑',
-						handler: function(view, rowIndex, colIndex, item, e, record){
-//							view.up('agencyGrid').fireEvent('agencyGridEdit', record);
-							showWin(record);
-						}
-					}]
-				},
 	            { text: '用户名', dataIndex: 'userName',flex: 1},
 				{ text: '密码', dataIndex: 'userPassword',flex: 1},
 				{ text: '确认密码', dataIndex: 'userPassWord',flex: 1},
 				{ text: '用户状态', dataIndex: 'userState' , flex: 1},
-//				{ text: '配送处理时间', dataIndex: 'userRoleIds' , flex: 1 },
-				{ text: '角色', dataIndex: 'userRoleNames',flex: 1}
-			/* 	{ text: '锁定状态', dataIndex: 'lockedState'},    
-				{ text: '用户级别', dataIndex: 'UserGrade'}, 
-				{ text: '角色名', dataIndex: 'UserRoleNames' , flex: 1}, 
-				{ text: '描述', dataIndex: 'UserDescription' , flex: 1 }, 
-				{ text: '操作', dataIndex: 'UserId' ,renderer:editTo ,width: 70 ,resizable:true}, */
+				{ text: '角色', dataIndex: 'userRoleNames',flex: 1},
+                { text: '操作', dataIndex: 'userId' ,renderer:editTo ,width:150 ,resizable:true}
 			],
 			store: UserStore,
 			 /*  listeners: {

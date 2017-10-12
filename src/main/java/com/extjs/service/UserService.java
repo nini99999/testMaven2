@@ -17,7 +17,7 @@ public interface UserService {
     List<RoleDTO> queryRoleList();
 
     void addUser(UserDTO userDTO) throws SysException;
-
+    void deleteUser(String  userId) throws SysException;
     List<UserDTO> getUser(String userName) throws SysException;
 
     UserDTO getUserByUnique(String userName) throws SysException;

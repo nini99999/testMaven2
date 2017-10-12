@@ -7,4 +7,5 @@ import com.extjs.model.UserRoleKey;
  */
 public interface UserRoleKeyDao {
     void addUserRole(UserRoleKey userRoleKey);
+    void deleteUserRole(String userId);
 }

@@ -1,0 +1,2156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="@47.93.78.81">
+  <database-model serializer="dbm" rdbms="ORACLE" format-version="4.1">
+    <root id="1"/>
+    <schema id="2" parent="1" name="C##TEST">
+      <ObjectId>103</ObjectId>
+      <IntrospectionTimestamp>2017-10-11.16:36:18</IntrospectionTimestamp>
+      <CreatedTimestamp>2017-03-14.17:23:48</CreatedTimestamp>
+      <ModifiedTimestamp>2017-10-02.14:24:32</ModifiedTimestamp>
+      <CommentsHash>469886366452742</CommentsHash>
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="PUBLIC">
+      <ObjectId>1</ObjectId>
+    </schema>
+    <schema id="4" parent="1" name="SYS">
+      <ObjectId>0</ObjectId>
+    </schema>
+    <schema id="5" parent="1" name="AUDSYS">
+      <ObjectId>7</ObjectId>
+    </schema>
+    <schema id="6" parent="1" name="SYSTEM">
+      <ObjectId>8</ObjectId>
+    </schema>
+    <schema id="7" parent="1" name="OUTLN">
+      <ObjectId>13</ObjectId>
+    </schema>
+    <schema id="8" parent="1" name="GSMADMIN_INTERNAL">
+      <ObjectId>21</ObjectId>
+    </schema>
+    <schema id="9" parent="1" name="GSMUSER">
+      <ObjectId>22</ObjectId>
+    </schema>
+    <schema id="10" parent="1" name="DIP">
+      <ObjectId>23</ObjectId>
+    </schema>
+    <schema id="11" parent="1" name="ORACLE_OCM">
+      <ObjectId>36</ObjectId>
+    </schema>
+    <schema id="12" parent="1" name="DBSNMP">
+      <ObjectId>48</ObjectId>
+    </schema>
+    <schema id="13" parent="1" name="APPQOSSYS">
+      <ObjectId>49</ObjectId>
+    </schema>
+    <schema id="14" parent="1" name="XDB">
+      <ObjectId>50</ObjectId>
+    </schema>
+    <schema id="15" parent="1" name="ANONYMOUS">
+      <ObjectId>51</ObjectId>
+    </schema>
+    <schema id="16" parent="1" name="GSMCATUSER">
+      <ObjectId>61</ObjectId>
+    </schema>
+    <schema id="17" parent="1" name="WMSYS">
+      <ObjectId>62</ObjectId>
+    </schema>
+    <schema id="18" parent="1" name="OJVMSYS">
+      <ObjectId>70</ObjectId>
+    </schema>
+    <schema id="19" parent="1" name="CTXSYS">
+      <ObjectId>73</ObjectId>
+    </schema>
+    <schema id="20" parent="1" name="ORDSYS">
+      <ObjectId>75</ObjectId>
+    </schema>
+    <schema id="21" parent="1" name="ORDDATA">
+      <ObjectId>76</ObjectId>
+    </schema>
+    <schema id="22" parent="1" name="ORDPLUGINS">
+      <ObjectId>77</ObjectId>
+    </schema>
+    <schema id="23" parent="1" name="SI_INFORMTN_SCHEMA">
+      <ObjectId>78</ObjectId>
+    </schema>
+    <schema id="24" parent="1" name="MDSYS">
+      <ObjectId>79</ObjectId>
+    </schema>
+    <schema id="25" parent="1" name="OLAPSYS">
+      <ObjectId>82</ObjectId>
+    </schema>
+    <schema id="26" parent="1" name="MDDATA">
+      <ObjectId>85</ObjectId>
+    </schema>
+    <schema id="27" parent="1" name="SPATIAL_WFS_ADMIN_USR">
+      <ObjectId>87</ObjectId>
+    </schema>
+    <schema id="28" parent="1" name="SPATIAL_CSW_ADMIN_USR">
+      <ObjectId>90</ObjectId>
+    </schema>
+    <schema id="29" parent="1" name="LBACSYS">
+      <ObjectId>92</ObjectId>
+    </schema>
+    <schema id="30" parent="1" name="FLOWS_FILES">
+      <ObjectId>94</ObjectId>
+    </schema>
+    <schema id="31" parent="1" name="APEX_PUBLIC_USER">
+      <ObjectId>95</ObjectId>
+    </schema>
+    <schema id="32" parent="1" name="APEX_040200">
+      <ObjectId>98</ObjectId>
+    </schema>
+    <schema id="33" parent="1" name="DVF">
+      <ObjectId>99</ObjectId>
+    </schema>
+    <schema id="34" parent="1" name="C##BASEROLE">
+      <ObjectId>102</ObjectId>
+    </schema>
+    <schema id="35" parent="1" name="C##MINGLU">
+      <ObjectId>104</ObjectId>
+    </schema>
+    <schema id="36" parent="1" name="DVSYS">
+      <ObjectId>1279990</ObjectId>
+    </schema>
+    <schema id="37" parent="1" name="SYSBACKUP">
+      <ObjectId>2147483617</ObjectId>
+    </schema>
+    <schema id="38" parent="1" name="SYSDG">
+      <ObjectId>2147483618</ObjectId>
+    </schema>
+    <schema id="39" parent="1" name="SYSKM">
+      <ObjectId>2147483619</ObjectId>
+    </schema>
+    <schema id="40" parent="1" name="XS$NULL">
+      <ObjectId>2147483638</ObjectId>
+    </schema>
+    <table id="41" parent="2" name="E_CLASS">
+      <ObjectId>94564</ObjectId>
+      <CreatedTimestamp>2017-03-18.13:18:54</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-01.01:24:44</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="42" parent="2" name="E_GRADE">
+      <ObjectId>94560</ObjectId>
+      <CreatedTimestamp>2017-03-18.13:04:26</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-01.01:23:05</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="43" parent="2" name="E_KNOWLEDGE">
+      <ObjectId>121920</ObjectId>
+      <Comment>知识点定义</Comment>
+      <CreatedTimestamp>2017-10-02.11:00:26</CreatedTimestamp>
+      <ModifiedTimestamp>2017-10-02.14:24:32</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="44" parent="2" name="E_PAPERQUESTIONS">
+      <ObjectId>107497</ObjectId>
+      <Comment>试卷题目表</Comment>
+      <CreatedTimestamp>2017-06-20.00:27:24</CreatedTimestamp>
+      <ModifiedTimestamp>2017-06-22.11:16:19</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="45" parent="2" name="E_PAPER_Q_TYPE">
+      <ObjectId>96803</ObjectId>
+      <Comment>试卷题型表</Comment>
+      <CreatedTimestamp>2017-04-04.02:04:59</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-08.03:58:41</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="46" parent="2" name="E_QUESTIONINFO">
+      <ObjectId>107508</ObjectId>
+      <Comment>试题信息表</Comment>
+      <CreatedTimestamp>2017-06-20.11:37:01</CreatedTimestamp>
+      <ModifiedTimestamp>2017-06-28.14:46:16</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="47" parent="2" name="E_QUESTIONS">
+      <ObjectId>107491</ObjectId>
+      <Comment>基础题库表</Comment>
+      <CreatedTimestamp>2017-06-20.00:00:56</CreatedTimestamp>
+      <ModifiedTimestamp>2017-09-11.11:22:19</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="48" parent="2" name="E_SCHOOL">
+      <ObjectId>94561</ObjectId>
+      <CreatedTimestamp>2017-03-18.13:06:56</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-01.01:17:33</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="49" parent="2" name="E_STUDENT">
+      <ObjectId>95279</ObjectId>
+      <CreatedTimestamp>2017-03-23.17:46:32</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-01.01:27:29</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="50" parent="2" name="E_STUDENT_MARK">
+      <ObjectId>101983</ObjectId>
+      <Comment>学生成绩登记表</Comment>
+      <CreatedTimestamp>2017-05-11.17:58:26</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-16.15:19:17</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="51" parent="2" name="E_SUBJECTS">
+      <ObjectId>94259</ObjectId>
+      <CreatedTimestamp>2017-03-16.13:33:57</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-09.13:54:25</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="52" parent="2" name="E_SUBJECT_Q_TYPE">
+      <ObjectId>96450</ObjectId>
+      <Comment>学科考题类型表</Comment>
+      <CreatedTimestamp>2017-04-01.00:35:03</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-01.01:42:14</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="53" parent="2" name="E_TEACHER">
+      <ObjectId>95741</ObjectId>
+      <Comment>教师基本信息表</Comment>
+      <CreatedTimestamp>2017-03-26.17:37:30</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-01.01:31:05</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="54" parent="2" name="E_TEACHER_CLASS">
+      <ObjectId>95748</ObjectId>
+      <Comment>教师班级关系表</Comment>
+      <CreatedTimestamp>2017-03-26.20:29:28</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-01.01:33:44</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="55" parent="2" name="E_TESTPAPER">
+      <ObjectId>94257</ObjectId>
+      <Comment>试卷表</Comment>
+      <CreatedTimestamp>2017-03-16.13:15:48</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-22.18:47:44</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="56" parent="2" name="E_WRONG_STUDENT">
+      <ObjectId>103450</ObjectId>
+      <Comment>学生错题记录表</Comment>
+      <CreatedTimestamp>2017-05-21.14:05:50</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-28.06:00:07</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="57" parent="2" name="R_ABOVESPECIFIEDMARK">
+      <ObjectId>101090</ObjectId>
+      <CreatedTimestamp>2017-05-04.15:32:08</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-04.15:36:20</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="58" parent="2" name="R_CLASSMARK">
+      <ObjectId>97506</ObjectId>
+      <Comment>班级成绩表</Comment>
+      <CreatedTimestamp>2017-04-09.00:01:39</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-14.01:43:19</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="59" parent="2" name="R_MARKAREA">
+      <ObjectId>98681</ObjectId>
+      <Comment>班级成绩区间分布表</Comment>
+      <CreatedTimestamp>2017-04-17.18:18:25</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-10.17:40:09</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="60" parent="2" name="R_WRONGQUESTION">
+      <ObjectId>100951</ObjectId>
+      <Comment>错题统计报表</Comment>
+      <CreatedTimestamp>2017-05-03.17:26:10</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-11.14:02:50</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="61" parent="2" name="R_YEARMARK">
+      <ObjectId>101548</ObjectId>
+      <Comment>年度成绩排名</Comment>
+      <CreatedTimestamp>2017-05-07.12:33:09</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-27.06:02:37</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="62" parent="2" name="R_YEARMARK_STUDENT">
+      <ObjectId>102716</ObjectId>
+      <Comment>学生年度成绩统计表</Comment>
+      <CreatedTimestamp>2017-05-16.16:01:21</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-20.06:00:50</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="63" parent="2" name="TB_MENU">
+      <ObjectId>93912</ObjectId>
+      <CreatedTimestamp>2017-03-14.17:26:40</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-15.08:54:21</ModifiedTimestamp>
+    </table>
+    <table id="64" parent="2" name="TB_ROLE">
+      <ObjectId>93913</ObjectId>
+      <CreatedTimestamp>2017-03-14.17:27:47</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-15.08:57:22</ModifiedTimestamp>
+    </table>
+    <table id="65" parent="2" name="TB_ROLE_MENU">
+      <ObjectId>93914</ObjectId>
+      <CreatedTimestamp>2017-03-14.17:28:19</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-14.17:30:07</ModifiedTimestamp>
+    </table>
+    <table id="66" parent="2" name="TB_USER">
+      <ObjectId>93915</ObjectId>
+      <CreatedTimestamp>2017-03-14.17:29:35</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-13.23:35:48</ModifiedTimestamp>
+      <TemporaryPreserve>1</TemporaryPreserve>
+    </table>
+    <table id="67" parent="2" name="TB_USER_ROLE">
+      <ObjectId>93920</ObjectId>
+      <CreatedTimestamp>2017-03-14.17:30:37</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-14.17:30:37</ModifiedTimestamp>
+    </table>
+    <view id="68" parent="2" name="V_QUESTIONANDINFO">
+      <ObjectId>120470</ObjectId>
+      <CreatedTimestamp>2017-09-22.18:47:01</CreatedTimestamp>
+      <ModifiedTimestamp>2017-09-25.23:25:11</ModifiedTimestamp>
+      <Modifiable>1</Modifiable>
+    </view>
+    <column id="69" parent="41" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="70" parent="41" name="CLASSNO">
+      <Position>2</Position>
+      <Comment>班级编号</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="71" parent="41" name="CLASSNAME">
+      <Position>3</Position>
+      <Comment>班级ming&apos;chengg</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="72" parent="41" name="GRADENO">
+      <Position>4</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="73" parent="41" name="CREATOR">
+      <Position>5</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="74" parent="41" name="CREATEDATE">
+      <Position>6</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate 
+</DefaultExpression>
+    </column>
+    <column id="75" parent="41" name="SCHOOLNO">
+      <Position>7</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>NULL </DefaultExpression>
+    </column>
+    <index id="76" parent="41" name="E_CLASS_PK">
+      <ObjectId>94566</ObjectId>
+      <CreatedTimestamp>2017-03-18.13:50:27</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-18.13:50:27</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID
+CLASSNO</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="77" parent="41" name="E_CLASS_ECLASSNO_UINDEX">
+      <ObjectId>95027</ObjectId>
+      <CreatedTimestamp>2017-03-22.01:12:33</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-22.01:12:33</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>CLASSNO</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="78" parent="41" name="E_CLASS_PK">
+      <ModifiedTimestamp>2017-03-18.13:50:27</ModifiedTimestamp>
+      <ColNames>ID
+CLASSNO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>E_CLASS_PK</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <key id="79" parent="41" name="E_CLASS_CLASSNO_pk">
+      <ModifiedTimestamp>2017-04-01.01:24:44</ModifiedTimestamp>
+      <ColNames>CLASSNO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>E_CLASS_ECLASSNO_UINDEX</UnderlyingIndexName>
+    </key>
+    <foreign-key id="80" parent="41" name="E_CLASS_FK1">
+      <ModifiedTimestamp>2017-04-01.01:24:04</ModifiedTimestamp>
+      <ColNames>GRADENO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <RefTableName>E_GRADE</RefTableName>
+      <RefKeyName>E_GRADE_GRADENO_pk</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <foreign-key id="81" parent="41" name="E_CLASS_FK">
+      <ModifiedTimestamp>2017-04-01.01:21:47</ModifiedTimestamp>
+      <ColNames>SCHOOLNO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <RefTableName>E_SCHOOL</RefTableName>
+      <RefKeyName>E_SCHOOL_SCHOOLNO_PK</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="82" parent="42" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="83" parent="42" name="GRADENAME">
+      <Position>2</Position>
+      <Comment>年级名称</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="84" parent="42" name="GRADENO">
+      <Position>3</Position>
+      <Comment>年级编号</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="85" parent="42" name="CREATOR">
+      <Position>4</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="86" parent="42" name="CREATEDATE">
+      <Position>5</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate </DefaultExpression>
+    </column>
+    <column id="87" parent="42" name="SCHOOLNO">
+      <Position>6</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <index id="88" parent="42" name="E_GRADE_PK">
+      <ObjectId>94879</ObjectId>
+      <CreatedTimestamp>2017-03-20.23:58:14</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-20.23:58:14</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="89" parent="42" name="E_GRADE_GRADENO_UINDEX">
+      <ObjectId>94881</ObjectId>
+      <CreatedTimestamp>2017-03-21.00:01:09</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-21.00:01:09</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>GRADENO</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="90" parent="42" name="E_GRADE_PK">
+      <ModifiedTimestamp>2017-03-20.23:58:14</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>E_GRADE_PK</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <key id="91" parent="42" name="E_GRADE_GRADENO_pk">
+      <ModifiedTimestamp>2017-04-01.01:23:05</ModifiedTimestamp>
+      <ColNames>GRADENO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>E_GRADE_GRADENO_UINDEX</UnderlyingIndexName>
+    </key>
+    <foreign-key id="92" parent="42" name="E_GRADE_FK">
+      <ModifiedTimestamp>2017-04-01.01:20:32</ModifiedTimestamp>
+      <ColNames>SCHOOLNO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <RefTableName>E_SCHOOL</RefTableName>
+      <RefKeyName>E_SCHOOL_SCHOOLNO_PK</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="93" parent="43" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+    </column>
+    <column id="94" parent="43" name="SCHOOLNO">
+      <Position>2</Position>
+      <DataType>VARCHAR2(12)|0</DataType>
+    </column>
+    <column id="95" parent="43" name="GRADENO">
+      <Position>3</Position>
+      <DataType>VARCHAR2(12)|0</DataType>
+    </column>
+    <column id="96" parent="43" name="SUBJECTNO">
+      <Position>4</Position>
+      <DataType>VARCHAR2(12)|0</DataType>
+    </column>
+    <column id="97" parent="43" name="KNOWLEDGE">
+      <Position>5</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="98" parent="43" name="PARENTID">
+      <Position>6</Position>
+      <Comment>父ID</Comment>
+      <DataType>VARCHAR2(64)|0</DataType>
+    </column>
+    <column id="99" parent="43" name="HASCHILD">
+      <Position>7</Position>
+      <Comment>0-无子节点，1-有子节点，添加子节点时将本记录更新为1</Comment>
+      <DataType>NUMBER(*)|0</DataType>
+      <DefaultExpression>0 </DefaultExpression>
+    </column>
+    <column id="100" parent="44" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="101" parent="44" name="PAPERID">
+      <Position>2</Position>
+      <Comment>试卷id</Comment>
+      <DataType>VARCHAR2(64)|0</DataType>
+    </column>
+    <column id="102" parent="44" name="QUESTIONID">
+      <Position>3</Position>
+      <Comment>试题id</Comment>
+      <DataType>VARCHAR2(64)|0</DataType>
+    </column>
+    <column id="103" parent="44" name="QUESTIONPOINTS">
+      <Position>4</Position>
+      <Comment>题目分值</Comment>
+      <DataType>NUMBER(3,2)|0</DataType>
+    </column>
+    <column id="104" parent="44" name="CREATOR">
+      <Position>5</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="105" parent="44" name="CREATEDATE">
+      <Position>6</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate</DefaultExpression>
+    </column>
+    <index id="106" parent="44" name="SYS_C0011658">
+      <ObjectId>107498</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2017-06-20.00:27:24</CreatedTimestamp>
+      <ModifiedTimestamp>2017-06-20.00:27:24</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="107" parent="44" name="E_PAPERQUESTIONS_INDEX">
+      <ObjectId>107499</ObjectId>
+      <CreatedTimestamp>2017-06-20.00:27:24</CreatedTimestamp>
+      <ModifiedTimestamp>2017-06-20.00:27:24</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>QUESTIONID
+PAPERID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="108" parent="44" name="SYS_C0011658">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2017-06-20.00:27:24</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0011658</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="109" parent="45" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="110" parent="45" name="TPNO">
+      <Position>2</Position>
+      <Comment>试卷编号</Comment>
+      <DataType>VARCHAR2(32)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="111" parent="45" name="QUESTIONTYPE">
+      <Position>3</Position>
+      <Comment>题型编号</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="112" parent="45" name="CREATOR">
+      <Position>4</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="113" parent="45" name="CREATEDATE">
+      <Position>5</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate </DefaultExpression>
+    </column>
+    <column id="114" parent="45" name="MARK">
+      <Position>6</Position>
+      <DataType>NUMBER(6)|0</DataType>
+      <DefaultExpression>0 </DefaultExpression>
+    </column>
+    <column id="115" parent="45" name="QUESTIONNUM">
+      <Position>7</Position>
+      <DataType>NUMBER(6)|0</DataType>
+      <DefaultExpression>0 </DefaultExpression>
+    </column>
+    <column id="116" parent="45" name="DESCRIPTION">
+      <Position>8</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+    </column>
+    <index id="117" parent="45" name="E_PAPER_Q_TYPE_ID_PK">
+      <ObjectId>96805</ObjectId>
+      <CreatedTimestamp>2017-04-04.02:22:33</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-04.02:22:33</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="118" parent="45" name="TPNO_QUESTIONTYPE_UINDEX">
+      <ObjectId>97359</ObjectId>
+      <CreatedTimestamp>2017-04-08.03:58:41</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-08.03:58:41</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>TPNO
+QUESTIONTYPE</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="119" parent="45" name="E_PAPER_Q_TYPE_ID_PK">
+      <ModifiedTimestamp>2017-04-04.02:22:33</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>E_PAPER_Q_TYPE_ID_PK</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="120" parent="46" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="121" parent="46" name="QUESTIONID">
+      <Position>2</Position>
+      <Comment>试题id</Comment>
+      <DataType>VARCHAR2(64)|0</DataType>
+    </column>
+    <column id="122" parent="46" name="QUESTIONTYPE">
+      <Position>3</Position>
+      <Comment>试题类型</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="123" parent="46" name="CREATOR">
+      <Position>4</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="124" parent="46" name="CREATEDATE">
+      <Position>5</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate
+</DefaultExpression>
+    </column>
+    <column id="125" parent="46" name="GRADENO">
+      <Position>6</Position>
+      <Comment>年级编码</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="126" parent="46" name="SUBJECTNO">
+      <Position>7</Position>
+      <Comment>学科</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="127" parent="46" name="DIFFICULTY">
+      <Position>8</Position>
+      <Comment>难度系数</Comment>
+      <DataType>NUMBER(3,2)|0</DataType>
+    </column>
+    <column id="128" parent="46" name="SCHOOLNO">
+      <Position>9</Position>
+      <Comment>学校编码</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <index id="129" parent="46" name="SYS_C0011659">
+      <ObjectId>107509</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2017-06-20.11:37:01</CreatedTimestamp>
+      <ModifiedTimestamp>2017-06-20.11:37:01</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="130" parent="46" name="E_QUESTIONINFO_ID_INDEX">
+      <ObjectId>107510</ObjectId>
+      <CreatedTimestamp>2017-06-20.11:38:14</CreatedTimestamp>
+      <ModifiedTimestamp>2017-06-20.11:38:14</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>QUESTIONID</ColNames>
+    </index>
+    <index id="131" parent="46" name="E_QUESTIONINFO_TYPE_INDEX">
+      <ObjectId>107511</ObjectId>
+      <CreatedTimestamp>2017-06-20.11:38:14</CreatedTimestamp>
+      <ModifiedTimestamp>2017-06-20.11:38:14</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>QUESTIONTYPE</ColNames>
+    </index>
+    <key id="132" parent="46" name="SYS_C0011659">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2017-06-20.11:37:01</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0011659</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="133" parent="47" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="134" parent="47" name="QUESTION">
+      <Position>2</Position>
+      <Comment>题干</Comment>
+      <DataType>VARCHAR2(3900)|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="135" parent="47" name="QUESTIONNO">
+      <Position>3</Position>
+      <Comment>每道题顺序号，长度&gt;3K时进行分割，每3k存1条记录</Comment>
+      <DataType>NUMBER(*)|0</DataType>
+    </column>
+    <column id="136" parent="47" name="QUESTIONID">
+      <Position>4</Position>
+      <Comment>每道题的id</Comment>
+      <DataType>VARCHAR2(64)|0</DataType>
+    </column>
+    <index id="137" parent="47" name="SYS_C0011656">
+      <ObjectId>107492</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2017-06-20.00:00:56</CreatedTimestamp>
+      <ModifiedTimestamp>2017-06-20.00:00:56</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="138" parent="47" name="E_QUESTIONS_QUESTION_INDEX">
+      <ObjectId>107495</ObjectId>
+      <CreatedTimestamp>2017-06-20.00:08:30</CreatedTimestamp>
+      <ModifiedTimestamp>2017-06-20.00:08:30</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>QUESTION</ColNames>
+    </index>
+    <index id="139" parent="47" name="E_QUESTIONS_QNO_INDEX">
+      <ObjectId>107514</ObjectId>
+      <CreatedTimestamp>2017-06-20.11:39:55</CreatedTimestamp>
+      <ModifiedTimestamp>2017-06-20.11:39:55</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>QUESTIONNO</ColNames>
+    </index>
+    <key id="140" parent="47" name="SYS_C0011656">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2017-06-20.00:00:56</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0011656</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="141" parent="48" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="142" parent="48" name="SCHOOLNO">
+      <Position>2</Position>
+      <Comment>学校编码</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="143" parent="48" name="SCHOOLNAME">
+      <Position>3</Position>
+      <Comment>学校名称</Comment>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="144" parent="48" name="CREATOR">
+      <Position>4</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="145" parent="48" name="CREATEDATE">
+      <Position>5</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate 
+</DefaultExpression>
+    </column>
+    <column id="146" parent="48" name="SCHOOLTYPE">
+      <Position>6</Position>
+      <Comment>&apos;01&apos;--高中,&apos;02&apos;--初中，&apos;03&apos;--小学</Comment>
+      <DataType>VARCHAR2(4)|0</DataType>
+      <DefaultExpression>&apos;01&apos; </DefaultExpression>
+    </column>
+    <index id="147" parent="48" name="E_SCHOOL_ID_pk">
+      <ObjectId>96463</ObjectId>
+      <CreatedTimestamp>2017-04-01.01:17:33</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-01.01:17:33</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="148" parent="48" name="E_SCHOOL_SCHOOLNO_UINDEX">
+      <ObjectId>95028</ObjectId>
+      <CreatedTimestamp>2017-03-22.01:13:29</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-22.01:13:29</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>SCHOOLNO</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="149" parent="48" name="E_SCHOOL_ID_pk">
+      <ModifiedTimestamp>2017-04-01.01:17:33</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>E_SCHOOL_ID_pk</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <key id="150" parent="48" name="E_SCHOOL_SCHOOLNO_PK">
+      <ModifiedTimestamp>2017-04-01.01:17:33</ModifiedTimestamp>
+      <ColNames>SCHOOLNO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>E_SCHOOL_SCHOOLNO_UINDEX</UnderlyingIndexName>
+    </key>
+    <column id="151" parent="49" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="152" parent="49" name="CHINAID">
+      <Position>2</Position>
+      <Comment>身份证号</Comment>
+      <DataType>VARCHAR2(30)|0</DataType>
+    </column>
+    <column id="153" parent="49" name="STUDENTNAME">
+      <Position>3</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="154" parent="49" name="LOCALID">
+      <Position>4</Position>
+      <Comment>学籍辅号</Comment>
+      <DataType>VARCHAR2(30)|0</DataType>
+    </column>
+    <column id="155" parent="49" name="SCHOOLNO">
+      <Position>5</Position>
+      <Comment>学校编码</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="156" parent="49" name="COUNTRYID">
+      <Position>6</Position>
+      <Comment>全国学籍号</Comment>
+      <DataType>VARCHAR2(40)|0</DataType>
+    </column>
+    <column id="157" parent="49" name="GRADENO">
+      <Position>7</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="158" parent="49" name="CLASSNO">
+      <Position>8</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="159" parent="49" name="NATION">
+      <Position>9</Position>
+      <Comment>民族</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="160" parent="49" name="BIRTHDAY">
+      <Position>10</Position>
+      <Comment>生日</Comment>
+      <DataType>DATE|0</DataType>
+    </column>
+    <column id="161" parent="49" name="ADMISSIONDATE">
+      <Position>11</Position>
+      <Comment>入学时间</Comment>
+      <DataType>DATE|0</DataType>
+    </column>
+    <column id="162" parent="49" name="SCHOOLSTATE">
+      <Position>12</Position>
+      <Comment>学籍状态：0-正常；1-转入；2-休学</Comment>
+      <DataType>VARCHAR2(4)|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="163" parent="49" name="CREATOR">
+      <Position>13</Position>
+      <Comment>创建人</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="164" parent="49" name="CREATEDATE">
+      <Position>14</Position>
+      <Comment>创建日期</Comment>
+      <DataType>DATE|0</DataType>
+    </column>
+    <column id="165" parent="49" name="STUDYSTATE">
+      <Position>15</Position>
+      <Comment>学习状态：0在校/1毕业/2离校</Comment>
+      <DataType>VARCHAR2(4)|0</DataType>
+    </column>
+    <index id="166" parent="49" name="E_STUDENT_ID_PK">
+      <ObjectId>95281</ObjectId>
+      <CreatedTimestamp>2017-03-23.18:00:58</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-23.18:00:58</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="167" parent="49" name="E_STUDENT_CHINAID_UINDEX">
+      <ObjectId>95585</ObjectId>
+      <CreatedTimestamp>2017-03-25.17:29:48</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-25.17:29:48</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>CHINAID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="168" parent="49" name="E_STUDENT_ID_PK">
+      <ModifiedTimestamp>2017-03-23.18:00:58</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>E_STUDENT_ID_PK</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="169" parent="49" name="E_STUDENT_E_SCHOOL_SCHOOLNO_FK">
+      <ModifiedTimestamp>2017-04-01.01:27:03</ModifiedTimestamp>
+      <ColNames>SCHOOLNO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <RefTableName>E_SCHOOL</RefTableName>
+      <RefKeyName>E_SCHOOL_SCHOOLNO_PK</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <foreign-key id="170" parent="49" name="E_STUDENT_E_GRADE_GRADENO_FK">
+      <ModifiedTimestamp>2017-04-01.01:26:32</ModifiedTimestamp>
+      <ColNames>GRADENO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <RefTableName>E_GRADE</RefTableName>
+      <RefKeyName>E_GRADE_GRADENO_pk</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <foreign-key id="171" parent="49" name="E_STUDENT_E_CLASS_CLASSNO_FK">
+      <ModifiedTimestamp>2017-04-01.01:27:29</ModifiedTimestamp>
+      <ColNames>CLASSNO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <RefTableName>E_CLASS</RefTableName>
+      <RefKeyName>E_CLASS_CLASSNO_pk</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="172" parent="50" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="173" parent="50" name="STUDENTNAME">
+      <Position>2</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="174" parent="50" name="TPNAME">
+      <Position>3</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="175" parent="50" name="MARK">
+      <Position>4</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="176" parent="50" name="TESTDATE">
+      <Position>5</Position>
+      <DataType>DATE|0</DataType>
+    </column>
+    <column id="177" parent="50" name="MARKONE">
+      <Position>6</Position>
+      <Comment>客观题分数</Comment>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="178" parent="50" name="MARKTWO">
+      <Position>7</Position>
+      <Comment>主观题</Comment>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="179" parent="50" name="CREATOR">
+      <Position>8</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="180" parent="50" name="CREATEDATE">
+      <Position>9</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate</DefaultExpression>
+    </column>
+    <column id="181" parent="50" name="SUBJECTNO">
+      <Position>10</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <index id="182" parent="50" name="SYS_C0011298">
+      <ObjectId>101984</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2017-05-11.17:58:26</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-11.17:58:26</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="183" parent="50" name="SYS_C0011298">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2017-05-11.17:58:26</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0011298</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="184" parent="51" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="185" parent="51" name="CREATOR">
+      <Position>2</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="186" parent="51" name="CREATEDATE">
+      <Position>3</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate 
+</DefaultExpression>
+    </column>
+    <column id="187" parent="51" name="SUBJECTNAME">
+      <Position>4</Position>
+      <Comment>学科名称</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="188" parent="51" name="SUBJECTNO">
+      <Position>5</Position>
+      <Comment>学科编码</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>NULL </DefaultExpression>
+    </column>
+    <column id="189" parent="51" name="TOTALSCORE">
+      <Position>6</Position>
+      <Comment>满分</Comment>
+      <DataType>NUMBER(4)|0</DataType>
+    </column>
+    <index id="190" parent="51" name="E_SUBJECTS_ID_pk">
+      <ObjectId>96464</ObjectId>
+      <CreatedTimestamp>2017-04-01.01:19:35</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-01.01:19:35</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="191" parent="51" name="E_SUBJECTS_SUBJECTNO_UINDEX">
+      <ObjectId>95030</ObjectId>
+      <CreatedTimestamp>2017-03-22.01:15:22</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-22.01:15:22</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>SUBJECTNO</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="192" parent="51" name="E_SUBJECTS_ID_pk">
+      <ModifiedTimestamp>2017-04-01.01:19:35</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>E_SUBJECTS_ID_pk</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <key id="193" parent="51" name="E_SUBJECTS_SUBJECTNO_PK">
+      <ModifiedTimestamp>2017-04-01.01:19:35</ModifiedTimestamp>
+      <ColNames>SUBJECTNO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>E_SUBJECTS_SUBJECTNO_UINDEX</UnderlyingIndexName>
+    </key>
+    <column id="194" parent="52" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="195" parent="52" name="SUBJECTNO">
+      <Position>2</Position>
+      <Comment>学科编码</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="196" parent="52" name="QUESTIONTYPE">
+      <Position>3</Position>
+      <Comment>试题分类编码</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="197" parent="52" name="CREATOR">
+      <Position>4</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="198" parent="52" name="CREATEDATE">
+      <Position>5</Position>
+      <DataType>DATE|0</DataType>
+    </column>
+    <column id="199" parent="52" name="QUESTIONTYPENAME">
+      <Position>6</Position>
+      <Comment>试题类型名称</Comment>
+      <DataType>VARCHAR2(30)|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <index id="200" parent="52" name="SYS_C0010912">
+      <ObjectId>96451</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2017-04-01.00:35:03</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-01.00:35:03</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="201" parent="52" name="E_QUESTIONTYPE_UINDEX">
+      <ObjectId>96452</ObjectId>
+      <CreatedTimestamp>2017-04-01.00:53:05</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-01.00:53:05</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>QUESTIONTYPE</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="202" parent="52" name="SYS_C0010912">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2017-04-01.00:35:03</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0010912</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <key id="203" parent="52" name="E_SUBJECT_Q_TYPE_pk1">
+      <ModifiedTimestamp>2017-04-01.01:40:41</ModifiedTimestamp>
+      <ColNames>QUESTIONTYPE</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>E_QUESTIONTYPE_UINDEX</UnderlyingIndexName>
+    </key>
+    <foreign-key id="204" parent="52" name="E_SUBJECT_Q_TYPE_FK">
+      <ModifiedTimestamp>2017-04-01.01:38:29</ModifiedTimestamp>
+      <ColNames>SUBJECTNO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <RefTableName>E_SUBJECTS</RefTableName>
+      <RefKeyName>E_SUBJECTS_SUBJECTNO_PK</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="205" parent="53" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="206" parent="53" name="TEACHERID">
+      <Position>2</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="207" parent="53" name="TEACHERNAME">
+      <Position>3</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="208" parent="53" name="SUBJECTNO">
+      <Position>4</Position>
+      <Comment>所教学科编码</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="209" parent="53" name="SCHOOLNO">
+      <Position>5</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="210" parent="53" name="TEL">
+      <Position>6</Position>
+      <DataType>NUMBER(11)|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="211" parent="53" name="CREATOR">
+      <Position>7</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="212" parent="53" name="CREATEDATE">
+      <Position>8</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate
+</DefaultExpression>
+    </column>
+    <index id="213" parent="53" name="E_TEACHER_ID_PK">
+      <ObjectId>95754</ObjectId>
+      <CreatedTimestamp>2017-03-26.23:04:58</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-26.23:04:58</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="214" parent="53" name="e_teacher_teacherid_uindex">
+      <ObjectId>95904</ObjectId>
+      <CreatedTimestamp>2017-03-28.21:10:15</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-28.21:10:15</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>TEACHERID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="215" parent="53" name="E_TEACHER_ID_PK">
+      <ModifiedTimestamp>2017-03-26.23:04:58</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>E_TEACHER_ID_PK</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <key id="216" parent="53" name="E_TEACHER_TEACHERID_pk">
+      <ModifiedTimestamp>2017-04-01.01:31:05</ModifiedTimestamp>
+      <ColNames>TEACHERID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>e_teacher_teacherid_uindex</UnderlyingIndexName>
+    </key>
+    <foreign-key id="217" parent="53" name="E_TEACHER_FK">
+      <ModifiedTimestamp>2017-04-01.01:28:47</ModifiedTimestamp>
+      <ColNames>SUBJECTNO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <RefTableName>E_SUBJECTS</RefTableName>
+      <RefKeyName>E_SUBJECTS_SUBJECTNO_PK</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <foreign-key id="218" parent="53" name="E_TEACHER_FK1">
+      <ModifiedTimestamp>2017-04-01.01:29:24</ModifiedTimestamp>
+      <ColNames>SCHOOLNO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <RefTableName>E_SCHOOL</RefTableName>
+      <RefKeyName>E_SCHOOL_SCHOOLNO_PK</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="219" parent="54" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="220" parent="54" name="TEACHERNO">
+      <Position>2</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="221" parent="54" name="CLASSNO">
+      <Position>3</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="222" parent="54" name="CREATOR">
+      <Position>4</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="223" parent="54" name="CREATEDATE">
+      <Position>5</Position>
+      <DataType>DATE|0</DataType>
+    </column>
+    <index id="224" parent="54" name="SYS_C0010886">
+      <ObjectId>95749</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2017-03-26.20:29:28</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-26.20:29:28</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="225" parent="54" name="SYS_C0010886">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2017-03-26.20:29:28</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0010886</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="226" parent="54" name="E_TEACHER_CLASS_FK">
+      <ModifiedTimestamp>2017-04-01.01:32:58</ModifiedTimestamp>
+      <ColNames>TEACHERNO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <RefTableName>E_TEACHER</RefTableName>
+      <RefKeyName>E_TEACHER_TEACHERID_pk</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <foreign-key id="227" parent="54" name="E_TEACHER_CLASS_FK1">
+      <ModifiedTimestamp>2017-04-01.01:33:44</ModifiedTimestamp>
+      <ColNames>CLASSNO</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <RefTableName>E_CLASS</RefTableName>
+      <RefKeyName>E_CLASS_CLASSNO_pk</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="228" parent="55" name="ID">
+      <Position>1</Position>
+      <Comment>试卷id</Comment>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="229" parent="55" name="TPNAME">
+      <Position>2</Position>
+      <Comment>试卷ming&apos;chengg </Comment>
+      <DataType>VARCHAR2(128)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="230" parent="55" name="CREATOR">
+      <Position>3</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="231" parent="55" name="CREATEDATE">
+      <Position>4</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate </DefaultExpression>
+    </column>
+    <column id="232" parent="55" name="SUBJECTNO">
+      <Position>5</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="233" parent="55" name="GRADENO">
+      <Position>6</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="234" parent="55" name="SCHOOLNO">
+      <Position>7</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="235" parent="55" name="TERM">
+      <Position>8</Position>
+      <Comment>学期：0-上学期,1-下学期</Comment>
+      <DataType>VARCHAR2(4)|0</DataType>
+    </column>
+    <column id="236" parent="55" name="TPNO">
+      <Position>9</Position>
+      <Comment>试卷编号</Comment>
+      <DataType>VARCHAR2(32)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="237" parent="55" name="EXAMTYPE">
+      <Position>10</Position>
+      <Comment>考试类型</Comment>
+      <DataType>VARCHAR2(1)|0</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <index id="238" parent="55" name="E_TESTPAPERS_PK">
+      <ObjectId>94258</ObjectId>
+      <CreatedTimestamp>2017-03-16.13:22:50</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-16.13:22:50</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="239" parent="55" name="E_TESTPAPER_TPNAME_UINDEX">
+      <ObjectId>103586</ObjectId>
+      <CreatedTimestamp>2017-05-22.18:47:44</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-22.18:47:44</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>TPNAME</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="240" parent="55" name="E_TESTPAPER_TPNO_UINDEX">
+      <ObjectId>96804</ObjectId>
+      <CreatedTimestamp>2017-04-04.02:08:23</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-04.02:08:23</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>TPNO</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="241" parent="55" name="E_TESTPAPERS_PK">
+      <ModifiedTimestamp>2017-03-16.13:22:50</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>E_TESTPAPERS_PK</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="242" parent="56" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="243" parent="56" name="COUNTRYID">
+      <Position>2</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="244" parent="56" name="TESTPAPERNO">
+      <Position>3</Position>
+      <DataType>VARCHAR2(32)|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="245" parent="56" name="QUESTIONNO">
+      <Position>4</Position>
+      <Comment>试题（小题）顺序号</Comment>
+      <DataType>NUMBER(4)|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="246" parent="56" name="CREATOR">
+      <Position>5</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="247" parent="56" name="CREATEDATE">
+      <Position>6</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate</DefaultExpression>
+    </column>
+    <column id="248" parent="56" name="TESTDATE">
+      <Position>7</Position>
+      <DataType>DATE|0</DataType>
+    </column>
+    <column id="249" parent="56" name="TESTPOINT">
+      <Position>8</Position>
+      <Comment>知识点</Comment>
+      <DataType>VARCHAR2(128)|0</DataType>
+    </column>
+    <index id="250" parent="56" name="SYS_C0011396">
+      <ObjectId>103451</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2017-05-21.14:05:50</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-21.14:05:50</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="251" parent="56" name="wrongMark_student_uindex">
+      <ObjectId>103452</ObjectId>
+      <CreatedTimestamp>2017-05-21.14:05:50</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-21.14:05:50</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>TESTPAPERNO
+COUNTRYID
+QUESTIONNO</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="252" parent="56" name="SYS_C0011396">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2017-05-21.14:05:50</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0011396</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="253" parent="57" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="254" parent="57" name="CLASSNO">
+      <Position>2</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="255" parent="57" name="ABOVEMARK">
+      <Position>3</Position>
+      <DataType>NUMBER(6)|0</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="256" parent="57" name="CREATOR">
+      <Position>4</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="257" parent="57" name="CREATEDATE">
+      <Position>5</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate
+</DefaultExpression>
+    </column>
+    <index id="258" parent="57" name="SYS_C0011236">
+      <ObjectId>101091</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2017-05-04.15:32:08</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-04.15:32:08</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="259" parent="57" name="R_ABOVEMARK_CLASSNO_UINDEX">
+      <ObjectId>101092</ObjectId>
+      <CreatedTimestamp>2017-05-04.15:36:20</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-04.15:36:20</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>CLASSNO</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="260" parent="57" name="SYS_C0011236">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2017-05-04.15:32:08</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0011236</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="261" parent="58" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="262" parent="58" name="SCHOOLNO">
+      <Position>2</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="263" parent="58" name="GRADENO">
+      <Position>3</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="264" parent="58" name="CLASSNO">
+      <Position>4</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="265" parent="58" name="TPNO">
+      <Position>5</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="266" parent="58" name="SUBJECTNO">
+      <Position>6</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="267" parent="58" name="TESTDATE">
+      <Position>7</Position>
+      <Comment>考试日期</Comment>
+      <DataType>DATE|0</DataType>
+    </column>
+    <column id="268" parent="58" name="MARK">
+      <Position>8</Position>
+      <Comment>班级平均分</Comment>
+      <DataType>NUMBER(6,2)|0</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="269" parent="58" name="CREATOR">
+      <Position>9</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="270" parent="58" name="CREATEDATE">
+      <Position>10</Position>
+      <DataType>DATE|0</DataType>
+    </column>
+    <index id="271" parent="58" name="SYS_C0011021">
+      <ObjectId>97507</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2017-04-09.00:01:39</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-09.00:01:39</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="272" parent="58" name="SYS_C0011021">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2017-04-09.00:01:39</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0011021</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="273" parent="59" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+    </column>
+    <column id="274" parent="59" name="GRADENO">
+      <Position>2</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="275" parent="59" name="SCHOOLNO">
+      <Position>3</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="276" parent="59" name="CLASSNO">
+      <Position>4</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="277" parent="59" name="MARKAREA">
+      <Position>5</Position>
+      <Comment>成绩排序号</Comment>
+      <DataType>VARCHAR2(10)|0</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="278" parent="59" name="MARKAREANUM">
+      <Position>6</Position>
+      <Comment>成绩在该区间的学生分布数量</Comment>
+      <DataType>NUMBER(4)|0</DataType>
+      <DefaultExpression>0</DefaultExpression>
+    </column>
+    <column id="279" parent="59" name="CREATOR">
+      <Position>7</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="280" parent="59" name="CREATEDATE">
+      <Position>8</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate
+</DefaultExpression>
+    </column>
+    <column id="281" parent="59" name="SUBJECTNO">
+      <Position>9</Position>
+      <Comment>noselected-总分；其它存学科编码</Comment>
+      <DataType>VARCHAR2(10)|0</DataType>
+      <DefaultExpression>&apos;noselected&apos;</DefaultExpression>
+    </column>
+    <index id="282" parent="59" name="R_MARKAERA_ID_pk">
+      <ObjectId>98682</ObjectId>
+      <CreatedTimestamp>2017-04-17.18:22:38</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-17.18:22:38</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="283" parent="59" name="R_MARKAERA_UNIQUE_INDEX">
+      <ObjectId>100676</ObjectId>
+      <CreatedTimestamp>2017-05-01.11:35:25</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-01.11:35:25</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>SCHOOLNO
+GRADENO
+CLASSNO
+MARKAREA
+CREATOR</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="284" parent="59" name="R_MARKAERA_ID_pk">
+      <ModifiedTimestamp>2017-04-17.18:22:38</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>R_MARKAERA_ID_pk</UnderlyingIndexName>
+    </key>
+    <column id="285" parent="60" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="286" parent="60" name="TPNO">
+      <Position>2</Position>
+      <Comment>试卷编码</Comment>
+      <DataType>VARCHAR2(60)|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="287" parent="60" name="QUESTIONNO">
+      <Position>3</Position>
+      <Comment>题号</Comment>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="288" parent="60" name="WRONGNUMS">
+      <Position>4</Position>
+      <Comment>错误人数</Comment>
+      <DataType>NUMBER(10)|0</DataType>
+    </column>
+    <column id="289" parent="60" name="TESTNUMS">
+      <Position>5</Position>
+      <Comment>考试人数</Comment>
+      <DataType>NUMBER(10)|0</DataType>
+    </column>
+    <column id="290" parent="60" name="CREATOR">
+      <Position>6</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="291" parent="60" name="CREATEDATE">
+      <Position>7</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate
+</DefaultExpression>
+    </column>
+    <column id="292" parent="60" name="TESTPOINT">
+      <Position>8</Position>
+      <Comment>考点</Comment>
+      <DataType>VARCHAR2(100)|0</DataType>
+    </column>
+    <index id="293" parent="60" name="SYS_C0011231">
+      <ObjectId>100952</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2017-05-03.17:26:10</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-03.17:26:10</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="294" parent="60" name="SYS_C0011231">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2017-05-03.17:26:10</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0011231</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="295" parent="61" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="296" parent="61" name="YEAR">
+      <Position>2</Position>
+      <DataType>NUMBER(*)|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="297" parent="61" name="CLASSNO">
+      <Position>3</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="298" parent="61" name="TEACHERNAME">
+      <Position>4</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="299" parent="61" name="MARKONE">
+      <Position>5</Position>
+      <Comment>1月平均分</Comment>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="300" parent="61" name="MARKTWO">
+      <Position>6</Position>
+      <Comment>2月平均分</Comment>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="301" parent="61" name="MARKTHREE">
+      <Position>7</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="302" parent="61" name="MARKFOUR">
+      <Position>8</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="303" parent="61" name="MARKFIVE">
+      <Position>9</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="304" parent="61" name="MARKSIX">
+      <Position>10</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="305" parent="61" name="MARKSEVEN">
+      <Position>11</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="306" parent="61" name="MARKEIGHT">
+      <Position>12</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="307" parent="61" name="MARKNINE">
+      <Position>13</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="308" parent="61" name="MARKTEN">
+      <Position>14</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="309" parent="61" name="MARKELEVEN">
+      <Position>15</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="310" parent="61" name="MARKTWEVLE">
+      <Position>16</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="311" parent="61" name="MARKMIDTERM">
+      <Position>17</Position>
+      <Comment>期中成绩</Comment>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="312" parent="61" name="MARKFINAL">
+      <Position>18</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="313" parent="61" name="AVEMARK">
+      <Position>19</Position>
+      <Comment>年度平均分</Comment>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="314" parent="61" name="AVEPOSITON">
+      <Position>20</Position>
+      <Comment>平均排名名次</Comment>
+      <DataType>NUMBER(4,2)|0</DataType>
+    </column>
+    <column id="315" parent="61" name="CREATOR">
+      <Position>21</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="316" parent="61" name="CREATEDATE">
+      <Position>22</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate
+</DefaultExpression>
+    </column>
+    <column id="317" parent="61" name="SUBJECTNO">
+      <Position>23</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <index id="318" parent="61" name="SYS_C0011273">
+      <ObjectId>101549</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2017-05-07.12:33:09</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-07.12:33:09</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="319" parent="61" name="R_YEARMARK_UINDEX">
+      <ObjectId>103146</ObjectId>
+      <CreatedTimestamp>2017-05-19.22:06:06</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-19.22:06:06</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>YEAR
+CLASSNO
+SUBJECTNO</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="320" parent="61" name="SYS_C0011273">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2017-05-07.12:33:09</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0011273</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="321" parent="62" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="322" parent="62" name="STUDENTNO">
+      <Position>2</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="323" parent="62" name="STUDENTNAME">
+      <Position>3</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="324" parent="62" name="MARKONE">
+      <Position>4</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="325" parent="62" name="MARKTWO">
+      <Position>5</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="326" parent="62" name="MARKTHREE">
+      <Position>6</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="327" parent="62" name="MARKFOUR">
+      <Position>7</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="328" parent="62" name="MARKFIVE">
+      <Position>8</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="329" parent="62" name="MARKSIX">
+      <Position>9</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="330" parent="62" name="MARKSEVEN">
+      <Position>10</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="331" parent="62" name="MARKEIGHT">
+      <Position>11</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="332" parent="62" name="MARKNINE">
+      <Position>12</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="333" parent="62" name="MARKTEN">
+      <Position>13</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="334" parent="62" name="MARKELEVEN">
+      <Position>14</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="335" parent="62" name="MARKTWELVE">
+      <Position>15</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="336" parent="62" name="MARKMIDTERM">
+      <Position>16</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="337" parent="62" name="MARKFINAL">
+      <Position>17</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="338" parent="62" name="MARKAVE">
+      <Position>18</Position>
+      <DataType>NUMBER(6,2)|0</DataType>
+    </column>
+    <column id="339" parent="62" name="YEAR">
+      <Position>19</Position>
+      <Comment>年度</Comment>
+      <DataType>NUMBER(*)|0</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <column id="340" parent="62" name="CLASSNO">
+      <Position>20</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="341" parent="62" name="SUBJECTNO">
+      <Position>21</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="342" parent="62" name="CREATOR">
+      <Position>22</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="343" parent="62" name="CREATEDATE">
+      <Position>23</Position>
+      <DataType>DATE|0</DataType>
+      <DefaultExpression>sysdate
+</DefaultExpression>
+    </column>
+    <index id="344" parent="62" name="SYS_C0011351">
+      <ObjectId>102717</ObjectId>
+      <NameSurrogate>1</NameSurrogate>
+      <CreatedTimestamp>2017-05-16.16:01:21</CreatedTimestamp>
+      <ModifiedTimestamp>2017-05-16.16:01:21</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="345" parent="62" name="SYS_C0011351">
+      <NameSurrogate>1</NameSurrogate>
+      <ModifiedTimestamp>2017-05-16.16:01:21</ModifiedTimestamp>
+      <ColNames>ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>SYS_C0011351</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="346" parent="63" name="MENU_ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="347" parent="63" name="PARENT_MENU_ID">
+      <Position>2</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="348" parent="63" name="MENU_NO">
+      <Position>3</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="349" parent="63" name="MENU_TITLE">
+      <Position>4</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="350" parent="63" name="MENU_DESCRIPTION">
+      <Position>5</Position>
+      <DataType>VARCHAR2(1000)|0</DataType>
+    </column>
+    <column id="351" parent="63" name="OPEN_FLAG">
+      <Position>6</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="352" parent="63" name="MENU_URL">
+      <Position>7</Position>
+      <DataType>VARCHAR2(500)|0</DataType>
+    </column>
+    <column id="353" parent="63" name="SORT_NO">
+      <Position>8</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="354" parent="63" name="DELETE_FLAG">
+      <Position>9</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <index id="355" parent="63" name="TB_MENU_PK">
+      <ObjectId>93917</ObjectId>
+      <CreatedTimestamp>2017-03-14.17:29:50</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-14.17:29:50</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>MENU_ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="356" parent="63" name="TB_MENU_PK">
+      <ModifiedTimestamp>2017-03-14.17:29:50</ModifiedTimestamp>
+      <ColNames>MENU_ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>TB_MENU_PK</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="357" parent="64" name="ROLE_ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="358" parent="64" name="ROLE_NAME">
+      <Position>2</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="359" parent="64" name="DESCRIPTION">
+      <Position>3</Position>
+      <DataType>VARCHAR2(2000)|0</DataType>
+    </column>
+    <column id="360" parent="64" name="OPEN_FLAG">
+      <Position>4</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="361" parent="64" name="ENTERPRISE_ID">
+      <Position>5</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <index id="362" parent="64" name="TB_ROLE_PK">
+      <ObjectId>93918</ObjectId>
+      <CreatedTimestamp>2017-03-14.17:29:59</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-14.17:29:59</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ROLE_ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="363" parent="64" name="TB_ROLE_PK">
+      <ModifiedTimestamp>2017-03-14.17:29:59</ModifiedTimestamp>
+      <ColNames>ROLE_ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>TB_ROLE_PK</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="364" parent="65" name="ROLE_ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="365" parent="65" name="MENU_ID">
+      <Position>2</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="366" parent="65" name="TB_ROLE_MENU_PK">
+      <ObjectId>93919</ObjectId>
+      <CreatedTimestamp>2017-03-14.17:30:07</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-14.17:30:07</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>ROLE_ID
+MENU_ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="367" parent="65" name="TB_ROLE_MENU_PK">
+      <ModifiedTimestamp>2017-03-14.17:30:07</ModifiedTimestamp>
+      <ColNames>ROLE_ID
+MENU_ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>TB_ROLE_MENU_PK</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="368" parent="66" name="USER_ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="369" parent="66" name="USER_NAME">
+      <Position>2</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="370" parent="66" name="USER_PASSWORD">
+      <Position>3</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="371" parent="66" name="USER_STATE">
+      <Position>4</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="372" parent="66" name="LOCKED_STATE">
+      <Position>5</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="373" parent="66" name="EMAIL">
+      <Position>6</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="374" parent="66" name="PHONE">
+      <Position>7</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="375" parent="66" name="CREATE_TIME">
+      <Position>8</Position>
+      <DataType>TIMESTAMP(6)|0</DataType>
+    </column>
+    <column id="376" parent="66" name="USER_REAL_NAME">
+      <Position>9</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="377" parent="66" name="USER_DESCRIPTION">
+      <Position>10</Position>
+      <DataType>VARCHAR2(2000)|0</DataType>
+    </column>
+    <column id="378" parent="66" name="USER_GRADE">
+      <Position>11</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="379" parent="66" name="USER_ROLE_IDS">
+      <Position>12</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="380" parent="66" name="USER_ROLE_NAMES">
+      <Position>13</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <column id="381" parent="66" name="USER_SCHOOL">
+      <Position>14</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+    </column>
+    <index id="382" parent="66" name="TB_USER_PK">
+      <ObjectId>93916</ObjectId>
+      <CreatedTimestamp>2017-03-14.17:29:35</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-14.17:29:35</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>USER_ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="383" parent="66" name="TB_USER_USER_NAME_INDEX">
+      <ObjectId>98223</ObjectId>
+      <CreatedTimestamp>2017-04-13.23:35:47</CreatedTimestamp>
+      <ModifiedTimestamp>2017-04-13.23:35:47</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>USER_NAME</ColNames>
+    </index>
+    <key id="384" parent="66" name="TB_USER_PK">
+      <ModifiedTimestamp>2017-03-14.17:29:35</ModifiedTimestamp>
+      <ColNames>USER_ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>TB_USER_PK</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="385" parent="67" name="USER_ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="386" parent="67" name="ROLE_ID">
+      <Position>2</Position>
+      <DataType>VARCHAR2(200)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="387" parent="67" name="TB_USER_ROLE_PK">
+      <ObjectId>93921</ObjectId>
+      <CreatedTimestamp>2017-03-14.17:30:37</CreatedTimestamp>
+      <ModifiedTimestamp>2017-03-14.17:30:37</ModifiedTimestamp>
+      <TablespaceName>USERS</TablespaceName>
+      <ColNames>USER_ID
+ROLE_ID</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="388" parent="67" name="TB_USER_ROLE_PK">
+      <ModifiedTimestamp>2017-03-14.17:30:37</ModifiedTimestamp>
+      <ColNames>USER_ID
+ROLE_ID</ColNames>
+      <InitiallyDeferred>1</InitiallyDeferred>
+      <UnderlyingIndexName>TB_USER_ROLE_PK</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="389" parent="68" name="ID">
+      <Position>1</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="390" parent="68" name="QUESTIONID">
+      <Position>2</Position>
+      <DataType>VARCHAR2(64)|0</DataType>
+    </column>
+    <column id="391" parent="68" name="QUESTION">
+      <Position>3</Position>
+      <DataType>VARCHAR2(3900)|0</DataType>
+    </column>
+    <column id="392" parent="68" name="QUESTIONNO">
+      <Position>4</Position>
+      <DataType>NUMBER(*)|0</DataType>
+    </column>
+    <column id="393" parent="68" name="CREATEDATE">
+      <Position>5</Position>
+      <DataType>DATE|0</DataType>
+    </column>
+    <column id="394" parent="68" name="CREATOR">
+      <Position>6</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="395" parent="68" name="DIFFICULTY">
+      <Position>7</Position>
+      <DataType>NUMBER(*)|0</DataType>
+    </column>
+    <column id="396" parent="68" name="GRADENO">
+      <Position>8</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="397" parent="68" name="QUESTIONTYPE">
+      <Position>9</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="398" parent="68" name="SCHOOLNO">
+      <Position>10</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+    <column id="399" parent="68" name="SUBJECTNO">
+      <Position>11</Position>
+      <DataType>VARCHAR2(20)|0</DataType>
+    </column>
+  </database-model>
+</dataSource>
