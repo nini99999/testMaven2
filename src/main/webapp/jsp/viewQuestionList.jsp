@@ -50,17 +50,13 @@
     function operateFormatter(value, row, index)
 //row 获取这行的值 ，index 获取索引值
     {
-
         return [
-
             '<a class="edit"  href="javascript:void(0)" title="edit">',
             '<i class="glyphicon glyphicon-edit"></i>',
             '</a>'
         ].join('');
     }
-
     var ue;
-
     window.operateEvent = {
         'click .edit': function (e, value, row, index) {
             //init修改操作
@@ -86,18 +82,14 @@
                 ue.setContent(row.question);
 //               console.log(ue.getContent()) ;
             });
-
         }
     }
     function moidfQuestion() {
 //        console.log('SSS');
         kfSubmit();
     }
-
     function kfSubmit() {
-
         ue.getKfContent(function (content) {
-
 //            console.log('sb:', content);
             doModif(content);
 //            form.submit();
@@ -106,7 +98,6 @@
     function doModif(content) {
         console.log($('#mquestiontype').val());
         if ('noselected' == $('#mquestiontype').val() || $('#mdifficulty').val() > 1) {
-
             alert('请选择题型！(难度系数应<=1)');
         } else {
             var params = {};
@@ -139,7 +130,6 @@
                     }
                 }
                 ,
-
                 error: function (data) {
                     console.log("错误信息 :", data.msg);
 //                    alert("保存失败"+data.msg);
@@ -176,7 +166,7 @@
     }
     function downloadFile(fileName) {
         var params = {};
-        params.fileName=fileName;
+        params.fileName = fileName;
         $.ajax({
             url: "/equestions/downloadFile",
 // 数据发送方式
@@ -190,24 +180,20 @@
 //                console.log(data.data);
 //                $('#ds_table').bootstrapTable('destroy');
 //                $('#ds_table').bootstrapTable({data: data.data});//刷新ds_table的数据
-                console.log("下载成功！"+data);
+                console.log("下载成功！" + data);
             },
-
             error: function (data) {
                 console.log("System Error", data);
             }
         })
-
     }
     function exportQuestions() {
         document.getElementById("exportForm").submit();
     }
-
     function queryEgradeListBYschool() {
 //        var params = {};
 //
 //        params.schoolno = $('#schoolno').val();
-
         $.ajax({
             url: "/egrade/viewEgradeListByschoolno",
 // 数据发送方式
@@ -223,23 +209,15 @@
                 $('#gradeno').append("<option value='noselected'>请选择年级</option>");
                 $('#mgradeno').append("<option value='noselected'>请选择年级</option>");
                 $.each(data.data, function (i) {
-
                     $('#gradeno.selectpicker').append("<option value=" + data.data[i].gradeno + ">" + data.data[i].gradename + "</option>");
                     $('#mgradeno.selectpicker').append("<option value=" + data.data[i].gradeno + ">" + data.data[i].gradename + "</option>");
-
                 });
-
-
 //                $('#schoolno').selectpicker('render');
                 $('#gradeno').selectpicker('refresh');
                 $('#mgradeno').selectpicker('refresh');
-
             },
-
             error: function (data) {
-
                 alert("查询年级失败" + data);
-
             }
         })
     }
@@ -257,24 +235,18 @@
 //                console.log(data);
 //            $('#subjectno.selectpicker').empty();
                 $.each(data.data, function (i) {
-
                     $('#subjectno.selectpicker').append("<option value=" + data.data[i].subjectno + ">" + data.data[i].subjectname + "</option>");
                     $('#msubjectno.selectpicker').append("<option value=" + data.data[i].subjectno + ">" + data.data[i].subjectname + "</option>");
                 });
-
                 $('#subjectno').selectpicker('refresh');
                 $('#msubjectno').selectpicker('refresh');
                 queryQTypeBySubject($('#subjectno').val());
             },
-
             error: function (data) {
-
                 alert("查询学科失败" + data);
-
             }
         })
     }
-
     function getTermList() {
         $.ajax({
             url: "/etestpaper/getTermList",
@@ -295,7 +267,6 @@
                 });
                 $('#term').selectpicker('refresh');
             },
-
             error: function (data) {
                 alert("初始化学期失败" + data);
             }
@@ -304,7 +275,6 @@
     function queryQTypeBySubject(subj) {
 //        console.log('subj',subj);
         var params = {};
-
         params.subjectno = subj;
         $.ajax({
             url: "/esubjectqt/viewEsubjectQT",
@@ -313,39 +283,23 @@
 // 接受数据格式
             dataType: "json",
             data: params,
-
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {
-
-
                 $('#questiontype').empty();
-
-
                 $('#questiontype').append("<option value='noselected'>请选择题型</option>");
-
-
                 $.each(data.data, function (i) {
-
                     $('#questiontype.selectpicker').append("<option value=" + data.data[i].questiontype + ">" + data.data[i].questiontypename + "</option>");
-
                 });
-
                 $('#questiontype').selectpicker('refresh');
-
             },
-
-
             error: function (data) {
-
                 alert("查询试题类型失败" + data);
-
             }
         })
     }
     function mqueryQTypeBySubject(subj) {
 //        console.log('subj',subj);
         var params = {};
-
         params.subjectno = subj;
         $.ajax({
             url: "/esubjectqt/viewEsubjectQT",
@@ -354,32 +308,17 @@
 // 接受数据格式
             dataType: "json",
             data: params,
-
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {
-
-
                 $('#mquestiontype').empty();
-
-
                 $('#mquestiontype').append("<option value='noselected'>请选择题型</option>");
-
-
                 $.each(data.data, function (i) {
-
                     $('#mquestiontype.selectpicker').append("<option value=" + data.data[i].questiontype + ">" + data.data[i].questiontypename + "</option>");
-
                 });
-
                 $('#mquestiontype').selectpicker('refresh');
-
             },
-
-
             error: function (data) {
-
                 alert("查询试题类型失败" + data);
-
             }
         })
     }
@@ -394,12 +333,10 @@
         var form = document.getElementById('mForm');
         //        var ue = UE.getEditor('editor');
         //        console.log(ue);
-
         form.onsubmit = function () {
             kfSubmit();
             return false;
         };
-
     })
 </script>
 <body>
@@ -452,61 +389,62 @@
 <!--modal end-->
 <form action="/equestions/exportQuestions" method="post" id="exportForm" name="exportForm">
 
-<div class="container" style="float:center;width: 99%;">
-    <div class="well">
-        <div class="input-prepend input-group">
+    <div class="container" style="float:center;width: 99%;">
+        <div class="well">
+            <div class="input-prepend input-group">
 
 
-            <%--<select id="schoolno" name="schoolno" class="selectpicker fit-width"--%>
-            <%--onchange="queryEgradeListBYschool()">--%>
-            <%--</select>--%>
+                <%--<select id="schoolno" name="schoolno" class="selectpicker fit-width"--%>
+                <%--onchange="queryEgradeListBYschool()">--%>
+                <%--</select>--%>
 
-            <select id="gradeno" name="gradeno" class="selectpicker fit-width">
-            </select>
-            <select id="subjectno" name="subjectno" class="selectpicker fit-width"
-                    onchange="queryQTypeBySubject($('#subjectno').val())">
-            </select>
-            <%--<select id="term" name="subjectno" class="selectpicker fit-width">--%>
-            <%--</select>--%>
-            <select id="questiontype" name="questiontype" class="selectpicker fit-width">
-            </select>
+                <select id="gradeno" name="gradeno" class="selectpicker fit-width">
+                </select>
+                <select id="subjectno" name="subjectno" class="selectpicker fit-width"
+                        onchange="queryQTypeBySubject($('#subjectno').val())">
+                </select>
+                <%--<select id="term" name="subjectno" class="selectpicker fit-width">--%>
+                <%--</select>--%>
+                <select id="questiontype" name="questiontype" class="selectpicker fit-width">
+                </select>
 
 
-            <div style="float: left">
-                <input id="konwledge" type="text" style="width: auto" class="form-control" placeholder="知识点：">
+                <div style="float: left">
+                    <input id="konwledge" type="text" style="width: auto" class="form-control" placeholder="知识点：">
 
-                <input id="difficulty" type="text" style="width: auto" class="form-control" placeholder="难度系数：">
-                <button class="btn btn-primary" type="button" onclick="queryQuestions()">
-                    <span class="glyphicon glyphicon-eye-open"></span>查询
-                </button>
+                    <input id="difficulty" type="text" style="width: auto" class="form-control" placeholder="难度系数：">
+                    <button class="btn btn-primary" type="button" onclick="queryQuestions()">
+                        <span class="glyphicon glyphicon-eye-open"></span>查询
+                    </button>
 
-                <button class="btn btn-primary" type="button" onclick="exportQuestions();"><span
-                        class="glyphicon glyphicon-export"></span>导出word
-                </button>
+                    <button class="btn btn-primary" type="button" onclick="exportQuestions();"><span
+                            class="glyphicon glyphicon-export"></span>导出
+                    </button>
 
+                </div>
             </div>
         </div>
     </div>
 </form>
 
-    <div id="bs_t" style="float: none;display: block;margin-left: auto;margin-right: auto;">
-        <table class="table table-striped" id="ds_table" align="center"
-               striped="true"
-               data-pagination="true" sidePagination="server" data-click-to-select="true">
-            <thead>
-            <tr>
+<div id="bs_t" style="float: none;display: block;margin-left: auto;margin-right: auto;">
+    <table class="table table-striped" id="ds_table" align="center"
+           striped="true"
+           data-pagination="true" sidePagination="server" data-click-to-select="true">
+        <thead>
+        <tr>
 
-                <%--<th data-field="estate" data-checkbox="true"></th>--%>
-                <th data-field="index" data-align="center" data-formatter="indexFormatter">序号</th>
+            <%--<th data-field="estate" data-checkbox="true"></th>--%>
+            <th data-field="index" data-align="center" data-formatter="indexFormatter">序号</th>
 
-                <%--<th data-field="questionid" hidden>题目ID</th>--%>
-                <th data-field="question">题目</th>
-                <th data-field="id" data-align="center" data-formatter="operateFormatter" data-events="operateEvent">编辑
-                </th>
-            </tr>
-            </thead>
-        </table>
-    </div>
+            <%--<th data-field="questionid" hidden>题目ID</th>--%>
+            <th data-field="question">题目</th>
+            <th data-field="id" data-align="center" data-formatter="operateFormatter" data-events="operateEvent">编辑
+            </th>
+        </tr>
+        </thead>
+    </table>
+</div>
 </div>
 </body>
 </html>
