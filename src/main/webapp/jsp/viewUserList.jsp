@@ -194,107 +194,7 @@
 				labelWidth: 120,
 				width: 250
 			},
-			items: [
-				{
-					x: 10,
-					y: 10,
-					fieldLabel: '订单号', 
-					name: 'orderId',
-		//			allowBlank: false // 输入校验：不允许为空
-					xtype: 'textfield',
-					id:'orderId_'
-				},
-				{
-					x: 375,
-					y: 10,
-					fieldLabel: '起始日期', // 表单控件的Label
-					name: 'startTime', // 表单控件的名称
-		//			allowBlank: false // 输入校验：不允许为空
-					xtype: 'datefield',
-					format:'Y-m-d',
-					id:'startTime_',
-                    width: '160',
-                    emptyText: '请选择日期...'
-				},{
-					x: 750,
-					y: 10,
-					fieldLabel: '结束日期', // 表单控件的Label
-					name: 'endTime', // 表单控件的名称
-		//			allowBlank: false // 输入校验：不允许为空
-					xtype: 'datefield',
-					format:'Y-m-d h:i:s',
-					id:'endTime_',
-                    width: '160',
-                    emptyText: '请选择日期...'
-				}/*,
-				{
-					x: 740,
-					y: 10,
-					fieldLabel: '用户组', // 表单控件的Label
-					name: 'groupId', // 表单控件的名称
-		//			allowBlank: false // 输入校验：不允许为空
-					xtype: 'combobox',
-					id:'groupId_',
-                    store: groupStore,
-                    valueField: 'VALUE',
-                    displayField: 'TEXT',
-                    typeAhead: true,
-                    width: '160',
-                    emptyText: '请选择用户组...'
-				},
-				{
-					x: 10,
-					y: 40,
-					fieldLabel: '姓名', // 表单控件的Label
-					name: 'UserRealName', // 表单控件的名称
-		//			allowBlank: false // 输入校验：不允许为空
-					xtype: 'textfield',
-					id:'UserRealName_',
-				},
-				{
-					x: 375,
-					y: 40,
-					xtype: 'combobox',
-					name:'lockedState',
-					id:'lockedState_',
-					fieldLabel: '锁定状态',
-					store: lockedStateStore, // 使用bookStore数据提供下拉列表项的数据
-					valueField: 'dictKey',
-                    displayField: 'dictValue',
-                    
-					width: '160',
-					emptyText: '请选择锁定状态...'
-				},
-				{
-					x: 740,
-					y: 40,
-					xtype: 'combobox',
-					name:'UserGrade',
-					id:'UserGrade_',
-					fieldLabel: '用户级别',
-					store: UserGradeStore, // 使用bookStore数据提供下拉列表项的数据
-					valueField: 'dictKey',
-                    displayField: 'dictValue',
-					width: '160',
-					emptyText: '请选择用户级别...'
-				}*/
-			],
-			// 为表单设置按钮
-			buttons: [{
-				
-					//style : 'margin-left:970px;float:left',//离左边一个按钮的距离多加100px
-					// 提交按钮
-					text: '查询',
-					formBind: true, // 只有当整个表单输入校验通过时，该按钮才可用
-					disabled: true, // 设置该按钮默认不可用
-					// 单击该按钮的事件处理函数
-					handler: function()
-					{
-						UserStore.currentPage =1; 
-						UserStore.loadPage(1);
-					}
-				}
-			],
+
 			dockedItems: [{
 			    xtype: 'toolbar',
 			    dock: 'bottom',
@@ -606,6 +506,7 @@
 			title: '用户列表',
 		//	width: 550, // 指定表单宽度
 			renderTo: Ext.getBody(),
+             tbar:[searchForm],
 			viewConfig:{  
 				   enableTextSelection:true  
 				},
