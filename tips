@@ -1,0 +1,2 @@
+1、UEditor目录下需新建文件夹upload用以保存图片，否则图片上传会出错
+2、添加oracle jar和UEditor jar至maven仓库

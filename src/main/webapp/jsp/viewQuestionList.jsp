@@ -67,8 +67,9 @@
             $('#mgradeno').selectpicker('val', row.gradeno);
             $('#msubjectno').selectpicker('val', row.subjectno);
 //            $('#mquestiontype').selectpicker('val',row.questiontype);
-//
-//                        console.log('ss',row.questiontype);
+////
+//                        console.log('ss',row.gradeno);
+//            console.log('questiontype',row.questiontype);
 //            $('#mquestiontype').selectpicker('refresh');
 //            $('#mquestiontype').selectpicker('render');
 //console.log('yy',$('#mquestiontype').val());
