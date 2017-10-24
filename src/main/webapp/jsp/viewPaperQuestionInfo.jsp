@@ -189,8 +189,9 @@
             var params = {};
             params.gradeno = $('#gradeno').val();
             params.subjectno = $('#subjectno').val();
-            console.log("gradeno", $('#gradeno').val());
-            console.log("subj", $('#subjectno').val());
+//            console.log("gradeno", $('#gradeno').val());
+//            console.log("subj", $('#subjectno').val());
+            params.paperid=$('#paperid').val();
             params.startDate = $('#reservation').val().replace(/-/g, "");
             params.endDate = $('#reservation').val().replace(/-/g, "");
 //        console.log("sss", $('#reservation').val().replace(/-/g, ""));
@@ -220,7 +221,7 @@
         var params = {};
         params.gradeno = $('#gradeno').val();
         params.subjectno = $('#subjectno').val();
-
+        params.creator = 'All';//不根据创建人查询，即查询满足条件的所有试卷
         params.startDate = $('#reservation').val().replace(/-/g, "");
         params.endDate = $('#reservation').val().replace(/-/g, "");
         $.ajax({
@@ -238,7 +239,7 @@
                     $('#paperid.selectpicker').append("<option value=" + data.data[i].tpno + ">" + data.data[i].tpname + "</option>");
                 });
                 $('#paperid').selectpicker('refresh');
-
+queryQuestions();
             },
             error: function (data) {
                 alert("查询失败" + data);
@@ -295,6 +296,9 @@
                 $('#gradeno').selectpicker('refresh');
                 $('#mgradeno').selectpicker('refresh');
 //                getTestPaperList();
+//                var res=$('#gradeno').val();
+//                return res;
+                getsubjectList();
             },
             error: function (data) {
                 alert("查询年级失败" + data);
@@ -322,6 +326,7 @@
                 $('#msubjectno').selectpicker('refresh');
 //                queryQTypeBySubject($('#subjectno').val());
 //                getTestPaperList();
+                getTestPaperList();
             },
             error: function (data) {
                 alert("查询学科失败" + data);
@@ -345,6 +350,7 @@
             });
         });
         document.getElementById("reservation").value = getCurrentMonth();
+        queryEgradeListBYschool();
     }
     function exportQuestions() {
 //        console.log('val',$('#paperid').val());
@@ -364,12 +370,13 @@
     $(function () {
         initDateSelect();
 //        console.log($('#reservation').val());
-        queryEgradeListBYschool();
-        getsubjectList();
-        console.log("gradeno", $('#gradeno').val());
-        console.log("subj", $('#subjectno').val());
-        getTestPaperList();
-        queryQuestions();
+
+//       alert(gradeno);
+
+//        console.log("gradeno", $('#gradeno').val());
+//        console.log("subj", $('#subjectno').val());
+
+//        queryQuestions();
         var form = document.getElementById('mForm');
         //        var ue = UE.getEditor('editor');
         //        console.log(ue);
@@ -458,7 +465,7 @@
                     <select id="subjectno" name="subjectno" class="selectpicker fit-width"
                             onchange="getTestPaperList()">
                     </select>
-                    <select id="paperid" name="paperid" class="selectpicker fit-width">
+                    <select id="paperid" name="paperid" class="selectpicker fit-width" onchange="queryQuestions()">
                     </select>
 
                     <button class="btn btn-primary" type="button" onclick="queryQuestions()">

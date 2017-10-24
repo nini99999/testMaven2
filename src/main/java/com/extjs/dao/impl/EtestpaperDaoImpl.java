@@ -25,12 +25,18 @@ public class EtestpaperDaoImpl implements EtestpaperDao {
     private SessionFactory sessionFactory;
 
     @Override
+    /**
+     * if creator="All",不根据创建人进行查询
+     */
     public List<ETestpaper> queryEtestPaper(ETestpaperDTO eTestpaperDTO) {
         StringBuilder sb = new StringBuilder();
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
-        sb.append("from ETestpaper where 1=1 and creator='" + userDetails.getUsername() + "'");
+        sb.append("from ETestpaper where 1=1");
+        if (!"All".equals(eTestpaperDTO.getCreator())) {
+            sb.append(" and creator='" + userDetails.getUsername() + "'");
+        }
         if (null != eTestpaperDTO.getSchoolno() && !"".equals(eTestpaperDTO.getSchoolno())) {
             sb.append(" and schoolno='" + eTestpaperDTO.getSchoolno() + "'");
         }
