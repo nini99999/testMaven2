@@ -110,10 +110,15 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
 //            ePaperQuestionsDTO.setPaperquestionno(vPaperQuestionAndInfo.getPaperquestionno());
 //            ePaperQuestionsDTO.setQuestionpoints(vPaperQuestionAndInfo.getQuestionpoints());
             ePaperQuestionsDTO.setQuestion(StringEscapeUtils.escapeXml11(subQuestion));//转义题干xml
-
+            EQuestionsDTO questionsDTO = new EQuestionsDTO();
+            questionsDTO.setId(UUID.randomUUID().toString());
+            questionsDTO.setQuestion(ePaperQuestionsDTO.getQuestion());
+            questionsDTO.setQuestionid(questionID);
+            questionsDTO.setCreator(userDetails.getUsername());
             try {
-
+                equestionService.addOneQuestion(questionsDTO);//添加至试题基础库
                 this.addOnePaperQuestion(ePaperQuestionsDTO);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -155,8 +160,11 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
 //        paperQuestionsDTO.setId(vPaperQuestionAndInfo.getId());
             ReflectionUtil.copyProperties(vPaperQuestionAndInfo, paperQuestionsDTO);
             ReflectionUtil.copyProperties(vPaperQuestionAndInfo, questionInfoDTO);
-
+//同步删除试题基础库表、试题信息表
             this.delPaperQuestion(paperQuestionsDTO);
+            EQuestionsDTO questionsDTO = new EQuestionsDTO();
+            questionsDTO.setQuestionid(vPaperQuestionAndInfo.getQuestionid());
+            equestionService.delOneQuestion(questionsDTO);
             equestionInfoDao.delQuestionInfo(questionInfoDTO.getQuestionid());
             this.addPaperQuestionAndInfo(vPaperQuestionAndInfo);
         } catch (Exception e) {

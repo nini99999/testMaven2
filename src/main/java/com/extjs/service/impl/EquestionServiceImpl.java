@@ -168,6 +168,13 @@ public class EquestionServiceImpl implements EquestionService {
     }
 
     @Override
+    public void delOneQuestion(EQuestionsDTO eQuestionsDTO) {
+        if (null != eQuestionsDTO.getQuestionid() && eQuestionsDTO.getQuestionid().length() > 0) {
+            equestionDao.delQuestion(eQuestionsDTO.getQuestionid());
+        }
+    }
+
+    @Override
     @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
     public void updateOneQuestionAndInfo(EQuestionsDTO eQuestionsDTO, EQuestionInfoDTO eQuestionInfoDTO) {
 //        EQuestionsDTO questionsDTO=new EQuestionsDTO();
@@ -184,12 +191,12 @@ public class EquestionServiceImpl implements EquestionService {
 //        return false;
     }
 
-    @Override
-    public void addOnePaperQuestion(EPaperQuestionsDTO ePaperQuestionsDTO) {
-        EPaperQuestions ePaperQuestions = new EPaperQuestions();
-        ReflectionUtil.copyProperties(ePaperQuestionsDTO, ePaperQuestions);
-        epaperQuestionsDao.addPaperQuestions(ePaperQuestions);
-    }
+//    @Override
+//    public void addOnePaperQuestion(EPaperQuestionsDTO ePaperQuestionsDTO) {
+//        EPaperQuestions ePaperQuestions = new EPaperQuestions();
+//        ReflectionUtil.copyProperties(ePaperQuestionsDTO, ePaperQuestions);
+//        epaperQuestionsDao.addPaperQuestions(ePaperQuestions);
+//    }
 
     @Override
     @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
@@ -259,7 +266,7 @@ public class EquestionServiceImpl implements EquestionService {
 //        return null;
 //
 //    }
-    public String exportToHTML(HttpServletResponse response, VQuestionandinfo questionandinfo,String url) {
+    public String exportToHTML(HttpServletResponse response, VQuestionandinfo questionandinfo, String url) {
         List<VQuestionandinfo> questionandinfoList = this.getQuestionAndInfoList(questionandinfo);
         StringBuilder stringBuilder = new StringBuilder("");
         int i = 0;
@@ -269,7 +276,7 @@ public class EquestionServiceImpl implements EquestionService {
         }
         ExportToHtml exportToHtml = new ExportToHtml();
 
-        return exportToHtml.exportToHtml(response, stringBuilder,url);
+        return exportToHtml.exportToHtml(response, stringBuilder, url);
 
     }
 }

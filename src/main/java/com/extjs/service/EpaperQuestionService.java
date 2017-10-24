@@ -19,7 +19,7 @@ public interface EpaperQuestionService {
 
     void mergePaperQuestion(EPaperQuestionsDTO ePaperQuestionsDTO);//修改
 
-    void addPaperQuestionAndInfo(VPaperQuestionAndInfo paperQuestionAndInfo);//添加试卷试题表和试题信息表
+    void addPaperQuestionAndInfo(VPaperQuestionAndInfo paperQuestionAndInfo);//添加试卷试题表和试题信息表,同步增加至试题基础库
 
     void mergePaperQuestionAndInfo(VPaperQuestionAndInfo vPaperQuestionAndInfo);//修改试卷试题表和试题信息表
 
