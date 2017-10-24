@@ -4,6 +4,7 @@ import com.extjs.model.EPaperQuestionsDTO;
 import com.extjs.model.ETestpaperDTO;
 import com.extjs.model.VPaperQuestionAndInfo;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -25,4 +26,6 @@ public interface EpaperQuestionService {
     List<VPaperQuestionAndInfo> getPaperQuestionAndInfo(VPaperQuestionAndInfo vPaperQuestionAndInfo);//查询试卷试题表和试题信息表
 
     List<ETestpaperDTO> getTestPaperListByTimeInterval(VPaperQuestionAndInfo vPaperQuestionAndInfo);//根据时间区间查询试卷编号和名称
+
+    String exportHTML(HttpServletResponse response, VPaperQuestionAndInfo paperQuestionAndInfo, String url);//导出HTML
 }

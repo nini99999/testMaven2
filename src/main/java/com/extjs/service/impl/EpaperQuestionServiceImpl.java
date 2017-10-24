@@ -4,6 +4,7 @@ import com.extjs.dao.EpaperQuestionsDao;
 import com.extjs.dao.EquestionInfoDao;
 import com.extjs.model.*;
 import com.extjs.service.*;
+import com.extjs.util.ExportToHtml;
 import com.extjs.util.ReflectionUtil;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.sql.Ref;
 import java.util.ArrayList;
@@ -200,5 +202,19 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
             resultMap.add(testpaperDTO);
         }
         return resultMap;
+    }
+
+    @Override
+    public String exportHTML(HttpServletResponse response, VPaperQuestionAndInfo paperQuestionAndInfo, String url) {
+        List<VPaperQuestionAndInfo> paperQuestionAndInfoList = this.getPaperQuestionAndInfo(paperQuestionAndInfo);
+        StringBuilder stringBuilder = new StringBuilder("");
+        int i = 0;
+        for (VPaperQuestionAndInfo vPaperQuestionAndInfo : paperQuestionAndInfoList) {
+            i++;
+            stringBuilder.append("(" + i + ")." + vPaperQuestionAndInfo.getQuestion());
+        }
+        ExportToHtml exportToHtml = new ExportToHtml();
+
+        return exportToHtml.exportToHtml(response, stringBuilder, url);
     }
 }

@@ -23,7 +23,7 @@ public class ETestpaperDTO {
     private String estate;
     private String examtype;
     private String examtypename;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date testdate;
     private String startDate;//考试区间开始
     private String endDate;//考试区间结束

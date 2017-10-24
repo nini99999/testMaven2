@@ -1,6 +1,6 @@
 package com.extjs.controller;
 
-import com.extjs.model.ETestpaperDTO;
+
 import com.extjs.model.VPaperQuestionAndInfo;
 import com.extjs.service.EpaperQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +69,7 @@ public class EpaperQuestionController {
         return resultMap;
     }
 
-//    @RequestMapping("/getTestPaperList")
+    //    @RequestMapping("/getTestPaperList")
 //    @ResponseBody
 //    public Map getTestPaperList(VPaperQuestionAndInfo vPaperQuestionAndInfo) {
 //        String startDate = vPaperQuestionAndInfo.getStartDate().substring(0, 8);
@@ -80,5 +82,20 @@ public class EpaperQuestionController {
 //        resultMap.put("total", testpaperDTOList.size());
 //        return resultMap;
 //    }
+    @RequestMapping("/exportQuestions")
+    @ResponseBody
+    public void exportQuestions(HttpServletRequest request, VPaperQuestionAndInfo paperQuestionAndInfo, HttpServletResponse response) {
+//        String startDate = paperQuestionAndInfo.getStartDate().substring(0, 8);
+//        String endDate = paperQuestionAndInfo.getEndDate().substring(paperQuestionAndInfo.getEndDate().length() - 8, paperQuestionAndInfo.getEndDate().length());
+//        paperQuestionAndInfo.setStartDate(startDate);
+//        paperQuestionAndInfo.setEndDate(endDate);
+
+        String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/" + request.getContextPath();
+
+        String path = epaperQuestionService.exportHTML(response, paperQuestionAndInfo, url);
+
+
+    }
+
 
 }

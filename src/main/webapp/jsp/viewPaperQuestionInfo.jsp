@@ -7,7 +7,7 @@
 %>
 <html>
 <head>
-    <title>试题库</title>
+    <title>试卷试题管理</title>
     <link rel="stylesheet" href="<%=path%>/css/main.css">
 
     <!-- Include Twitter Bootstrap and jQuery: -->
@@ -182,35 +182,39 @@
         }
     }
     function queryQuestions() {
+        if (!$('#paperid').val()) {
+            alert('请选择试卷！');
 
-        var params = {};
-        params.gradeno = $('#gradeno').val();
-        params.subjectno = $('#subjectno').val();
-        console.log("gradeno", $('#gradeno').val());
-        console.log("subj", $('#subjectno').val());
-        params.startDate = $('#reservation').val().replace(/-/g, "");
-        params.endDate = $('#reservation').val().replace(/-/g, "");
+        } else {
+            var params = {};
+            params.gradeno = $('#gradeno').val();
+            params.subjectno = $('#subjectno').val();
+            console.log("gradeno", $('#gradeno').val());
+            console.log("subj", $('#subjectno').val());
+            params.startDate = $('#reservation').val().replace(/-/g, "");
+            params.endDate = $('#reservation').val().replace(/-/g, "");
 //        console.log("sss", $('#reservation').val().replace(/-/g, ""));
 
-        $.ajax({
-            url: "/paperQuestion/getPaperQuestionList",
+            $.ajax({
+                url: "/paperQuestion/getPaperQuestionList",
 // 数据发送方式
-            type: "get",
+                type: "get",
 // 接受数据格式
-            dataType: "json",
+                dataType: "json",
 // 要传递的数据
-            data: params,
+                data: params,
 // 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
-                console.log(data.data);
-                $('#ds_table').bootstrapTable('destroy');
-                $('#ds_table').bootstrapTable({data: data.data});//刷新ds_table的数据
-            },
-            error: function (data) {
-                alert("查询失败" + data);
-                console.log(data.data);
-            }
-        })
+                success: function (data) {
+                    console.log(data.data);
+                    $('#ds_table').bootstrapTable('destroy');
+                    $('#ds_table').bootstrapTable({data: data.data});//刷新ds_table的数据
+                },
+                error: function (data) {
+                    alert("查询失败" + data);
+                    console.log(data.data);
+                }
+            })
+        }
     }
     function getTestPaperList() {
         var params = {};
@@ -342,6 +346,20 @@
         });
         document.getElementById("reservation").value = getCurrentMonth();
     }
+    function exportQuestions() {
+//        console.log('val',$('#paperid').val());
+//        if ($('#paperid').val().length == 0 || 'noselected' == $('#paperid').val()) {
+        if (!$('#paperid').val()) {
+            alert('请选择试卷！');
+
+        } else {
+
+//
+            var form = document.getElementById("exportForm");
+
+            form.submit();
+        }
+    }
 
     $(function () {
         initDateSelect();
@@ -359,7 +377,6 @@
             kfSubmit();
             return false;
         };
-
 
 
 //        $('reservation').on('input propertychange', function () {
@@ -421,8 +438,9 @@
     </div>
 </div>
 <!--modal end-->
-<form action="/equestions/exportQuestions" method="post" id="exportForm" name="exportForm">
-
+<form action="/paperQuestion/exportQuestions" method="post" id="exportForm" name="exportForm">
+    <input id="startDate" hidden/>
+    <input id="endDate" hidden/>
     <div class="container" style="float:center;width: 99%;">
         <div class="well">
             <div class="input-prepend input-group">
