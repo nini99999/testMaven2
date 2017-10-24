@@ -3,9 +3,7 @@ package com.extjs.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Id;
+
 import java.sql.Date;
 
 /**
@@ -25,8 +23,7 @@ public class ETestpaperDTO {
     private String estate;
     private String examtype;
     private String examtypename;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-ddHH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date testdate;
     private String startDate;//考试区间开始
     private String endDate;//考试区间结束
