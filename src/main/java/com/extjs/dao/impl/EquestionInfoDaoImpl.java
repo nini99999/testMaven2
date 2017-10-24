@@ -56,6 +56,7 @@ public class EquestionInfoDaoImpl implements EquestionInfoDao {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("delete from EQuestionInfo where questionid='" + questionid + "'");
         query.executeUpdate();
+        session.flush();
     }
 
     @Override

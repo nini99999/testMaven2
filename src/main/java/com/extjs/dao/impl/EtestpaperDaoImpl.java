@@ -52,6 +52,9 @@ public class EtestpaperDaoImpl implements EtestpaperDao {
         if (null != eTestpaperDTO.getTpname() && !"".equals(eTestpaperDTO.getTpname())) {
             sb.append(" and tpname like '%" + eTestpaperDTO.getTpname() + "%'");
         }
+        if (null != eTestpaperDTO.getStartDate() && eTestpaperDTO.getStartDate().length() > 0 && null != eTestpaperDTO.getEndDate() && eTestpaperDTO.getEndDate().length() > 0) {
+            sb.append(" and testdate BETWEEN to_date('" + eTestpaperDTO.getStartDate() + "', 'yyyy-mm-dd') AND to_date('" + eTestpaperDTO.getEndDate() + "', 'yyyy-mm-dd')");
+        }
         sb.append(" order by schoolno,gradeno,term,subjectno,tpno");
         List<ETestpaper> eTestpaperList = null;
         Session session = sessionFactory.getCurrentSession();

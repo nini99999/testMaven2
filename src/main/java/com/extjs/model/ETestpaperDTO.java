@@ -1,5 +1,8 @@
 package com.extjs.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -22,6 +25,11 @@ public class ETestpaperDTO {
     private String estate;
     private String examtype;
     private String examtypename;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-ddHH:mm:ss")
+    private Date testdate;
+    private String startDate;//考试区间开始
+    private String endDate;//考试区间结束
 
 
     public String getId() {
@@ -125,5 +133,30 @@ public class ETestpaperDTO {
 
     public void setExamtypename(String examtypename) {
         this.examtypename = examtypename;
+    }
+
+
+    public Date getTestdate() {
+        return testdate;
+    }
+
+    public void setTestdate(Date testdate) {
+        this.testdate = testdate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 }

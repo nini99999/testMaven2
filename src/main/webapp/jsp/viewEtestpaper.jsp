@@ -23,6 +23,10 @@
     <script src="<%=path%>/bootstrap/bootstrap-table.js"></script>
     <script src="<%=path%>/bootstrap/bootstrap-table-zh-CN.js"></script>
 
+    <link href="<%=path%>/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet"/>
+    <script src="<%=path%>/bootstrap/moment-with-locales.js"></script>
+    <script src="<%=path%>/bootstrap/bootstrap-datetimepicker.js"></script>
+    <script src="<%=path%>/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
 
 </head>
 <script type="text/javascript">
@@ -63,6 +67,7 @@
             $('#tpno').val(row.tpno);
             $('#c_tpname').val(row.tpname);
             $('#c_examtype').selectpicker('val', (row.examtype));
+            $('#testdate').datetimepicker('val', (row.testdate));
             $("#myModal").modal('show');
 
         },
@@ -353,6 +358,8 @@
         params.tpno = tpno.value;
         params.examtype = $('#c_examtype').val();
         params.id = sid.value;
+        params.testdate =$('#testdate').val();
+        console.log('add',$('#testdate').val());
 
         $.ajax({
 
@@ -476,7 +483,8 @@
             <div>
                 <form class="form-inline">
 
-                    <select id="schoolno" name="schoolno" class="selectpicker fit-width" onchange="queryEgradeListBYschool()">
+                    <select id="schoolno" name="schoolno" class="selectpicker fit-width"
+                            onchange="queryEgradeListBYschool()">
                     </select>
 
                     <select id="gradeno" name="gradeno" class="selectpicker fit-width">
@@ -506,7 +514,7 @@
 
     </div>
     <div id="bs_t" style="float: none;display: block;margin-left: auto;margin-right: auto;">
-        <table class="table table-striped"  id="ds_table" align="center"
+        <table class="table table-striped" id="ds_table" align="center"
                striped="true"
                data-height="500" data-detail-view="true" data-detail-formatter="getChildTable"
                data-pagination="true" sidePagination="server" data-click-to-select="true">
@@ -517,9 +525,11 @@
                 <th data-field="tpno" data-align="center" data-sortable="true">试卷编号</th>
                 <th data-field="tpname" data-align="center" data-sortable="true">试卷名称</th>
                 <th data-field="examtypename" data-align="center" data-sortable="true">考试类型</th>
+                <th data-field="testdate" data-align="center" data-sortable="true">考试日期</th>
                 <th data-field="creator" data-align="center">创建人</th>
                 <th data-field="createdate" data-align="center">创建日期</th>
-                <th data-field="bs_rowid" data-align="center" data-formatter="operateFormatter" data-events="operateEvent">
+                <th data-field="bs_rowid" data-align="center" data-formatter="operateFormatter"
+                    data-events="operateEvent">
                     编辑
                 </th>
 
@@ -544,6 +554,19 @@
             <div class="modal-body">
                 <input id="sid" name="sid" class="btn-default" hidden></input>
                 <input id="tpno" name="tpno" class="btn-default" hidden></input>
+                <div class='col-sm-6'>
+                    <div class="form-group">
+                        <label>考试日期：</label>
+                        <!--指定 date标记-->
+                        <div class='input-group date'>
+                            <input  id='testdate' type='text' class="form-control"/>
+                            <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                        </div>
+                    </div>
+                </div>
+
                 <label for="c_tpname">试卷名称：</label><input id="c_tpname" name="c_tpname" class="form-control"></input>
                 <label for="c_examtype">考试类型：</label> <select id="c_examtype" name="c_examtype"
                                                               class="selectpicker"></select>
@@ -617,6 +640,15 @@
         getsubjectList();
         getTermList();
         getExamType();
+        $('#testdate').datetimepicker({
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            startView: 2,
+            minView: 2,
+            forceParse: false,
+            language: 'zh-CN'
+        });
 //        queryEgradeListBYschool();
 //        queryEteacherBYschool();
 

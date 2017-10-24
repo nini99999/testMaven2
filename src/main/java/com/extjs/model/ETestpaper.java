@@ -21,6 +21,7 @@ public class ETestpaper {
     private String term;
     private String tpno;
     private String examtype;
+    private Date testdate;
 
     @Id
     @Column(name = "ID", nullable = false, length = 64)
@@ -31,7 +32,6 @@ public class ETestpaper {
     public void setId(String id) {
         this.id = id;
     }
-
 
 
     @Basic
@@ -114,6 +114,7 @@ public class ETestpaper {
     public void setTpno(String tpno) {
         this.tpno = tpno;
     }
+
     @Basic
     @Column(name = "EXAMTYPE", nullable = true, length = 1)
     public String getExamtype() {
@@ -122,5 +123,15 @@ public class ETestpaper {
 
     public void setExamtype(String examtype) {
         this.examtype = examtype;
+    }
+
+    @Basic
+    @Column(name = "TESTDATE", nullable = true)
+    public Date getTestdate() {
+        return testdate;
+    }
+
+    public void setTestdate(Date testdate) {
+        this.testdate = testdate;
     }
 }

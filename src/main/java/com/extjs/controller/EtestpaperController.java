@@ -41,10 +41,10 @@ public class EtestpaperController {
 
     @RequestMapping("/getExamType")
     @ResponseBody
-    public Map getExamType(){
-        Map<String,Object> resultMap=new HashMap<String, Object>();
+    public Map getExamType() {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
         EConstants eConstants = new EConstants();
-        resultMap.put("examtype",eConstants.examType);
+        resultMap.put("examtype", eConstants.examType);
         return resultMap;
     }
 
@@ -66,6 +66,16 @@ public class EtestpaperController {
     public Map queryTestPaper(ETestpaperDTO eTestpaperDTO) {
         if ("noselected".equals(eTestpaperDTO.getGradeno())) {
             eTestpaperDTO.setGradeno(null);
+        }
+        String startDate;
+        String endDate;
+        if (null != eTestpaperDTO.getStartDate() && eTestpaperDTO.getStartDate().length() > 0) {
+            startDate = eTestpaperDTO.getStartDate().substring(0, 8);
+            eTestpaperDTO.setStartDate(startDate);
+        }
+        if (null != eTestpaperDTO.getEndDate() && eTestpaperDTO.getEndDate().length() > 0) {
+            endDate = eTestpaperDTO.getEndDate().substring(eTestpaperDTO.getEndDate().length() - 8, eTestpaperDTO.getEndDate().length());
+            eTestpaperDTO.setEndDate(endDate);
         }
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<ETestpaperDTO> eTestpaperDTOList = new ArrayList<ETestpaperDTO>();
@@ -93,6 +103,7 @@ public class EtestpaperController {
 
     /**
      * 删除试卷表，同步删除子表
+     *
      * @param eTestpaperDTOList
      * @return
      */
@@ -100,7 +111,8 @@ public class EtestpaperController {
     @ResponseBody
     public Map delTestPaper(@RequestBody List<ETestpaperDTO> eTestpaperDTOList) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        try {EPaperQTypeDTO ePaperQTypeDTO;
+        try {
+            EPaperQTypeDTO ePaperQTypeDTO;
             for (ETestpaperDTO eTestpaperDTO : eTestpaperDTOList) {
                 etestpaperService.delEtestpaper(eTestpaperDTO);//删除主表
                 epaperQTypeService.delEpaperQType(eTestpaperDTO.getTpno());//根据试卷编码删除子表
@@ -118,6 +130,7 @@ public class EtestpaperController {
 
     /**
      * 添加或修改，试卷题型对应表，
+     *
      * @param ePaperQTypeDTO
      * @return
      */

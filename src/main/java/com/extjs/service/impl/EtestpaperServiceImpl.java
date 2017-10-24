@@ -18,9 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by jenny on 2017/4/4.
@@ -105,6 +103,17 @@ public class EtestpaperServiceImpl implements EtestpaperService {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public HashMap<String, String> getEtestPaper() {
+        HashMap resultMap = new HashMap<String, String>();
+        ETestpaperDTO etestpaperDTO = new ETestpaperDTO();
+        List<ETestpaperDTO> testpaperDTOList = this.queryEtestpaper(etestpaperDTO);
+        for (ETestpaperDTO testpaperDTO : testpaperDTOList) {
+            resultMap.put(testpaperDTO.getTpno(), testpaperDTO.getTpname());
+        }
+        return resultMap;
     }
 
     /**

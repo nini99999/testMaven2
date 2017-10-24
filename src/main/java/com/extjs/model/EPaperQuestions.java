@@ -13,8 +13,11 @@ public class EPaperQuestions {
     private String paperid;
     private String questionid;
     private Float questionpoints;
-    private String creator;
-    private Date createdate;
+//    private String creator;
+//    private Date createdate;
+    private String question;
+    private Integer questionno;
+    private Integer paperquestionno;
 
     @Id
     @Column(name = "ID", nullable = false, length = 64)
@@ -56,23 +59,54 @@ public class EPaperQuestions {
         this.questionpoints = questionpoints;
     }
 
+//    @Basic
+//    @Column(name = "CREATOR", nullable = true, length = 20)
+//    public String getCreator() {
+//        return creator;
+//    }
+//
+//    public void setCreator(String creator) {
+//        this.creator = creator;
+//    }
+//
+//    @Basic
+//    @Column(name = "CREATEDATE", nullable = true)
+//    public Date getCreatedate() {
+//        return createdate;
+//    }
+//
+//    public void setCreatedate(Date createdate) {
+//        this.createdate = createdate;
+//    }
+
     @Basic
-    @Column(name = "CREATOR", nullable = true, length = 20)
-    public String getCreator() {
-        return creator;
+    @Column(name = "QUESTION", nullable = true, length = 3900)
+    public String getQuestion() {
+        return question;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     @Basic
-    @Column(name = "CREATEDATE", nullable = true)
-    public Date getCreatedate() {
-        return createdate;
+    @Column(name = "QUESTIONNO", nullable = true, precision = 0)
+    public Integer getQuestionno() {
+        return questionno;
     }
 
-    public void setCreatedate(Date createdate) {
-        this.createdate = createdate;
+    public void setQuestionno(Integer questionno) {
+        this.questionno = questionno;
     }
+    @Basic
+    @Column(name = "PAPERQUESTIONNO", nullable = true, precision = 0)
+    public Integer getPaperquestionno() {
+        return paperquestionno;
+    }
+
+    public void setPaperquestionno(Integer paperquestionno) {
+        this.paperquestionno = paperquestionno;
+    }
+
+
 }

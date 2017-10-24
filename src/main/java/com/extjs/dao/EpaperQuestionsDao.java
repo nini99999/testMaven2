@@ -1,6 +1,7 @@
 package com.extjs.dao;
 
 import com.extjs.model.EPaperQuestions;
+import com.extjs.model.VPaperQuestionAndInfo;
 
 import java.util.List;
 
@@ -14,7 +15,9 @@ public interface EpaperQuestionsDao {
 
     EPaperQuestions updatePaperQuestions(EPaperQuestions ePaperQuestions);//修改试卷试题
 
-    void delPaperQuestions(EPaperQuestions ePaperQuestions);//删除试卷试题
+    void delPaperQuestions(EPaperQuestions ePaperQuestions);//根据id或questionid删除试卷试题
 
+    void mergePaperQuestion(EPaperQuestions paperQuestions);//修改
 
+    List<VPaperQuestionAndInfo> getPaperQuestionAndInfo(VPaperQuestionAndInfo vPaperQuestionAndInfo);//查询试卷试题及信息表
 }

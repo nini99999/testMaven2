@@ -12,8 +12,13 @@ public class EPaperQuestionsDTO {
     private String paperid;
     private String questionid;
     private Float questionpoints;
-    private String creator;
-    private Date createdate;
+//    private String creator;
+//    private Date createdate;
+    private String question;
+    private Integer questionno;
+    private Integer paperquestionno;
+//    private Date testdate;
+
 
 
     public String getId() {
@@ -52,20 +57,56 @@ public class EPaperQuestionsDTO {
     }
 
 
-    public String getCreator() {
-        return creator;
+//    public String getCreator() {
+//        return creator;
+//    }
+//
+//    public void setCreator(String creator) {
+//        this.creator = creator;
+//    }
+//
+//
+//    public Date getCreatedate() {
+//        return createdate;
+//    }
+//
+//    public void setCreatedate(Date createdate) {
+//        this.createdate = createdate;
+//    }
+
+
+    public String getQuestion() {
+        return question;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
 
-    public Date getCreatedate() {
-        return createdate;
+    public Integer getQuestionno() {
+        return questionno;
     }
 
-    public void setCreatedate(Date createdate) {
-        this.createdate = createdate;
+    public void setQuestionno(Integer questionno) {
+        this.questionno = questionno;
     }
+
+
+    public Integer getPaperquestionno() {
+        return paperquestionno;
+    }
+
+    public void setPaperquestionno(Integer paperquestionno) {
+        this.paperquestionno = paperquestionno;
+    }
+
+//    public Date getTestdate() {
+//        return testdate;
+//    }
+//
+//    public void setTestdate(Date testdate) {
+//        this.testdate = testdate;
+//    }
+
 }
