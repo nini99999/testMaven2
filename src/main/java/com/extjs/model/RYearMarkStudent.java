@@ -1,7 +1,10 @@
 package com.extjs.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by jenny on 2017/5/18.
@@ -31,6 +34,8 @@ public class RYearMarkStudent {
     private String classno;
     private String subjectno;
     private String creator;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
 
     @Id

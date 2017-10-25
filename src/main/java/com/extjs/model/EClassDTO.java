@@ -1,9 +1,11 @@
 package com.extjs.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Id;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by jenny on 2017/3/22.
@@ -15,6 +17,7 @@ public class EClassDTO {
     private String gradeno;
     private String schoolno;
     private String creator;
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
     private Boolean estate;
     private String teacherno;

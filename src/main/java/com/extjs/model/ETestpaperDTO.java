@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by jenny on 2017/4/4.
@@ -14,6 +14,7 @@ public class ETestpaperDTO {
 
     private String tpname;
     private String creator;
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
     private String subjectno;
     private String gradeno;
@@ -24,6 +25,7 @@ public class ETestpaperDTO {
     private String examtype;
     private String examtypename;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date testdate;
     private String startDate;//考试区间开始
     private String endDate;//考试区间结束
@@ -131,7 +133,6 @@ public class ETestpaperDTO {
     public void setExamtypename(String examtypename) {
         this.examtypename = examtypename;
     }
-
 
     public Date getTestdate() {
         return testdate;

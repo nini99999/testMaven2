@@ -1,7 +1,9 @@
 package com.extjs.model;
 
 
-import java.sql.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
 
 /**
  * Created by jenny on 2017/4/4.
@@ -15,6 +17,7 @@ public class EPaperQTypeDTO {
     private Integer mark;
     private Integer questionnum;
     private String creator;
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
     private String estate;
 

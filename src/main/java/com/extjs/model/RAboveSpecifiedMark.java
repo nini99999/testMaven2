@@ -1,8 +1,11 @@
 package com.extjs.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 
 /**
@@ -15,6 +18,8 @@ public class RAboveSpecifiedMark {
     private String classno;
     private Integer abovemark;
     private String creator;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
 
     @Id

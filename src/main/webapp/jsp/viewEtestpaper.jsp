@@ -66,8 +66,10 @@
             $('#sid').val(row.id);
             $('#tpno').val(row.tpno);
             $('#c_tpname').val(row.tpname);
-            $('#c_examtype').selectpicker('val', (row.examtype));
-            $('#testdate').datetimepicker('val', (row.testdate));
+            $('#c_examtype').selectpicker('val', row.examtype);
+            $('#testdate').val(row.testdate);
+//            $('#testdate').datetimepicker('val', row.testdate);
+            console.log('testdate',row.testdate);
             $("#myModal").modal('show');
 
         },
@@ -358,8 +360,8 @@
         params.tpno = tpno.value;
         params.examtype = $('#c_examtype').val();
         params.id = sid.value;
-        params.testdate =$('#testdate').val();
-        console.log('add',$('#testdate').val());
+        params.testdate = $('#testdate').val();
+//        console.log('add', $('#testdate').val());
 
         $.ajax({
 
@@ -541,7 +543,7 @@
 
 <!-- 模态框-添加试卷（Modal） -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="width: 85%">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -552,24 +554,26 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <input id="sid" name="sid" class="btn-default" hidden></input>
-                <input id="tpno" name="tpno" class="btn-default" hidden></input>
-                <div class='col-sm-6'>
-                    <div class="form-group">
-                        <label>考试日期：</label>
-                        <!--指定 date标记-->
-                        <div class='input-group date'>
-                            <input  id='testdate' type='text' class="form-control"/>
-                            <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-                        </div>
-                    </div>
-                </div>
+                <input id="sid" name="sid" class="btn-default" hidden>
+                <input id="tpno" name="tpno" class="btn-default" hidden>
 
-                <label for="c_tpname">试卷名称：</label><input id="c_tpname" name="c_tpname" class="form-control"></input>
-                <label for="c_examtype">考试类型：</label> <select id="c_examtype" name="c_examtype"
-                                                              class="selectpicker"></select>
+
+
+                    <div class="form-group">
+                        <label for="testdate">考试日期：</label>
+                        <!--指定 date标记-->
+                        <div class="input-group date col-xs-6">
+                            <input id='testdate' type='text' class="form-control" readonly/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <hr/>
+                        <label for="c_tpname">试卷名称：</label><input id="c_tpname" name="c_tpname" class="form-control" style="width: 50%">
+                        <hr/>
+                        <label for="c_examtype">考试类型：</label>
+                        <select id="c_examtype" name="c_examtype" class="selectpicker"></select>
+                    </div>
+
+
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" type="button" onclick="addEtestpaper();">

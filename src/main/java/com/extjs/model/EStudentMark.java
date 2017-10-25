@@ -1,7 +1,10 @@
 package com.extjs.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Table(name = "E_STUDENT_MARK")
@@ -10,10 +13,13 @@ public class EStudentMark {
     private String studentname;
     private String tpname;
     private Float mark;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date testdate;
     private Float markone;
     private Float marktwo;
     private String creator;
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
     private String subjectno;
 

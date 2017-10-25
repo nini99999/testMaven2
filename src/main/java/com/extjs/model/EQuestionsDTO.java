@@ -1,6 +1,8 @@
 package com.extjs.model;
 
-import java.sql.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
 
 /**
  * Created by jenny on 2017/6/20.
@@ -12,6 +14,7 @@ public class EQuestionsDTO {
     private String qtype;
     private Integer questionno;
     private String creator;
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
     private String questionid;
 

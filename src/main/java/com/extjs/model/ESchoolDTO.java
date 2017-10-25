@@ -1,7 +1,9 @@
 package com.extjs.model;
 
 
-import java.sql.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
 
 
 /**
@@ -13,6 +15,7 @@ public class ESchoolDTO {
     private String schoolno;
     private String schoolname;
     private String creator;
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
     private Boolean estate;
 

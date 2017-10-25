@@ -4,8 +4,11 @@ package com.extjs.model;
  * Created by jenny on 2017/5/7.
  */
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 //import java.sql.Date;
 
 /**
@@ -35,6 +38,8 @@ public class RYearMark{
     private Float avemark;
     private Float avepositon;
     private String creator;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
     private String subjectno;
 

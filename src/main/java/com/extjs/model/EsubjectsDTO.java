@@ -4,12 +4,17 @@ package com.extjs.model;
  * Created by jenny on 2017/3/16.
  */
 
-import java.sql.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 public class EsubjectsDTO {
 
     private String id;
     private String creator;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
     private String subjectname;
     private String subjectno;

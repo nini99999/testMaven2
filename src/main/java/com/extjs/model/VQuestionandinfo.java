@@ -3,8 +3,11 @@ package com.extjs.model;
 /**
  * Created by jenny on 2017/9/23.
  */
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by jenny on 2017/9/22.
@@ -16,6 +19,8 @@ public class VQuestionandinfo {
     private String questionid;
     private String question;
     private Integer questionno;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
     private String creator;
     private Float difficulty;

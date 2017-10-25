@@ -191,7 +191,7 @@
             params.subjectno = $('#subjectno').val();
 //            console.log("gradeno", $('#gradeno').val());
 //            console.log("subj", $('#subjectno').val());
-            params.paperid=$('#paperid').val();
+            params.paperid = $('#paperid').val();
             params.startDate = $('#reservation').val().replace(/-/g, "");
             params.endDate = $('#reservation').val().replace(/-/g, "");
 //        console.log("sss", $('#reservation').val().replace(/-/g, ""));
@@ -239,7 +239,7 @@
                     $('#paperid.selectpicker').append("<option value=" + data.data[i].tpno + ">" + data.data[i].tpname + "</option>");
                 });
                 $('#paperid').selectpicker('refresh');
-queryQuestions();
+                queryQuestions();
             },
             error: function (data) {
                 alert("查询失败" + data);
@@ -395,7 +395,7 @@ queryQuestions();
 
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width: 85%">
+    <div class="modal-dialog" style="width: 90%">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -408,28 +408,29 @@ queryQuestions();
             <div class="modal-body">
                 <form id="mForm" method="post" class="form-inline">
 
-                    <script id="editor" name="content" type="text/plain"></script>
-                    <hr/>
-                    <select id="mgradeno" name="mgradeno" class="selectpicker fit-width">
-                    </select>
-                    <select id="msubjectno" name="msubjectno" class="selectpicker fit-width"
-                            onchange="mqueryQTypeBySubject( $('#msubjectno').val())">
-                    </select>
-                    <select id="mquestiontype" name="mquestiontype" class="selectpicker fit-width">
-                    </select>
-                    <hr/>
-                    <label for="mdifficulty">难度系数：</label><input id="mdifficulty" class="form-control"
-                                                                 placeholder="难度系数：">
-                    <label for="squestionpoints">分值：</label><input id="squestionpoints" name="squestionpoints"
-                                                                   class="form-control" placeholder="分值：">
+                        <script id="editor" name="content" type="text/plain"></script>
 
-                    <input id="sid" name="sid" class="btn-default" hidden>
-                    <input id="squestionid" name="squestionid" class="btn-default" hidden>
-                    <input id="spaperid" name="spaperid" class="btn-default" hidden>
-                    <label for="spaperquestionno">题号：</label><input id="spaperquestionno"
-                                                                    name="spaperquestionno" type="text"
-                                                                    style="width: auto" class="form-control"
-                                                                    placeholder="题号：">
+                        <hr/>
+                        <select id="mgradeno" name="mgradeno" class="selectpicker fit-width">
+                        </select>
+                        <select id="msubjectno" name="msubjectno" class="selectpicker fit-width"
+                                onchange="mqueryQTypeBySubject( $('#msubjectno').val())">
+                        </select>
+                        <select id="mquestiontype" name="mquestiontype" class="selectpicker fit-width">
+                        </select>
+                        <hr/>
+                        <label for="mdifficulty">难度系数：</label><input id="mdifficulty" class="form-control"
+                                                                     placeholder="难度系数：">
+                        <label for="squestionpoints">分值：</label><input id="squestionpoints" name="squestionpoints"
+                                                                       class="form-control" placeholder="分值：">
+
+                        <input id="sid" name="sid" class="btn-default" hidden>
+                        <input id="squestionid" name="squestionid" class="btn-default" hidden>
+                        <input id="spaperid" name="spaperid" class="btn-default" hidden>
+                        <label for="spaperquestionno">题号：</label><input id="spaperquestionno"
+                                                                        name="spaperquestionno" type="text"
+                                                                        style="width: auto" class="form-control"
+                                                                        placeholder="题号：">
                 </form>
             </div>
             <div class="modal-footer">

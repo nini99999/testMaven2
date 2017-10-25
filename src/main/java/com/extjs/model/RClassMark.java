@@ -1,7 +1,10 @@
 package com.extjs.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by jenny on 2017/4/9.
@@ -17,9 +20,13 @@ public class RClassMark {
     private String classno;
     private String tpno;
     private String subjectno;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date testdate;
     private Float mark;
     private String creator;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
 
     @Id

@@ -1,9 +1,12 @@
 package com.extjs.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Id;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by jenny on 2017/5/22.
@@ -14,7 +17,11 @@ public class EWrongStudentDTO {
     private String testpaperno;
     private Integer questionno;
     private String creator;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date testdate;
     private String studentname;
     private String testpapername;

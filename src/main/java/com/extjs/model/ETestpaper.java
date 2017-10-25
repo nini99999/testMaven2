@@ -1,8 +1,8 @@
 package com.extjs.model;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Time;
+import java.util.Date;
+
 
 /**
  * Created by jenny on 2017/4/4.
