@@ -4,6 +4,7 @@ import com.extjs.dao.EpaperQuestionsDao;
 import com.extjs.dao.EquestionInfoDao;
 import com.extjs.model.*;
 import com.extjs.service.*;
+import com.extjs.util.EConstants;
 import com.extjs.util.ExportToHtml;
 import com.extjs.util.ReflectionUtil;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -86,7 +87,7 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
                 .getAuthentication()
                 .getPrincipal();
         String questionID = UUID.randomUUID().toString();
-        int questionLength = 2000;
+        int questionLength = EConstants.questionLength;
         String subQuestion;
         UserDTO userDTO = null;
         EQuestionInfoDTO equestionInfoDTO;
@@ -96,7 +97,7 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
             if (question.length() < (j + 1) * questionLength - 1) {
                 subQuestion = question.substring(j * questionLength, question.length());
             } else {
-                subQuestion = question.substring(j * questionLength, (j + 1) * questionLength - 1);
+                subQuestion = question.substring(j * questionLength, (j + 1) * questionLength);
             }
 
             ePaperQuestionsDTO = new EPaperQuestionsDTO();
@@ -114,6 +115,7 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
             questionsDTO.setId(UUID.randomUUID().toString());
             questionsDTO.setQuestion(ePaperQuestionsDTO.getQuestion());
             questionsDTO.setQuestionid(questionID);
+            questionsDTO.setQuestionno(j);
             questionsDTO.setCreator(userDetails.getUsername());
             try {
                 equestionService.addOneQuestion(questionsDTO);//添加至试题基础库
@@ -122,25 +124,26 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            EQuestionInfoDTO questionInfoDTO = new EQuestionInfoDTO();
-            ReflectionUtil.copyProperties(vPaperQuestionAndInfo, questionInfoDTO);
-            questionInfoDTO.setQuestionid(questionID);
-            questionInfoDTO.setId(UUID.randomUUID().toString());
+
+        }
+        EQuestionInfoDTO questionInfoDTO = new EQuestionInfoDTO();
+        ReflectionUtil.copyProperties(vPaperQuestionAndInfo, questionInfoDTO);
+        questionInfoDTO.setQuestionid(questionID);
+        questionInfoDTO.setId(UUID.randomUUID().toString());
 ////            questionInfoDTO.setGradeno(gradeNo);
 ////            questionInfoDTO.setSubjectno(subjectNo);
-            questionInfoDTO.setCreator(userDetails.getUsername());
+        questionInfoDTO.setCreator(userDetails.getUsername());
 ////            questionInfoDTO.setDifficulty(difficulty);
 
-            try {
-                userDTO = userService.getUserByUnique(userDetails.getUsername());
-                questionInfoDTO.setSchoolno(eschoolService.querySchoolByUnique(userDTO.getuserSchool(), null).getSchoolno());
+        try {
+            userDTO = userService.getUserByUnique(userDetails.getUsername());
+            questionInfoDTO.setSchoolno(eschoolService.querySchoolByUnique(userDTO.getuserSchool(), null).getSchoolno());
 //                questionInfoDTO.setQuestiontype(questionType);
-                questionInfoDTO.setCreatedate(new Date(System.currentTimeMillis()));
+            questionInfoDTO.setCreatedate(new Date(System.currentTimeMillis()));
 
-                equestionService.addOneQuestionInfo(questionInfoDTO);//添加试题信息表
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            equestionService.addOneQuestionInfo(questionInfoDTO);//添加试题信息表
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -186,12 +189,15 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
             paperQuestionAndInfo.setQuestion(
                     StringEscapeUtils.unescapeXml(vPaperQuestionAndInfo1.getQuestion().replaceFirst(".？&nbsp", ". &nbsp")));
             if (vPaperQuestionAndInfo1.getQuestionno() > 0) {
-                resultList.remove(i);
+                resultList.remove(i - 1);
                 paperQuestionAndInfo.setQuestion(question + vPaperQuestionAndInfo1.getQuestion().replaceFirst(".？&nbsp", ". &nbsp"));
+                resultList.add(paperQuestionAndInfo);
+                question = resultList.get(i - 1).getQuestion();
+            } else {
+                resultList.add(paperQuestionAndInfo);
+                question = resultList.get(i).getQuestion();
+                i++;
             }
-            resultList.add(paperQuestionAndInfo);
-            question = resultList.get(i).getQuestion();
-            i++;
         }
 
         return resultList;

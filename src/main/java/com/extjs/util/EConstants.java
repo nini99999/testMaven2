@@ -39,7 +39,7 @@ public class EConstants {
         termMap = Collections.unmodifiableMap(term);
     }
 
-    public static final Map<String, String> examType;
+    public static final Map<String, String> examType;//考试类型
 
     static {
         Map<String, String> exam = new HashMap<String, String>();
@@ -53,6 +53,35 @@ public class EConstants {
         examType = Collections.unmodifiableMap(exam);
     }
 
+    public static final Map<Integer, String> convertToChinese;//数字转化为汉字大写
+
+    static {
+        Map<Integer, String> map = new HashMap<Integer, String>();
+        map.put(1, "一");
+        map.put(2, "二");
+        map.put(3, "三");
+        map.put(4, "四");
+        map.put(5, "五");
+        map.put(6, "六");
+        map.put(7, "七");
+        map.put(8, "八");
+        map.put(9, "九");
+        map.put(10, "十");
+        map.put(11, "十一");
+        map.put(12, "十二");
+        map.put(13, "十三");
+        map.put(14, "十四");
+        map.put(15, "十五");
+        map.put(16, "十六");
+        map.put(17, "十七");
+        map.put(18, "十八");
+        map.put(19, "十九");
+        map.put(20, "二十");
+        convertToChinese = Collections.unmodifiableMap(map);
+    }
+
+    public static final Integer questionLength = 1800;//题干长度
+    public static final String questionTypeIdentifier = "、\u200B&nbsp;";
     /**
      * html文档/xml文档中的题号识别符
      */
@@ -73,7 +102,7 @@ public class EConstants {
 //    public static final String docOutPutPath = "//Users//jenny//downloads//upLoadFiles//";
     public static final String docOutPutPath = "/upLoads/upLoadFiles/";
 
-    public static final String exportHtmlPath="/exportFiles";//html导出路径
+    public static final String exportHtmlPath = "/exportFiles";//html导出路径
 
     public static final String[] markArea = {"500-", "500~550", "550~600", "600~650", "650~700", "700+"};
     public static final String[] subjectMarkArea = {"90-", "90~100", "100~110", "110~120", "120~130", "130+"};

@@ -408,29 +408,29 @@
             <div class="modal-body">
                 <form id="mForm" method="post" class="form-inline">
 
-                        <script id="editor" name="content" type="text/plain"></script>
+                    <script id="editor" name="content" type="text/plain"></script>
 
-                        <hr/>
-                        <select id="mgradeno" name="mgradeno" class="selectpicker fit-width">
-                        </select>
-                        <select id="msubjectno" name="msubjectno" class="selectpicker fit-width"
-                                onchange="mqueryQTypeBySubject( $('#msubjectno').val())">
-                        </select>
-                        <select id="mquestiontype" name="mquestiontype" class="selectpicker fit-width">
-                        </select>
-                        <hr/>
-                        <label for="mdifficulty">难度系数：</label><input id="mdifficulty" class="form-control"
-                                                                     placeholder="难度系数：">
-                        <label for="squestionpoints">分值：</label><input id="squestionpoints" name="squestionpoints"
-                                                                       class="form-control" placeholder="分值：">
+                    <hr/>
+                    <select id="mgradeno" name="mgradeno" class="selectpicker fit-width">
+                    </select>
+                    <select id="msubjectno" name="msubjectno" class="selectpicker fit-width"
+                            onchange="mqueryQTypeBySubject( $('#msubjectno').val())">
+                    </select>
+                    <select id="mquestiontype" name="mquestiontype" class="selectpicker fit-width">
+                    </select>
+                    <hr/>
+                    <label for="mdifficulty">难度系数：</label><input id="mdifficulty" class="form-control"
+                                                                 placeholder="难度系数：">
+                    <label for="squestionpoints">分值：</label><input id="squestionpoints" name="squestionpoints"
+                                                                   class="form-control" placeholder="分值：">
 
-                        <input id="sid" name="sid" class="btn-default" hidden>
-                        <input id="squestionid" name="squestionid" class="btn-default" hidden>
-                        <input id="spaperid" name="spaperid" class="btn-default" hidden>
-                        <label for="spaperquestionno">题号：</label><input id="spaperquestionno"
-                                                                        name="spaperquestionno" type="text"
-                                                                        style="width: auto" class="form-control"
-                                                                        placeholder="题号：">
+                    <input id="sid" name="sid" class="btn-default" hidden>
+                    <input id="squestionid" name="squestionid" class="btn-default" hidden>
+                    <input id="spaperid" name="spaperid" class="btn-default" hidden>
+                    <label for="spaperquestionno">题号：</label><input id="spaperquestionno"
+                                                                    name="spaperquestionno" type="text"
+                                                                    style="width: auto" class="form-control"
+                                                                    placeholder="题号：">
                 </form>
             </div>
             <div class="modal-footer">
@@ -484,6 +484,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </form>
 
 <div id="bs_t" style="float: none;display: block;margin-left: auto;margin-right: auto;">

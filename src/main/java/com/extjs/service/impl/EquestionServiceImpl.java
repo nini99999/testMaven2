@@ -7,6 +7,7 @@ import com.extjs.model.*;
 import com.extjs.service.EquestionService;
 import com.extjs.service.EschoolService;
 import com.extjs.service.UserService;
+import com.extjs.util.EConstants;
 import com.extjs.util.ExportToHtml;
 import com.extjs.util.ReflectionUtil;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -112,18 +113,21 @@ public class EquestionServiceImpl implements EquestionService {
             if (vQuestionandinfo.getQuestionno() > 0) {
 
 
-                ResultQuestionandinfos.remove(i);
+                ResultQuestionandinfos.remove(i-1);
 
 //                vQuestionandinfo.setQuestion(question+vQuestionandinfo.getQuestion());//这种写法会引发hibernate持久化自动执行update
 
                 c_questionandinfo.setQuestion(question +
                         StringEscapeUtils.unescapeXml(vQuestionandinfo.getQuestion()).replaceFirst(".？&nbsp", ". &nbsp"));
 
-
+                ResultQuestionandinfos.add(c_questionandinfo);
+                question = ResultQuestionandinfos.get(i-1).getQuestion();
+            }else {
+                ResultQuestionandinfos.add(c_questionandinfo);
+                question = ResultQuestionandinfos.get(i).getQuestion();
+                i++;
             }
-            ResultQuestionandinfos.add(c_questionandinfo);
-            question = ResultQuestionandinfos.get(i).getQuestion();
-            i++;
+
         }
         return ResultQuestionandinfos;
     }
@@ -205,7 +209,8 @@ public class EquestionServiceImpl implements EquestionService {
                 .getAuthentication()
                 .getPrincipal();
         String questionID = UUID.randomUUID().toString();
-        int questionLength = 2000;
+
+        int questionLength = EConstants.questionLength;
         String subQuestion;
         UserDTO userDTO = null;
 
@@ -215,7 +220,7 @@ public class EquestionServiceImpl implements EquestionService {
             if (question.length() < (j + 1) * questionLength - 1) {
                 subQuestion = question.substring(j * questionLength, question.length());
             } else {
-                subQuestion = question.substring(j * questionLength, (j + 1) * questionLength - 1);
+                subQuestion = question.substring(j * questionLength, (j + 1) * questionLength);
             }
 
             eQuestionsDTO = new EQuestionsDTO();
@@ -229,22 +234,22 @@ public class EquestionServiceImpl implements EquestionService {
                 System.out.print("添加基础题库表错误：--");
                 e.printStackTrace();
             }
-            questionInfoDTO = new EQuestionInfoDTO();
-            questionInfoDTO.setQuestionid(eQuestionsDTO.getQuestionid());
-            questionInfoDTO.setId(eQuestionsDTO.getId());
-            questionInfoDTO.setGradeno(gradeNo);
-            questionInfoDTO.setSubjectno(subjectNo);
-            questionInfoDTO.setCreator(userDetails.getUsername());
-            questionInfoDTO.setDifficulty(difficulty);
-            try {
-                userDTO = userService.getUserByUnique(userDetails.getUsername());
-                questionInfoDTO.setSchoolno(eschoolService.querySchoolByUnique(userDTO.getuserSchool(), null).getSchoolno());
-                questionInfoDTO.setQuestiontype(questionType);
-                questionInfoDTO.setCreatedate(new Date(System.currentTimeMillis()));
-                this.addOneQuestionInfo(questionInfoDTO);//添加试题信息表
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        }
+        questionInfoDTO = new EQuestionInfoDTO();
+        questionInfoDTO.setQuestionid(questionID);
+        questionInfoDTO.setId(UUID.randomUUID().toString());
+        questionInfoDTO.setGradeno(gradeNo);
+        questionInfoDTO.setSubjectno(subjectNo);
+        questionInfoDTO.setCreator(userDetails.getUsername());
+        questionInfoDTO.setDifficulty(difficulty);
+        try {
+            userDTO = userService.getUserByUnique(userDetails.getUsername());
+            questionInfoDTO.setSchoolno(eschoolService.querySchoolByUnique(userDTO.getuserSchool(), null).getSchoolno());
+            questionInfoDTO.setQuestiontype(questionType);
+            questionInfoDTO.setCreatedate(new Date(System.currentTimeMillis()));
+            this.addOneQuestionInfo(questionInfoDTO);//添加试题信息表
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

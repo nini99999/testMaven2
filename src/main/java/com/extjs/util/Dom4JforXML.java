@@ -9,9 +9,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Dom4JforXML {
 
@@ -19,6 +17,104 @@ public class Dom4JforXML {
 
 //        List<String> questionList = new Dom4JforXML().getQuestionList("333.html");
 
+    }
+
+    /**
+     * 获取指定文件中的body内容，根据body内容获取所有试题类型的集合，每道试题对应集合中的每条记录，返回试题类型（含试题信息)的集合
+     *
+     * @param fileName
+     * @return
+     * @throws Exception
+     */
+    public List<List<String>> getPaperQuestionType(String rootPath, String fileName, Map<Integer, String> map) throws Exception {
+        List<List<String>> result = new ArrayList<>();
+
+        List<String> questionTypeList = new ArrayList<>();//试题类型，包含试题
+        List<String> bodyList = this.getBodyList(rootPath, fileName);
+
+        List<String> oneTypeQuestionList;
+        for (int i = 1; i < map.size(); i++) {
+            String string = this.getOneQuestion(bodyList, map.get(i), map.get(i + 1));
+            if (null != string && string.length() > 0) {
+                questionTypeList.add(string);
+            }
+        }
+//        List<String> stringList = this.getPaperQuestionList(qusetionTypeList, bodyList.size());
+//        return stringList;
+
+
+        for (String string : questionTypeList) {
+            oneTypeQuestionList = new ArrayList<>();
+            oneTypeQuestionList = this.getPaperQuestionsBySpecify(string, bodyList.size());
+            result.add(oneTypeQuestionList);
+        }
+        return result;
+    }
+
+//    /**
+//     * 根据试题类型（含试题信息），拆分出每道试题
+//     *
+//     * @param questionTypeList 试题类型（含试题信息
+//     * @param count            body中的element总数量
+//     * @return
+//     * @throws Exception
+//     */
+//    public List getPaperQuestionList(List<String> questionTypeList, Integer count) throws Exception {
+//        List<String> resultList = new ArrayList<String>();
+//        List<String> cList;
+////        int i = 0;
+//        for (String string : questionTypeList) {
+//            cList = new ArrayList<String>();
+////            i++;
+////            String string = this.getOneQuestion(questionTypeList,
+////                    String.valueOf(i) + EConstants.questionIdentifier, String.valueOf(i + 1) + EConstants.questionIdentifier).replace(String.valueOf(i) + EConstants.questionIdentifier, "");
+//            cList = this.getPaperQuestionsBySpecify(string, count);
+//            resultList.addAll(cList);
+//        }
+//        return resultList;
+//    }
+
+    /**
+     * 获取每种试题类型的试题集合
+     *
+     * @param string 指定试题类型（含试题信息)
+     * @param count
+     * @return
+     */
+    public List<String> getPaperQuestionsBySpecify(String string, Integer count) {
+        List<String> resultList = new ArrayList<String>();
+        String str;
+        for (int i = 1; i < count; i++) {
+            str = "";
+            if (string.indexOf(String.valueOf(i) + EConstants.questionIdentifier) > -1 && string.indexOf(String.valueOf(i + 1) + EConstants.questionIdentifier) > -1) {
+
+                str = string.substring(string.indexOf(String.valueOf(i) + EConstants.questionIdentifier), string.indexOf(String.valueOf(i + 1) + EConstants.questionIdentifier));
+            }
+            if (string.indexOf(String.valueOf(i) + EConstants.questionIdentifier) > -1 && string.indexOf(String.valueOf(i + 1) + EConstants.questionIdentifier) == -1) {
+
+                str = string.substring(string.indexOf(String.valueOf(i) + EConstants.questionIdentifier), string.length());
+            }
+            if (null != str && str.length() > 0) {
+                resultList.add(str.replace(String.valueOf(i) + EConstants.questionIdentifier, ""));
+            }
+        }
+        return resultList;
+    }
+
+    private List<String> getBodyList(String rootPath, String fileName) throws Exception {
+
+        //创建SAXReader对象
+        SAXReader reader = new SAXReader();
+        //读取文件 转换成Document
+        Document document = reader.read(new File(rootPath + EConstants.htmlOutPutPath + fileName));
+        //获取根节点元素对象
+        Element root = document.getRootElement();
+
+        Element body = root.element("body");
+
+        List<String> bodyList = this.listBodyNodes(body);
+
+        return bodyList;
     }
 
     /**
@@ -30,16 +126,7 @@ public class Dom4JforXML {
      */
     public List<String> getQuestionList(String rootPath, String fileName) throws Exception {
         List<String> resultList = new ArrayList<String>();
-        //创建SAXReader对象
-        SAXReader reader = new SAXReader();
-        //读取文件 转换成Document
-        Document document = reader.read(new File(rootPath + EConstants.htmlOutPutPath + fileName));
-        //获取根节点元素对象
-        Element root = document.getRootElement();
-
-        Element body = root.element("body");
-
-        List<String> bodyList = this.listBodyNodes(body);
+        List<String> bodyList = this.getBodyList(rootPath, fileName);
         for (int i = 1; i < bodyList.size() + 1; i++) {
             String s = this.getOneQuestion(bodyList,
                     String.valueOf(i) + EConstants.questionIdentifier, String.valueOf(i + 1) + EConstants.questionIdentifier).replace(String.valueOf(i) + EConstants.questionIdentifier, "");
@@ -142,4 +229,6 @@ public class Dom4JforXML {
         return sb.toString();
 
     }
+
+
 }
