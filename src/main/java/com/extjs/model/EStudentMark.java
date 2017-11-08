@@ -14,14 +14,17 @@ public class EStudentMark {
     private String tpname;
     private Float mark;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date testdate;
     private Float markone;
     private Float marktwo;
     private String creator;
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createdate;
     private String subjectno;
+    private String studentno;
+    private String tpno;
+    private String classno;
 
     @Id
     @Column(name = "ID", nullable = false, length = 64)
@@ -121,5 +124,35 @@ public class EStudentMark {
 
     public void setSubjectno(String subjectno) {
         this.subjectno = subjectno;
+    }
+
+    @Basic
+    @Column(name = "STUDENTNO", nullable = true, length = 64)
+    public String getStudentno() {
+        return studentno;
+    }
+
+    public void setStudentno(String studentno) {
+        this.studentno = studentno;
+    }
+
+    @Basic
+    @Column(name = "TPNO", nullable = true, length = 32)
+    public String getTpno() {
+        return tpno;
+    }
+
+    public void setTpno(String tpno) {
+        this.tpno = tpno;
+    }
+
+    @Basic
+    @Column(name = "CLASSNO", nullable = true, length = 20)
+    public String getClassno() {
+        return classno;
+    }
+
+    public void setClassno(String classno) {
+        this.classno = classno;
     }
 }

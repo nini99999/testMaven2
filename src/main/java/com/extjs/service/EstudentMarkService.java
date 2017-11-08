@@ -12,6 +12,8 @@ public interface EstudentMarkService {
 
     void modifEStudentMark(EStudentMark eStudentMark);
 
+    void modifOnlyMark(EStudentMark studentMark);
+
     void delEStudentMark(EStudentMark eStudentMark);
 
     void delEStudentMark();

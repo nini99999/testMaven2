@@ -27,9 +27,9 @@ public class EstudentDaoImpl implements EstudentDao {
     public List<EStudent> queryEstudent(EStudentDTO eStudentDTO) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append("from EStudent");
+        sb.append("from EStudent where 1=1");
         if (null != eStudentDTO.getSchoolno() && !"".equals(eStudentDTO.getSchoolno())) {
-            sb.append(" where schoolno='" + eStudentDTO.getSchoolno() + "'");
+            sb.append(" and schoolno='" + eStudentDTO.getSchoolno() + "'");
         }
         if (null != eStudentDTO.getGradeno() && !"".equals(eStudentDTO.getGradeno())) {
             sb.append(" and gradeno='" + eStudentDTO.getGradeno() + "'");
@@ -48,6 +48,22 @@ public class EstudentDaoImpl implements EstudentDao {
         List<EStudent> eStudentList = query.list();
 
         return eStudentList;
+    }
+
+    @Override
+    public List<EStudent> queryEstudentByClassAndTpno(String classno, String tpno) {
+        StringBuilder stringBuilder = new StringBuilder("from EStudent where classno='");
+        stringBuilder.append(classno + "' and id not in (SELECT studentno FROM EStudentMark where classno='")
+                .append(classno + "' and tpno='").append(tpno + "')");
+        Session session = sessionFactory.getCurrentSession();
+        List<EStudent> studentList = new ArrayList<>();
+        try {
+            Query query = session.createQuery(stringBuilder.toString());
+            studentList = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return studentList;
     }
 
     public EStudent getEstudentByCountryID(String countryID) {

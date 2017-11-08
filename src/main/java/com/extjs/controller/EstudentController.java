@@ -1,4 +1,5 @@
 package com.extjs.controller;
+
 import com.extjs.util.EConstants;
 
 import com.extjs.model.EStudentDTO;
@@ -42,6 +43,19 @@ public class EstudentController {
         eStudentDTOList = estudentService.queryEstudent(eStudentDTO);
         resultMap.put("data", eStudentDTOList);
         resultMap.put("total", eStudentDTOList.size());
+        resultMap.put("rows", eStudentDTOList);
+        return resultMap;
+    }
+
+    @RequestMapping("/getStudentByClassAndTpno")
+    @ResponseBody
+    public Map getStudentByClassAndTpno(String classno, String tpno) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        List<EStudentDTO> eStudentDTOList = new ArrayList<EStudentDTO>();
+        eStudentDTOList = estudentService.getStudentByClassAndTpno(classno, tpno);
+        resultMap.put("data", eStudentDTOList);
+        resultMap.put("total", eStudentDTOList.size());
+        resultMap.put("rows", eStudentDTOList);
         return resultMap;
     }
 
@@ -81,12 +95,12 @@ public class EstudentController {
 
     @RequestMapping("/getNation")
     @ResponseBody
-    public Map getNation(){
+    public Map getNation() {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        EConstants eConstants=new EConstants();
-        resultMap.put("schoolstate",eConstants.schoolStateMap);
-        resultMap.put("studystate",eConstants.studyStateMap);
-        resultMap.put("nation",eConstants.nation);
+        EConstants eConstants = new EConstants();
+        resultMap.put("schoolstate", eConstants.schoolStateMap);
+        resultMap.put("studystate", eConstants.studyStateMap);
+        resultMap.put("nation", eConstants.nation);
         resultMap.put("total", eConstants.nation.length);
         return resultMap;
 

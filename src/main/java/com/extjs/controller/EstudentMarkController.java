@@ -28,8 +28,9 @@ public class EstudentMarkController {
     public Map queryEstudentMark(EStudentMark eStudentMark) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<EStudentMark> eStudentMarkList = estudentMarkService.queryEStudentMark(eStudentMark);
-        resultMap.put("data", eStudentMarkList);
+//        resultMap.put("data", eStudentMarkList);
         resultMap.put("total", eStudentMarkList.size());
+        resultMap.put("rows", eStudentMarkList);
         return resultMap;
     }
 
@@ -39,6 +40,22 @@ public class EstudentMarkController {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
             estudentMarkService.modifEStudentMark(eStudentMark);
+            resultMap.put("success", true);
+            resultMap.put("msg", "添加成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("success", false);
+            resultMap.put("msg", "添加失败!" + e.getMessage());
+        }
+        return resultMap;
+    }
+
+    @RequestMapping(value = "/modifOnlyMark", method = RequestMethod.POST)
+    @ResponseBody
+    public Map modifOnlyMark(EStudentMark eStudentMark) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+            estudentMarkService.modifOnlyMark(eStudentMark);
             resultMap.put("success", true);
             resultMap.put("msg", "添加成功!");
         } catch (Exception e) {

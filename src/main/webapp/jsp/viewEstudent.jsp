@@ -438,7 +438,7 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-<div id="bs_t" style="float: none;display: block;margin-left: auto;margin-right: auto;width: 90%">
+<div id="bs_t" style="float: none;display: block;margin-left: auto;margin-right: auto;width: 99%">
     <table class="table table-striped" width="80%" id="ds_table" align="center"
            striped="true"
            data-height="566" data-toolbar="#bs_toolbar"

@@ -12,6 +12,8 @@ import java.util.List;
 public interface EstudentDao {
     List<EStudent> queryEstudent(EStudentDTO eStudentDTO);//根据条件查询
 
+    List<EStudent> queryEstudentByClassAndTpno(String classno,String tpno);//查询指定条件下，未包括在学生成绩表中的学生
+
     EStudent getEstudentByCountryID(String countryID);
 
     String addEstudent(EStudentDTO eStudentDTO);//添加学生

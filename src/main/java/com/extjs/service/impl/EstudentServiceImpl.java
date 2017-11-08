@@ -16,6 +16,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import com.extjs.util.EConstants;
 
 /**
@@ -32,17 +33,33 @@ public class EstudentServiceImpl implements EstudentService {
 
         List<EStudentDTO> eStudentDTOList = new ArrayList<EStudentDTO>();
         List<EStudent> eStudentList = estudentDao.queryEstudent(eStudentDTO);
-        EConstants eConstants=new EConstants();
+        EConstants eConstants = new EConstants();
 
         for (EStudent eStudent : eStudentList) {
             eStudentDTO = new EStudentDTO();
             ReflectionUtil.copyProperties(eStudent, eStudentDTO);
-            eStudentDTO.setStudystate( eConstants.studyStateMap.get(eStudentDTO.getStudystate()));
+            eStudentDTO.setStudystate(eConstants.studyStateMap.get(eStudentDTO.getStudystate()));
             eStudentDTO.setSchoolstate(eConstants.schoolStateMap.get(eStudentDTO.getSchoolstate()));
 
             eStudentDTOList.add(eStudentDTO);
         }
 
+        return eStudentDTOList;
+    }
+
+    @Override
+    public List<EStudentDTO> getStudentByClassAndTpno(String classno, String tpno) {
+        List<EStudentDTO> eStudentDTOList = new ArrayList<EStudentDTO>();
+        List<EStudent> eStudentList = estudentDao.queryEstudentByClassAndTpno(classno, tpno);
+        EConstants eConstants = new EConstants();
+        for (EStudent eStudent : eStudentList) {
+            EStudentDTO eStudentDTO = new EStudentDTO();
+            ReflectionUtil.copyProperties(eStudent, eStudentDTO);
+            eStudentDTO.setStudystate(eConstants.studyStateMap.get(eStudentDTO.getStudystate()));
+            eStudentDTO.setSchoolstate(eConstants.schoolStateMap.get(eStudentDTO.getSchoolstate()));
+
+            eStudentDTOList.add(eStudentDTO);
+        }
         return eStudentDTOList;
     }
 

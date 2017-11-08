@@ -14,6 +14,8 @@ public interface EStudentMarkDao {
 
     void saveOrUpdateEStudentMark(EStudentMark eStudentMark);
 
+    void modifOnlyMark(EStudentMark studentMark);//仅更新成绩
+
     void delEStudentMark(EStudentMark eStudentMark);
 
     void delEStudentMarkByCreator(String creator);

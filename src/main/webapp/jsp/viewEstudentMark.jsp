@@ -34,54 +34,21 @@
     <script src="<%=path%>/bootstrap/bootstrap-table.js"></script>
     <script src="<%=path%>/bootstrap/bootstrap-table-zh-CN.js"></script>
     <script src="<%=path%>/utils/xdate.js"></script>
+
+    <link rel="stylesheet" type="text/css" media="all" href="<%=path%>/bootstrap/bootstrap-editable.css"/>
+    <script src="<%=path%>/bootstrap/bootstrap-editable.min.js"></script>
+    <script src="<%=path%>/bootstrap/bootstrap-table-editable.js"></script>
 </head>
 <script type="text/javascript">
 
     $(function () {
+        initDateSelect();
         getEsubjects();
         queryEgradeListBYschool();
-        queryStudentMark();
+        initBT();
+//        queryStudentMark();
+
     });
-
-    function indexFormatter(value, row, index) {
-        return index + 1;
-    }
-    function operateFormatter(value, row, index) {
-        var PySheDingID = row.bs_rowid;
-// 利用 row 获取点击这行的ID
-
-        return [
-            "<button type='button' class='btn btn-info';' id='m-callback-this-start' onclick='btnEntry(" + row.bs_rowid + ")'  > <span class='glyphicon glyphicon-th-list' onclick='queryStudentMark()'></span>  </button>"].join('');
-
-    }
-    function queryStudentMark() {
-        var params = {};
-        params.gradeno = $('#gradeno').val();
-        params.classno = $('#classno').val();
-        params.tpname = $('#tpname').val();
-        params.subjectno = $('#subjectno').val();
-        $.ajax({
-            url: "/studentMark/queryEstudentMark",
-// 数据发送方式
-            type: "post",
-// 接受数据格式
-            dataType: "json",
-// 要传递的数据
-            data: params,
-// 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
-
-                $("#ds_table").bootstrapTable('destroy');
-                $("#ds_table").bootstrapTable({data: data.data});//刷新ds_table的数据
-
-            },
-
-            error: function (data) {
-                alert("查询失败" + data);
-            }
-        })
-    }
-
     function queryEgradeListBYschool() {//年级下拉列表加载
 
         $.ajax({
@@ -185,6 +152,318 @@
         })
 
     }
+    function getCurrentMonth() {
+        var firstDate = new Date();
+        firstDate.setDate(1); //第一天
+        var endDate = new Date(firstDate);
+        endDate.setMonth(firstDate.getMonth() + 1);
+        endDate.setDate(0);
+        return new XDate(firstDate).toString('yyyy-MM-dd') + " - " + new XDate(endDate).toString('yyyy-MM-dd');
+//        alert("第一天：" + new XDate(firstDate).toString('yyyy-MM-dd') + " 最后一天：" + new XDate(endDate).toString('yyyy-MM-dd'));
+    }
+    function initDateSelect() {
+        $(document).ready(function () {
+            $('#reservation').daterangepicker(null, function (start, end, label) {
+//                console.log(start.toISOString(), end.toISOString(), label);
+                getTestPaperList();
+            });
+        });
+        document.getElementById("reservation").value = getCurrentMonth();
+        queryEgradeListBYschool();
+    }
+
+    function getTestPaperList() {
+        var params = {};
+        params.gradeno = $('#gradeno').val();
+        params.subjectno = $('#subjectno').val();
+//        params.creator = 'All';//不根据创建人查询，即查询满足条件的所有试卷
+        params.startDate = $('#reservation').val().replace(/-/g, "");
+        params.endDate = $('#reservation').val().replace(/-/g, "");
+        $.ajax({
+            url: "/etestpaper/viewTestPaper",
+// 数据发送方式
+            type: "get",
+// 接受数据格式
+            dataType: "json",
+// 要传递的数据
+            data: params,
+// 回调函数，接受服务器端返回给客户端的值，即result值
+            success: function (data) {
+                $('#paperid').empty();
+                $.each(data.data, function (i) {
+                    $('#paperid.selectpicker').append("<option value=" + data.data[i].tpno + ">" + data.data[i].tpname + "</option>");
+                });
+                $('#paperid').selectpicker('refresh');
+            },
+            error: function (data) {
+                alert("查询失败" + data);
+                console.log("error", data);
+            }
+        })
+
+    }
+
+    function initBT() {
+        $("#ds_table").bootstrapTable('destroy');
+        $("#ds_table").bootstrapTable({
+            method: "get",
+            catch: false,
+            toolbar: "#bs_toolbar",
+            idField: "id",
+            pagination: true,
+            striped: true,
+            clickToSelect: true,
+            queryParams: function (param) {
+                var params = {};
+                params.gradeno = $('#gradeno').val();
+                params.classno = $('#classno').val();
+                params.tpno = $('#paperid').val();
+                params.subjectno = $('#subjectno').val();
+                return params;
+            },
+            url: "/studentMark/queryEstudentMark",
+            sidePagination: "server",
+            columns: [{
+                checkbox: true
+            }, {
+                field: "index",
+                title: "名次",
+                align: "center",
+                formatter: function (value, row, index) {
+
+                    return index + 1;
+                }
+            }, {
+                field: "classno",
+                title: "班级",
+                align: "center"
+            }, {
+                field: "studentname",
+                title: "学生",
+                align: "center"
+            }, {
+                field: "mark",
+                title: "总分",
+                align: "center"
+            }, {
+                field: "markone",
+                title: "客观分",
+                align: "center",
+                editable: {
+                    type: 'text',
+                    title: '客观分',
+                    validate: function (v) {
+                        if (v < 0) return '不能小于0';
+                    }
+                }
+            }, {
+                field: "marktwo",
+                title: "主观分",
+                align: "center",
+                editable: {
+                    type: 'text',
+                    title: '主观分',
+                    align: "center",
+                    validate: function (v) {
+                        if (v < 0) return '不能小于0';
+                    }
+                }
+            }, {
+                field: "testdate",
+                title: "测试日期",
+                align: "center"
+//            }, {
+//                field: "bs_rowid",
+//                title: "操作",
+//                align: "center",
+//                formatter: function (value, row, index) {
+//                    return [
+//                        "<button type='button' class='btn btn-info';' id='m-callback-this-start' onclick='btnEntry(" + row.bs_rowid + ")'  > <span class='glyphicon glyphicon-th-list' onclick='queryStudentMark()'></span>  </button>"].join('');
+//
+//                }
+            }],
+
+            onEditableSave: function (field, row, oldValue, $el) {
+//                console.log(row);
+                var params = {};
+
+                params.id = row.id;
+                params.markone = row.markone;
+                params.marktwo = row.marktwo;
+                $.ajax({
+                    type: "post",
+                    url: "/studentMark/modifOnlyMark",
+                    data: params,
+                    dataType: 'JSON',
+                    success: function (data) {
+
+                        if (data.success) {
+                            alert('提交数据成功');
+                        }
+                        initBT();
+                    },
+                    error: function (data) {
+                        alert('编辑失败' + data.msg);
+                    },
+                    complete: function () {
+
+                    }
+
+                });
+            }
+        });
+//        queryStudentMark();
+    }
+    function validateModal() {
+        var a = $("#classno").val();
+        var b = $("#paperid").val();
+        if (null == a || null == b) {
+            alert("请在主界面中选择班级和试卷！");
+        }
+        else {
+            initModal();
+        }
+    }
+    function initModal() {
+//        $("#mclassno").val($("#classno").val());
+        $("#myModal").modal('show');
+        $("#mclassno").val($("#classno").val());
+        $("#mpaperid").val($("#paperid").val());
+        $("#aaa").bootstrapTable('destroy');
+        $("#aaa").bootstrapTable({
+            method: "get",
+            catch: false,
+//            toolbar: "#bs_toolbar",
+            idField: "id",
+//            pagination: true,
+            striped: true,
+            clickToSelect: true,
+            queryParams: function (param) {
+                var params = {};
+                params.gradeno = $('#gradeno').val();
+                params.classno = $('#classno').val();
+                params.tpno = $('#mpaperid').val();
+//                params.subjectno = $('#subjectno').val();
+                return params;
+            },
+            url: "/estudent/getStudentByClassAndTpno",
+//            sidePagination: "server",
+            columns: [{
+                field: "index",
+                title: "序号",
+                align: "center",
+                formatter: function (value, row, index) {
+
+                    return index + 1;
+                }
+            }, {
+                field: "studentname",
+                title: "姓名",
+                align: "center"
+            }, {
+                field: "localid",
+                title: "学籍辅号",
+                halign: "center",
+                align: "left"
+            }, {
+                field: "countryid",
+                title: "全国学籍号",
+                halign: "center",
+                align: "left"
+            }, {
+                field: "markone",
+                title: "客观分",
+                align: "center",
+                editable: {
+                    type: 'text',
+                    title: '客观分',
+                    validate: function (v) {
+                        if (v < 0) return '不能小于0';
+                    }
+                }
+            }, {
+                field: "marktwo",
+                title: "主观分",
+                align: "center",
+                editable: {
+                    type: 'text',
+                    title: '主观分',
+                    align: "center",
+                    validate: function (v) {
+                        if (v < 0) return '不能小于0';
+                    }
+                }
+            }],
+
+            onEditableSave: function (field, row, oldValue, $el) {
+                console.log(row);
+                var params = {};
+
+                params.studentno = row.id;
+                params.studentname = row.studentname;
+                params.markone = row.markone;
+                params.marktwo = row.marktwo;
+                params.classno = $("#mclassno").val();
+                params.tpno = $("#mpaperid").val();
+                params.subjectno = $("#subjectno").val();
+                $.ajax({
+                    type: "post",
+                    url: "/studentMark/saveOrUpdateEstudentMark",
+                    data: params,
+                    dataType: 'JSON',
+                    success: function (data) {
+
+                        if (data.success) {
+                            alert('提交数据成功');
+                        }
+                        initBT();
+                    },
+                    error: function (data) {
+                        alert('编辑失败' + data.msg);
+                    },
+                    complete: function () {
+                    }
+
+                });
+            }
+        });
+//        queryStudentMark();
+//            }
+//        });
+    }
+    function delMark() {
+        var selects = $("#ds_table").bootstrapTable('getSelections');
+//        console.log(selects);
+        $.ajax({
+
+            url: "/studentMark/delEstudentMark",
+// 数据发送方式
+            type: "post",
+// 接受数据格式
+            dataType: "json",
+            contentType: 'application/json',
+// 要传递的数据
+            data: JSON.stringify(selects),
+// 回调函数，接受服务器端返回给客户端的值，即result值
+            success: function (data) {//调用url成功时有效
+                if (data.success == true) {
+                    initBT();
+                    alert("记录已删除!");
+
+                } else {
+                    alert(data.msg);
+                }
+
+            },
+
+            error: function (data) {//仅调用url失败时有效
+
+                alert("删除失败" + JSON.stringify(data));
+
+            }
+        })
+
+    }
 </script>
 
 <body>
@@ -192,52 +471,87 @@
 
 <div class="container" style="float:center;width: 99%;">
     <div class="well">
-
         <div class="input-prepend input-group">
-            <div style="float: left">
-                <select id="subjectno" name="subjectno" class="selectpicker fit-width">
+                <span class="add-on input-group-addon">
+                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                </span>
+            <input type="text" readonly
+                   style="width: 200px"
+                   name="reservation"
+                   id="reservation"
+                   class="form-control"/>
+            <div class="input-prepend input-group">
+                <div style="float: left">
+                    <select id="subjectno" name="subjectno" class="selectpicker fit-width"
+                            onchange="getTestPaperList()">
 
-                </select>
-                <select id="gradeno" name="gradeno" class="selectpicker fit-width" onchange="getEclassList()">
+                    </select>
+                    <select id="gradeno" name="gradeno" class="selectpicker fit-width"
+                            onchange="getEclassList();getTestPaperList()">
 
-                </select>
-                <select id="classno" name="classno" class="selectpicker fit-width">
+                    </select>
+                    <select id="classno" name="classno" class="selectpicker fit-width">
 
-                </select>
-
-                <input id="tpname" name="tpname" class="form-control" style="width: 200px;" placeholder="试卷名称"/>
-                <button class="btn btn-primary" type="button" onclick="queryStudentMark()"><span
-                        class="glyphicon glyphicon-eye-open"></span>查询
-                </button>
-
-                </button>
+                    </select>
+                    <select id="paperid" name="paperid" class="selectpicker fit-width"></select>
+                    <%--<input id="tpname" name="tpname" class="form-control" style="width: 200px;" placeholder="试卷名称"/>--%>
+                </div>
             </div>
         </div>
     </div>
-
-
-    <div id="bs_t" style="float: none;display: block;margin-left: auto;margin-right: auto;">
-        <table class="table table-striped" id="ds_table" align="center"
-               striped="true" data-toolbar="#bs_toolbar"
-               data-pagination="true" sidePagination="server" data-click-to-select="true">
-            <thead>
-
-            <tr>
-
-                <th data-field="index" data-align="center" data-formatter="indexFormatter">名次</th>
-
-                <th data-field="tpname" data-align="center" data-sortable="true">试卷</th>
-                <th data-field="studentname" data-align="center" data-sortable="true">考生</th>
-                <th data-field="mark" data-align="center" data-sortable="true">总分</th>
-                <th data-field="markone" data-align="center">客观题分</th>
-                <th data-field="marktwo" data-align="center">主观题分</th>
-                <th data-field="creator" data-align="center" data-sortable="true">创建人</th>
-                <th data-field="createdate" data-align="center" data-sortable="true">创建日期</th>
-                <th data-field="bs_rowid" data-align="center" data-formatter="operateFormatter">操作</th>
-            </tr>
-            </thead>
-        </table>
+    <div id="bs_toolbar">
+        <button class="btn btn-primary" type="button" onclick="initBT()"><span
+                class="glyphicon glyphicon-eye-open"></span>查询
+        </button>
+        <!-- 按钮触发模态框 -->
+        <button class="btn btn-primary" type="button" onclick="validateModal();">
+            <span class="glyphicon glyphicon-plus-sign"></span> 添加
+        </button>
+        <button class="btn btn-primary" type="button" onclick="delMark();">
+            <span class="glyphicon glyphicon-minus-sign"></span> 删除
+        </button>
     </div>
+    <table id="ds_table"></table>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 85%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    成绩登记
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <label for="mclassno">当前年级：</label><input type="text" id="mclassno" style="width: auto"
+                                                                  class="form-control" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label for="mpaperid">当前试卷：</label><input type="text" id="mpaperid" style="width: auto"
+                                                                  class="form-control" readonly/>
+                    </div>
+                    <hr/>
+                    <div id="bbb" style="float: none;display: block;margin-left: auto;margin-right: auto;">
+
+                        <table id="aaa"></table>
+                        <hr/>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" onclick="addWrongStudent();">
+                    <span class="glyphicon glyphicon-floppy-save"></span> 保存
+                </button>
+                <button class="btn btn-primary" type="button" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-log-out"></span> 关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
 </body>
 </html>

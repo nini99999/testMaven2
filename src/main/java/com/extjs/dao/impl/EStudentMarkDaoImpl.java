@@ -33,13 +33,22 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
         if (null != eStudentMark.getStudentname() && !"".equals(eStudentMark.getStudentname())) {
             sb.append(" and studentname='" + eStudentMark.getStudentname() + "'");
         }
+        if (null!=eStudentMark.getStudentno()&&eStudentMark.getStudentno().length()>0){
+            sb.append(" and studentno='"+eStudentMark.getStudentno()+"'");
+        }
         if (null != eStudentMark.getSubjectno() && !"".equals(eStudentMark.getSubjectno()) && !"noselected".equals(eStudentMark.getSubjectno())) {
             sb.append(" and subjectno='" + eStudentMark.getSubjectno() + "'");
         }
         if (null != eStudentMark.getTpname() && !"".equals(eStudentMark.getTpname())) {
             sb.append(" and tpname like '%" + eStudentMark.getTpname() + "%'");
         }
-        sb.append(" order by tpname,mark desc,createdate desc");
+        if (null != eStudentMark.getTpno() && eStudentMark.getTpno().length() > 0) {
+            sb.append(" and tpno='" + eStudentMark.getTpno() + "'");
+        }
+        if (null != eStudentMark.getClassno() && eStudentMark.getClassno().length() > 0) {
+            sb.append(" and classno='" + eStudentMark.getClassno() + "'");
+        }
+        sb.append(" order by tpno,mark desc,createdate desc");
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(sb.toString());
         studentMarks = query.list();
@@ -50,9 +59,22 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
     public void saveOrUpdateEStudentMark(EStudentMark eStudentMark) {
         Session session = sessionFactory.getCurrentSession();
         if (null != eStudentMark) {
-            session.saveOrUpdate(eStudentMark);
+//            session.saveOrUpdate(eStudentMark);
+            session.merge(eStudentMark);
             session.flush();
         }
+    }
+
+    @Override
+    public void modifOnlyMark(EStudentMark studentMark) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("update EStudentMark set markone=:markone,marktwo=:marktwo,mark=:mark where id=:id");
+        query.setFloat("markone", studentMark.getMarkone());
+        query.setFloat("marktwo", studentMark.getMarktwo());
+        query.setFloat("mark", studentMark.getMarkone() + studentMark.getMarktwo());
+        query.setString("id", studentMark.getId());
+        query.executeUpdate();
+        session.flush();
     }
 
     @Override
