@@ -17,6 +17,7 @@ public class EWrongStudent {
     private Date createdate;
     private Date testdate;
     private String testpoint;
+    private String studentid;
 
     @Id
     @Column(name = "ID", nullable = false, length = 64)
@@ -96,5 +97,14 @@ public class EWrongStudent {
 
     public void setTestpoint(String testpoint) {
         this.testpoint = testpoint;
+    }
+    @Basic
+    @Column(name = "studentid", nullable = true,length = 64)
+    public String getStudentid() {
+        return studentid;
+    }
+
+    public void setStudentid(String studentid) {
+        this.studentid = studentid;
     }
 }

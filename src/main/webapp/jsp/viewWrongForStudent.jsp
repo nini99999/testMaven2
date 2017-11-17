@@ -429,14 +429,6 @@
                 <div style="float: left">
                     <select id="subjectno" name="subjectno" class="selectpicker fit-width"
                             onchange="getTestPaperList()">
-
-                    </select>
-                    <select id="gradeno" name="gradeno" class="selectpicker fit-width"
-                            onchange="getEclassList();getTestPaperList()">
-
-                    </select>
-                    <select id="classno" name="classno" class="selectpicker fit-width">
-
                     </select>
                     <select id="paperid" name="paperid" class="selectpicker fit-width"></select>
                     <%--<input id="tpname" name="tpname" class="form-control" style="width: 200px;" placeholder="试卷名称"/>--%>

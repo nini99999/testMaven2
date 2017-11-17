@@ -50,10 +50,8 @@
             "<button type='button' class='btn btn-info';' id='m-callback-this-start' onclick='btnEntry(" + row.bs_rowid + ")'  > <span class='glyphicon glyphicon-pencil' onclick='queryEgradeList()'></span>  </button>"].join('');
 
     }
-    function queryEgradeListBYschool() {//年级下拉列表加载
-        var params = {};
 
-        params.schoolno = $('#schoolno').val();
+    function queryEgradeListBYschool() {//年级下拉列表加载
 
         $.ajax({
             url: "/egrade/viewEgradeListByschoolno",
@@ -61,8 +59,7 @@
             type: "post",
 // 接受数据格式
             dataType: "json",
-// 要传递的数据
-            data: params,
+
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {
                 $('#gradeno').empty();
@@ -85,51 +82,9 @@
             }
         })
     }
-
-    function getschoolList() {//获取下拉学校列表
-        $.ajax({
-            url: "/eschool/viewEschoolList",
-// 数据发送方式
-            type: "get",
-// 接受数据格式
-            dataType: "json",
-// 要传递的数据
-            data: 'data',
-// 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
-//alert(data.data);
-                $('#schoolno').empty();
-                $('#schoolno').append("<option value='noselected'>请选择学校</option>");
-                $.each(data.data, function (i) {
-//                    alert(i);
-
-
-//                    $("<option value='" + data.data[i].schoolno + "'>" + data.data[i].schoolname + "</option>")
-//                        .appendTo("#schoolno.selectpicker");
-                    $('#schoolno.selectpicker').append("<option value=" + data.data[i].schoolno + ">" + data.data[i].schoolname + "</option>");
-
-                });
-
-
-//                $('#schoolno').selectpicker('render');
-                $('#schoolno').selectpicker('refresh');
-
-//
-            },
-
-            error: function (data) {
-
-                alert("查询学校失败" + data);
-
-            }
-        })
-
-    }
     function getEclassList() {
 
         var params = {};
-
-        params.schoolno = $('#schoolno').val();
         params.gradeno = $('#gradeno').val();
         $.ajax({
             url: "/eclass/viewEclassByDTO",
@@ -145,15 +100,21 @@
 
                 $('#classno').selectpicker();
                 $('#classno').append("<option value='noselected'>请选择班级</option>");
-                console.log(data.data);
+//                console.log(data.data);
                 $.each(data.data, function (i) {
 
                     $('#classno.selectpicker').append("<option value=" + data.data[i].classno + ">" + data.data[i].classname + "</option>");
 
 
                 });
+                if (params.gradeno != 'noselected') {
+                    $('#classno').selectpicker('refresh');
+                } else {
+//                    $('#classno').selectpicker('destroy');
+                    $('#classno').val('noselected');
+                }
 
-                $('#classno').selectpicker('refresh');
+
             },
 
             error: function (data) {
@@ -163,8 +124,6 @@
             }
         })
     }
-
-
     function queryEstudentByDTO() {
         var params = {};
 
@@ -208,8 +167,6 @@
     function addEstudent() {
 
         var params = {};
-
-        params.schoolno = $('#schoolno').val();
         params.gradeno = $('#gradeno').val();
         params.classno = $('#classno').val();
         params.chinaid = chinaid.value;
@@ -350,10 +307,6 @@
 </div>
 <div id="bs_toolbar">
 
-    <select id="schoolno" name="schoolno" class="selectpicker" onchange="queryEgradeListBYschool()">
-
-    </select>
-
     <select id="gradeno" name="gradeno" class="selectpicker" onchange="getEclassList()">
 
     </select>
@@ -481,9 +434,8 @@
 
     });
     $(function () {
-        getschoolList();//填充学校下拉列表
 
-//        queryEgradeListBYschool();//填充年级下拉列表
+        queryEgradeListBYschool();//填充年级下拉列表
 //        getEclassList();//填充班级下拉列表
         getNation();//填充民族
         queryEstudentByDTO();

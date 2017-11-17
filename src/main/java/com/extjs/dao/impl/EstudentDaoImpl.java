@@ -28,6 +28,9 @@ public class EstudentDaoImpl implements EstudentDao {
 
         StringBuilder sb = new StringBuilder();
         sb.append("from EStudent where 1=1");
+        if (null != eStudentDTO.getId() && eStudentDTO.getId().length() > 0) {
+            sb.append(" and id='" + eStudentDTO.getId() + "'");
+        }
         if (null != eStudentDTO.getSchoolno() && !"".equals(eStudentDTO.getSchoolno())) {
             sb.append(" and schoolno='" + eStudentDTO.getSchoolno() + "'");
         }
@@ -64,6 +67,18 @@ public class EstudentDaoImpl implements EstudentDao {
             e.printStackTrace();
         }
         return studentList;
+    }
+
+    @Override
+    public EStudent getStudentByID(String id) {
+        EStudent eStudent = new EStudent();
+        if (null != id && id.length() > 0) {
+            String hql = "from EStudent where id=:str";
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createQuery(hql).setString("str", id);
+            eStudent = (EStudent) query.uniqueResult();
+        }
+        return eStudent;
     }
 
     public EStudent getEstudentByCountryID(String countryID) {

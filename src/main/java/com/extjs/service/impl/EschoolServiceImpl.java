@@ -4,6 +4,7 @@ import com.extjs.dao.EschoolDao;
 import com.extjs.model.ESchoolDTO;
 import com.extjs.model.ESchool;
 import com.extjs.service.EschoolService;
+import com.extjs.service.UserService;
 import com.extjs.util.ReflectionUtil;
 import com.extjs.util.SysException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ import java.util.UUID;
 public class EschoolServiceImpl implements EschoolService {
     @Autowired
     private EschoolDao eschoolDao;
+    @Autowired
+    private UserService userService;
+
 
     @Override
     public List<ESchoolDTO> queryEschool() {
@@ -67,5 +71,16 @@ public class EschoolServiceImpl implements EschoolService {
     @Override
     public void delEschool(ESchoolDTO eSchoolDTO) throws SysException {
         eschoolDao.delEschool(eSchoolDTO);
+    }
+
+    @Override
+    public String getSchoolnoByContext() throws SysException{
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        String schoolid = userService.getUserByUnique(userDetails.getUsername()).getuserSchool();
+        ESchoolDTO schoolDTO = this.querySchoolByUnique(schoolid, null);
+        return schoolDTO.getSchoolno();
     }
 }

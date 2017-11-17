@@ -2,6 +2,7 @@ package com.extjs.dao.impl;
 
 import com.extjs.dao.EStudentMarkDao;
 import com.extjs.model.EStudentMark;
+import com.extjs.model.Page;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,8 +24,31 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public List<EStudentMark> queryEStudentMark(EStudentMark eStudentMark) {
+    public List<EStudentMark> queryEStudentMark(EStudentMark eStudentMark, Page page) {
         List<EStudentMark> studentMarks = new ArrayList<EStudentMark>();
+        String hql = this.getHql(eStudentMark);
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(hql);
+        if (null != page.getPageno() && page.getPageno() > 0 && null != page.getPagesize() && page.getPagesize() > 0) {
+            query.setFirstResult((page.getPageno()-1)*page.getPagesize());
+            query.setMaxResults(page.getPagesize());
+        }
+        studentMarks = query.list();
+        return studentMarks;
+    }
+
+    @Override
+    public int getTotalCount(EStudentMark eStudentMark) {
+        StringBuilder sb = new StringBuilder("select count(rowid) ");
+        sb.append(this.getHql(eStudentMark)).append(")");
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(sb.toString());
+        int res = Integer.parseInt(query.uniqueResult().toString());
+        return res;
+    }
+
+
+    private String getHql(EStudentMark eStudentMark) {
         StringBuilder sb = new StringBuilder("from EStudentMark where 1=1");
         if (null != eStudentMark.getCreator() && !"".equals(eStudentMark.getCreator())) {
             sb.append(" and creator='").append(eStudentMark.getCreator()).append("'");
@@ -33,8 +57,8 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
         if (null != eStudentMark.getStudentname() && !"".equals(eStudentMark.getStudentname())) {
             sb.append(" and studentname='" + eStudentMark.getStudentname() + "'");
         }
-        if (null!=eStudentMark.getStudentno()&&eStudentMark.getStudentno().length()>0){
-            sb.append(" and studentno='"+eStudentMark.getStudentno()+"'");
+        if (null != eStudentMark.getStudentno() && eStudentMark.getStudentno().length() > 0) {
+            sb.append(" and studentno='" + eStudentMark.getStudentno() + "'");
         }
         if (null != eStudentMark.getSubjectno() && !"".equals(eStudentMark.getSubjectno()) && !"noselected".equals(eStudentMark.getSubjectno())) {
             sb.append(" and subjectno='" + eStudentMark.getSubjectno() + "'");
@@ -49,10 +73,7 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
             sb.append(" and classno='" + eStudentMark.getClassno() + "'");
         }
         sb.append(" order by tpno,mark desc,createdate desc");
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery(sb.toString());
-        studentMarks = query.list();
-        return studentMarks;
+        return sb.toString();
     }
 
     @Override

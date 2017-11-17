@@ -77,11 +77,12 @@ public class EtestpaperDaoImpl implements EtestpaperDao {
     public ETestpaper getTestPaper(String tpno, String tpname) {
         ETestpaper result = new ETestpaper();
         ETestpaperDTO eTestpaperDTO = new ETestpaperDTO();
-        if (null != tpno) {
+        if (null != tpno && tpno.length() > 0) {
             eTestpaperDTO.setTpno(tpno);
-        }
-        if (null != tpname) {
-            eTestpaperDTO.setTpname(tpname);
+        } else {
+            if (null != tpname && tpno.length() > 0) {
+                eTestpaperDTO.setTpname(tpname);
+            }
         }
         List<ETestpaper> eTestpaperList = this.queryEtestPaper(eTestpaperDTO);
 
@@ -96,7 +97,11 @@ public class EtestpaperDaoImpl implements EtestpaperDao {
         String hql = "select sum(questionnum) from EPaperQType where tpno=:str";
         Session session = sessionFactory.getCurrentSession();
         Object object = session.createQuery(hql).setString("str", tpno).uniqueResult();
-        return Integer.parseInt(String.valueOf(object));
+        int i = 0;
+        if (null != object) {
+            i = Integer.parseInt(String.valueOf(object));
+        }
+        return i;
     }
 
     @Override

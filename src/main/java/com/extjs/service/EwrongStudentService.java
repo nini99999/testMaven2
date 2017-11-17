@@ -12,7 +12,7 @@ public interface EwrongStudentService {
 
     List<EWrongStudentDTO> queryWrongStudent(EWrongStudentDTO eWrongStudentDTO);
 
-    HashMap<Integer, Integer> getQuestionno(String countryid);
+    HashMap<Integer, Integer> getQuestionno(String studentID);//获取指定学生已存在的错题
 
     void saveOrUpdateWrongStudent(EWrongStudentDTO eWrongStudentDTO);
 

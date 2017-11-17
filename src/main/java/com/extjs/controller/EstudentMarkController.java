@@ -1,6 +1,7 @@
 package com.extjs.controller;
 
 import com.extjs.model.EStudentMark;
+import com.extjs.model.Page;
 import com.extjs.service.EstudentMarkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,11 +26,13 @@ public class EstudentMarkController {
 
     @RequestMapping("/queryEstudentMark")
     @ResponseBody
-    public Map queryEstudentMark(EStudentMark eStudentMark) {
+    public Map queryEstudentMark(EStudentMark eStudentMark, Page page) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<EStudentMark> eStudentMarkList = estudentMarkService.queryEStudentMark(eStudentMark);
+        int totalCount = estudentMarkService.getTotalCount(eStudentMark);
+//        page.setTotalCount(totalCount);
+        List<EStudentMark> eStudentMarkList = estudentMarkService.queryEStudentMark(eStudentMark, page);
 //        resultMap.put("data", eStudentMarkList);
-        resultMap.put("total", eStudentMarkList.size());
+        resultMap.put("total", totalCount);
         resultMap.put("rows", eStudentMarkList);
         return resultMap;
     }

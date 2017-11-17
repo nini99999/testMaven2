@@ -63,7 +63,7 @@ public class EgradeController {
     @ResponseBody
     public Map<String, Object> addEgrade(EGradeDTO eGradeDTO) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        eGradeDTO.setGradeno(eGradeDTO.getSchoolno() + "-" + eGradeDTO.getGradeno());
+
         try {
             egradeService.addEgrade(eGradeDTO);
             resultMap.put("success", true);

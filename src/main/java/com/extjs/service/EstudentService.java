@@ -15,6 +15,8 @@ public interface EstudentService {
 
     List<EStudentDTO> getStudentByClassAndTpno(String classno, String tpno);//查询指定条件下，未包括在学生成绩表中的学生
 
+    EStudentDTO getStudentByID(String id);
+
     String addEstudent(EStudentDTO eStudentDTO) throws SysException;//添加
 
     void delEstudent(EStudentDTO eStudentDTO) throws SysException;//删除

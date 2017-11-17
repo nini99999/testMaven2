@@ -7,6 +7,7 @@ import com.extjs.model.EGradeDTO;
 import com.extjs.model.ESchool;
 import com.extjs.model.UserDTO;
 import com.extjs.service.EgradeService;
+import com.extjs.service.EschoolService;
 import com.extjs.service.UserService;
 import com.extjs.util.ReflectionUtil;
 import com.extjs.util.SysException;
@@ -31,8 +32,10 @@ public class EgradeServiceImpl implements EgradeService {
     private EgradeDao egradeDao;
     @Autowired
     private UserService userService;
+    //    @Autowired
+//    private EschoolDao eschoolDao;
     @Autowired
-    private EschoolDao eschoolDao;
+    private EschoolService eschoolService;
 
     @Override
     public List<EGradeDTO> queryEgrade() {
@@ -49,22 +52,16 @@ public class EgradeServiceImpl implements EgradeService {
 
     /**
      * 查询年级列表，如果指定学校为空，则根据当前登录用户获取其所对应的学校；然后根据学校查询其对应的年级列表
+     *
      * @param schoolno
      * @return List<EGradeDTO>
      */
     public List<EGradeDTO> queryEgradeByschoolno(String schoolno) {
         List<EGradeDTO> eGradeDTOList = new ArrayList<EGradeDTO>();
-        ESchool eSchool = new ESchool();
-        if (schoolno == null || schoolno.equals("")) {
-//             eGradeDTOList = egradeService.queryEgrade();
-            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-                    .getAuthentication()
-                    .getPrincipal();
+
+        if (null == schoolno || schoolno.length() == 0) {
             try {
-                UserDTO userDTO = userService.getUserByUnique(userDetails.getUsername());
-                eSchool.setId(userDTO.getuserSchool());
-                eSchool = eschoolDao.queryEschool(eSchool);
-                schoolno=eSchool.getSchoolno();
+                schoolno = eschoolService.getSchoolnoByContext();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -86,6 +83,10 @@ public class EgradeServiceImpl implements EgradeService {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
+        if (null == eGradeDTO.getSchoolno() || eGradeDTO.getSchoolno().length() == 0) {
+            eGradeDTO.setSchoolno(eschoolService.getSchoolnoByContext());
+        }
+        eGradeDTO.setGradeno(eGradeDTO.getSchoolno() + "-" + eGradeDTO.getGradeno());
         eGradeDTO.setId(uuid.toString());
         eGradeDTO.setCreatedate(date);
         eGradeDTO.setCreator(userDetails.getUsername());

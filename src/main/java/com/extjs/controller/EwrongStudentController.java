@@ -1,6 +1,9 @@
 package com.extjs.controller;
 
+import com.extjs.model.EStudentDTO;
+import com.extjs.model.ETestpaperDTO;
 import com.extjs.model.EWrongStudentDTO;
+import com.extjs.service.EstudentService;
 import com.extjs.service.EtestpaperService;
 import com.extjs.service.EwrongStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +30,17 @@ public class EwrongStudentController {
     private EwrongStudentService ewrongStudentService;
     @Autowired
     private EtestpaperService etestpaperService;
+    @Autowired
+    private EstudentService estudentService;
 
     @RequestMapping("/viewWrongStudent")
     @ResponseBody
-    public Map<String, Object> queryWrongStudent(String countryid, String tpno) {
+    public Map<String, Object> queryWrongStudent(String tpno) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
 
             EWrongStudentDTO wrongStudentDTO = new EWrongStudentDTO();
-            wrongStudentDTO.setCountryid(countryid.trim());
+//            wrongStudentDTO.setCountryid(countryid.trim());
             wrongStudentDTO.setTestpaperno(tpno.trim());
             List<EWrongStudentDTO> wrongStudentDTOS = ewrongStudentService.queryWrongStudent(wrongStudentDTO);
             resultMap.put("data", wrongStudentDTOS);
@@ -51,24 +56,35 @@ public class EwrongStudentController {
      * 待解决：将学生错题记录表中的questionno设置为int
      *
      * @param tpno
-     * @param countryid
+     * @param studentid
      * @param testdate
      * @return
      */
     @RequestMapping("/getQuestionNumList")
     @ResponseBody
-    public Map<String, Object> getQuestionNumList(String tpno, String countryid, String testdate) {
+    public Map<String, Object> getQuestionNumList(String tpno, String studentid, String testdate) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Integer num = etestpaperService.getSumQuestionNum(tpno);
+        EStudentDTO studentDTO = estudentService.getStudentByID(studentid);
         List<EWrongStudentDTO> eWrongStudentDTOList = new ArrayList<EWrongStudentDTO>();
-        HashMap<Integer, Integer> questionnoMap = ewrongStudentService.getQuestionno(countryid);
+
+        HashMap<Integer, Integer> questionnoMap = ewrongStudentService.getQuestionno(studentid);//获取指定学生已有的错题
+//        ETestpaperDTO testpaperDTO=new ETestpaperDTO();
+//        testpaperDTO.setTpno(tpno);
+        ETestpaperDTO testpaperDTO = etestpaperService.getTestPaperByTPNO(tpno);
+
+
         try {
             for (int i = 0; i < num; i++) {
                 EWrongStudentDTO wrongStudentDTO = new EWrongStudentDTO();
                 wrongStudentDTO.setTestpaperno(tpno);
-                wrongStudentDTO.setCountryid(countryid);
-                Date date = new Date(System.currentTimeMillis());
-                wrongStudentDTO.setTestdate(date);
+                wrongStudentDTO.setStudentid(studentid);
+                wrongStudentDTO.setCountryid(studentDTO.getCountryid());
+                wrongStudentDTO.setTestpapername(testpaperDTO.getTpname());
+                wrongStudentDTO.setTestdate(testpaperDTO.getTestdate());
+//                wrongStudentDTO.setStudentid();
+//                Date date = new Date(System.currentTimeMillis());
+//                wrongStudentDTO.setTestdate(date);
                 wrongStudentDTO.setQuestionno(i + 1);
 
                 if (null != questionnoMap.get(i + 1)) {
@@ -91,8 +107,29 @@ public class EwrongStudentController {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
             String str = ewrongStudentService.modifdSelected(wrongStudentDTOS);
-            resultMap.put("success", true);
-            resultMap.put("msg", "删除成功!");
+            if ("success".equals(str)){
+                resultMap.put("success", true);
+                resultMap.put("msg", "保存成功!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("success", false);
+            resultMap.put("msg", "保存失败!" + e.getMessage());
+        }
+
+        return resultMap;
+    }
+    @RequestMapping("/delSelects")
+    @ResponseBody
+    public Map<String,Object> delSelects(@RequestBody List<EWrongStudentDTO> wrongStudentDTOS){
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+            for (EWrongStudentDTO wrongStudentDTO:wrongStudentDTOS){
+                ewrongStudentService.delWrongStudent(wrongStudentDTO);
+                resultMap.put("success", true);
+                resultMap.put("msg", "删除成功!");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             resultMap.put("success", false);
@@ -101,13 +138,13 @@ public class EwrongStudentController {
 
         return resultMap;
     }
-
     @RequestMapping("/delWrongStudent")
     @ResponseBody
-    public Map<String, Object> delWrongStudent(String countryid, String tpno) {
+    public Map<String, Object> delWrongStudent(String studentid, String countryid, String tpno) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
             EWrongStudentDTO eWrongStudentDTO = new EWrongStudentDTO();
+            eWrongStudentDTO.setStudentid(studentid);
             eWrongStudentDTO.setCountryid(countryid);
             eWrongStudentDTO.setTestpaperno(tpno);
             ewrongStudentService.delWrongStudent(eWrongStudentDTO);

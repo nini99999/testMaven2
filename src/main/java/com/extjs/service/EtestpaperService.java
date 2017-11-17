@@ -13,6 +13,8 @@ import java.util.List;
 public interface EtestpaperService {
     List<ETestpaperDTO> queryEtestpaper(ETestpaperDTO eTestpaperDTO);
 
+    ETestpaperDTO getTestPaperByTPNO(String tpno);//根据试卷编码查询试卷
+
     Integer getSumQuestionNum(String tpno);
 
     void addEtestpaper(ETestpaperDTO eTestpaperDTO) throws SysException;

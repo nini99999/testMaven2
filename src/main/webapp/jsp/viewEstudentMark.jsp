@@ -44,7 +44,7 @@
     $(function () {
         initDateSelect();
         getEsubjects();
-        queryEgradeListBYschool();
+//        queryEgradeListBYschool();
         initBT();
 //        queryStudentMark();
 
@@ -210,24 +210,42 @@
             catch: false,
             toolbar: "#bs_toolbar",
             idField: "id",
-            pagination: true,
-            striped: true,
-            clickToSelect: true,
-            queryParams: function (param) {
-                var params = {};
-                params.gradeno = $('#gradeno').val();
-                params.classno = $('#classno').val();
-                params.tpno = $('#paperid').val();
-                params.subjectno = $('#subjectno').val();
-                return params;
+
+            queryParams: function (params) {
+
+                return {
+                    pageno: (params.offset / params.limit) + 1,
+                    pagesize: params.limit,
+                    gradeno: $('#gradeno').val(),
+                    classno: $('#classno').val(),
+                    tpno: $('#paperid').val(),
+                    subjectno: $('#subjectno').val()
+                }
+//                var params = {};
+//                params.pagesize = param.limit;
+//                params.pageno = param.offset;
+//                console.log('limit:',param.limit);
+//                console.log('pageNumber:',param.pageNumber);
+//                params.gradeno = $('#gradeno').val();
+//                params.classno = $('#classno').val();
+//                params.tpno = $('#paperid').val();
+//                params.subjectno = $('#subjectno').val();
+//                return params;
             },
             url: "/studentMark/queryEstudentMark",
-            sidePagination: "server",
+            striped: true,
+            clickToSelect: true,
+            pagination: true, //是否显示分页（*）
+            sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1, //初始化加载第一页，默认第一页
+            pageSize: 10, //每页的记录行数（*）
+            pageList: [10, 20, 50, 100],
+//            showColumns:true,
             columns: [{
                 checkbox: true
             }, {
                 field: "index",
-                title: "名次",
+                title: "序号",
                 align: "center",
                 formatter: function (value, row, index) {
 
@@ -336,8 +354,6 @@
 //            toolbar: "#bs_toolbar",
             idField: "id",
 //            pagination: true,
-            striped: true,
-            clickToSelect: true,
             queryParams: function (param) {
                 var params = {};
                 params.gradeno = $('#gradeno').val();
@@ -347,7 +363,8 @@
                 return params;
             },
             url: "/estudent/getStudentByClassAndTpno",
-//            sidePagination: "server",
+            striped: true,
+            clickToSelect: true,
             columns: [{
                 field: "index",
                 title: "序号",
@@ -541,6 +558,7 @@
                         <table id="aaa"></table>
                         <hr/>
                     </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" type="button" onclick="addWrongStudent();">

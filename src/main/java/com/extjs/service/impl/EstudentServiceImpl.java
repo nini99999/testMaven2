@@ -1,9 +1,12 @@
 package com.extjs.service.impl;
 
 import com.extjs.dao.EstudentDao;
+import com.extjs.model.ESchoolDTO;
 import com.extjs.model.EStudentDTO;
 import com.extjs.model.EStudent;
+import com.extjs.service.EschoolService;
 import com.extjs.service.EstudentService;
+import com.extjs.service.UserService;
 import com.extjs.util.ReflectionUtil;
 import com.extjs.util.SysException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,10 @@ import com.extjs.util.EConstants;
 public class EstudentServiceImpl implements EstudentService {
     @Autowired
     private EstudentDao estudentDao;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    EschoolService eschoolService;
 
     @Override
     public List<EStudentDTO> queryEstudent(EStudentDTO eStudentDTO) {
@@ -64,6 +71,21 @@ public class EstudentServiceImpl implements EstudentService {
     }
 
     @Override
+    public EStudentDTO getStudentByID(String id) {
+
+        EStudentDTO studentDTO = new EStudentDTO();
+        if (null != id && id.length() > 0) {
+            EStudent student = estudentDao.getStudentByID(id);
+            ReflectionUtil.copyProperties(student, studentDTO);
+            EConstants eConstants = new EConstants();
+            studentDTO.setStudystate(eConstants.studyStateMap.get(studentDTO.getStudystate()));
+            studentDTO.setSchoolstate(eConstants.schoolStateMap.get(studentDTO.getSchoolstate()));
+        }
+
+        return studentDTO;
+    }
+
+    @Override
     public String addEstudent(EStudentDTO eStudentDTO) throws SysException {
         UUID uuid = UUID.randomUUID();
         Date date = new Date(System.currentTimeMillis());
@@ -71,6 +93,11 @@ public class EstudentServiceImpl implements EstudentService {
                 .getAuthentication()
                 .getPrincipal();
         eStudentDTO.setId(uuid.toString());
+        if (null == eStudentDTO.getSchoolno() || eStudentDTO.getSchoolno().length() == 0) {
+            String schoolid = userService.getUserByUnique(userDetails.getUsername()).getuserSchool();
+            ESchoolDTO schoolDTO = eschoolService.querySchoolByUnique(schoolid, null);
+            eStudentDTO.setSchoolno(schoolDTO.getSchoolno());
+        }
         eStudentDTO.setCreator(userDetails.getUsername());
         eStudentDTO.setCreatedate(date);
         String flag = estudentDao.addEstudent(eStudentDTO);

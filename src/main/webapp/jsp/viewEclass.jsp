@@ -48,9 +48,6 @@
     }
     function queryEgradeListBYschool() {
         var params = {};
-
-        params.schoolno = $('#schoolno').val();
-
         $.ajax({
             url: "/egrade/viewEgradeListByschoolno",
 // 数据发送方式
@@ -83,51 +80,10 @@
         })
     }
 
-    function getschoolList() {//获取下拉学校列表
-        $.ajax({
-            url: "/eschool/viewEschoolList",
-// 数据发送方式
-            type: "get",
-// 接受数据格式
-            dataType: "json",
-// 要传递的数据
-            data: 'data',
-// 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
-//alert(data.data);
-                $('#schoolno').empty();
-                $('#schoolno').append("<option value='noselected'>请选择</option>");
-                $.each(data.data, function (i) {
-//                    alert(i);
-
-
-//                    $("<option value='" + data.data[i].schoolno + "'>" + data.data[i].schoolname + "</option>")
-//                        .appendTo("#schoolno.selectpicker");
-                    $('#schoolno.selectpicker').append("<option value=" + data.data[i].schoolno + ">" + data.data[i].schoolname + "</option>");
-
-                });
-
-
-//                $('#schoolno').selectpicker('render');
-                $('#schoolno').selectpicker('refresh');
-
-//
-            },
-
-            error: function (data) {
-
-                alert("查询学校失败" + data);
-
-            }
-        })
-
-    }
-
-
     function queryEclassListByDTO() {
         var params = {};
 
-        params.schoolno = $('#schoolno').val();
+//        params.schoolno = $('#schoolno').val();
         params.gradeno = $('#gradeno').val();
         $.ajax({
             url: "/eclass/viewEclassByDTO",
@@ -153,9 +109,9 @@
         })
     }
     function validatAddEclass() {
-        var str_school=$('#schoolno').val();
+//        var str_school=$('#schoolno').val();
         var str_grade=$('#gradeno').val();
-        if(str_school==("noselected")||str_grade==("noselected")){
+        if(str_grade==("noselected")){
             alert("请选择学校和年级!");
         }else {
             addEclass();
@@ -165,7 +121,7 @@
     function addEclass() {
         var params = {};
 
-        params.schoolno = $('#schoolno').val();
+//        params.schoolno = $('#schoolno').val();
         params.gradeno = $('#gradeno').val();
         params.classno = classno.value;
         params.classname = classname.value;
@@ -247,12 +203,9 @@
     <hr/>
 </div>
 <div id="bs_toolbar">
-    选择学校--：
-    <select id="schoolno" name="schoolno" class="selectpicker" onchange="queryEgradeListBYschool()">
 
-    </select>
     选择年级--：
-    <select id="gradeno" name="gradeno" class="selectpicker">
+    <select id="gradeno" name="gradeno" class="selectpicker" onchange="queryEclassListByDTO();">
 
     </select>
 
@@ -297,7 +250,7 @@
                 $(document).ready(function () {
 
                     //$('#schoolno').multiselect();
-                    getschoolList();//填充学校下拉列表
+//                    getschoolList();//填充学校下拉列表
 
                     queryEgradeListBYschool();//填充年级下拉列表
                     queryEclassListByDTO();//查询年级

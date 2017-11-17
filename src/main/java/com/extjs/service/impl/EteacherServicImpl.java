@@ -1,9 +1,12 @@
 package com.extjs.service.impl;
 
 import com.extjs.dao.EteacherDao;
+import com.extjs.model.ESchoolDTO;
 import com.extjs.model.ETeacher;
 import com.extjs.model.ETeacherDTO;
+import com.extjs.service.EschoolService;
 import com.extjs.service.EteacherService;
+import com.extjs.service.UserService;
 import com.extjs.util.ReflectionUtil;
 import com.extjs.util.SysException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +28,21 @@ import java.util.UUID;
 public class EteacherServicImpl implements EteacherService {
     @Autowired
     private EteacherDao eteacherDao;
+    @Autowired
+    private EschoolService eschoolService;
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<ETeacherDTO> queryEteacher(ETeacherDTO eTeacherDTO) {
         List<ETeacherDTO> eTeacherDTOList = new ArrayList<ETeacherDTO>();
+        if (null == eTeacherDTO.getSchoolno() || eTeacherDTO.getSchoolno().length() > 0) {
+            try {
+                eTeacherDTO.setSchoolno(eschoolService.getSchoolnoByContext());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         List<ETeacher> eTeacherList = eteacherDao.queryEteacher(eTeacherDTO);
 
         for (ETeacher eTeacher : eTeacherList) {
@@ -47,10 +61,13 @@ public class EteacherServicImpl implements EteacherService {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
+        if (null == eTeacherDTO.getSchoolno() || eTeacherDTO.getSchoolno().length() == 0) {
+             eTeacherDTO.setSchoolno(eschoolService.getSchoolnoByContext());
+        }
         eTeacherDTO.setId(uuid.toString());
         eTeacherDTO.setCreator(userDetails.getUsername());
         eTeacherDTO.setCreatedate(date);
-        eTeacherDTO.setTeacherid(eTeacherDTO.getSchoolno()+"-"+eTeacherDTO.getTeacherid());
+        eTeacherDTO.setTeacherid(eTeacherDTO.getSchoolno() + "-" + eTeacherDTO.getTeacherid());
         String flag = eteacherDao.addEteacher(eTeacherDTO);
         return flag;
     }
@@ -59,4 +76,6 @@ public class EteacherServicImpl implements EteacherService {
     public void delEteacher(ETeacherDTO eTeacherDTO) throws SysException {
         eteacherDao.delEteacher(eTeacherDTO);
     }
+
+
 }

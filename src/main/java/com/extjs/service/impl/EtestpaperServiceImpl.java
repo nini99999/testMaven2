@@ -50,6 +50,15 @@ public class EtestpaperServiceImpl implements EtestpaperService {
     }
 
     @Override
+    public ETestpaperDTO getTestPaperByTPNO(String tpno) {
+        ETestpaperDTO testpaperDTO=new ETestpaperDTO();
+        ETestpaper testpaper=etestpaperDao.getTestPaper(tpno,null);
+        ReflectionUtil.copyProperties(testpaper,testpaperDTO);
+
+        return testpaperDTO;
+    }
+
+    @Override
     public Integer getSumQuestionNum(String tpno) {
         Integer integer = etestpaperDao.getSumQuestionNum(tpno);
         return integer;

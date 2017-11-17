@@ -40,13 +40,19 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
         for (EWrongStudent eWrongStudent : eWrongStudents) {
             eWrongStudentDTO = new EWrongStudentDTO();
             ReflectionUtil.copyProperties(eWrongStudent, eWrongStudentDTO);
-            if (null != eWrongStudent.getTestpaperno()) {//试卷名赋值
+            if (null != eWrongStudent.getTestpaperno() && eWrongStudent.getTestpaperno().length() > 0) {//试卷名赋值
                 ETestpaper eTestpaper = etestpaperDao.getTestPaper(eWrongStudent.getTestpaperno(), null);
                 eWrongStudentDTO.setTestpapername(eTestpaper.getTpname());
             }
-            if (null != eWrongStudent.getCountryid()) {//学生姓名赋值
-                String studentname = estudentDao.getEstudentByCountryID(eWrongStudent.getCountryid()).getStudentname();
+
+            if (null != eWrongStudent.getId() && eWrongStudent.getId().length() > 0) {//学生姓名赋值
+                String studentname = estudentDao.getStudentByID(eWrongStudent.getStudentid()).getStudentname();
                 eWrongStudentDTO.setStudentname(studentname);
+            } else {
+                if (null != eWrongStudent.getCountryid() && eWrongStudent.getCountryid().length() > 0) {//学生姓名赋值
+                    String studentname = estudentDao.getEstudentByCountryID(eWrongStudent.getCountryid()).getStudentname();
+                    eWrongStudentDTO.setStudentname(studentname);
+                }
             }
             eWrongStudentDTOList.add(eWrongStudentDTO);
         }
@@ -54,13 +60,16 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
     }
 
     @Override
-    public HashMap<Integer, Integer> getQuestionno(String countryid) {
+    public HashMap<Integer, Integer> getQuestionno(String studentID) {
         HashMap<Integer, Integer> resultMap = new HashMap<Integer, Integer>();
-        EWrongStudentDTO eWrongStudentDTO = new EWrongStudentDTO();
-        eWrongStudentDTO.setCountryid(countryid);
-        List<EWrongStudent> eWrongStudents = ewrongStudentDao.queryEWrongStudent(eWrongStudentDTO);
-        for (EWrongStudent eWrongStudent : eWrongStudents) {
-            resultMap.put(eWrongStudent.getQuestionno(), eWrongStudent.getQuestionno());
+        if (null != studentID && studentID.length() > 0) {
+            EWrongStudentDTO eWrongStudentDTO = new EWrongStudentDTO();
+//            eWrongStudentDTO.setCountryid(countryid);
+            eWrongStudentDTO.setStudentid(studentID);
+            List<EWrongStudent> eWrongStudents = ewrongStudentDao.queryEWrongStudent(eWrongStudentDTO);
+            for (EWrongStudent eWrongStudent : eWrongStudents) {
+                resultMap.put(eWrongStudent.getQuestionno(), eWrongStudent.getQuestionno());
+            }
         }
         return resultMap;
     }
@@ -82,8 +91,12 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
 
             EWrongStudent eWrongStudent = new EWrongStudent();
             ReflectionUtil.copyProperties(eWrongStudentDTO, eWrongStudent);
-            EStudent eStudent = estudentDao.getEstudentByCountryID(eWrongStudentDTO.getCountryid());//获得学生姓名并赋值
-            eWrongStudentDTO.setStudentname(eStudent.getStudentname());
+//            EStudentDTO eStudentDTO=new EStudentDTO();
+//            eStudentDTO.setId(eWrongStudentDTO.getStudentid());
+            EStudent eStudent = estudentDao.getStudentByID(eWrongStudentDTO.getStudentid());//获得学生姓名并赋值
+//            EStudent eStudent = estudentDao.getEstudentByCountryID(eWrongStudentDTO.getCountryid());//获得学生姓名并赋值
+//            eWrongStudent.setStudentname(eStudent.getStudentname());
+            eWrongStudent.setCountryid(eStudent.getCountryid());
             ewrongStudentDao.addEWrongStudent(eWrongStudent);
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,9 +120,7 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
         String res = "success";
         try {
             for (EWrongStudentDTO eWrongStudentDTO : eWrongStudentDTOList) {
-//                wrongStudentDTO.setCountryid(eWrongStudentDTO.getCountryid());
-//                wrongStudentDTO.setTestpapername(eWrongStudentDTO.getTestpapername());
-//                this.delWrongStudent(eWrongStudentDTO);
+
                 this.saveOrUpdateWrongStudent(eWrongStudentDTO);
             }
         } catch (Exception e) {

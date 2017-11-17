@@ -1,10 +1,16 @@
 package com.extjs.controller;
 
 import com.extjs.model.EClassDTO;
+import com.extjs.model.ESchoolDTO;
 import com.extjs.model.ETeacherClassDTO;
 import com.extjs.service.EclassService;
+import com.extjs.service.EschoolService;
 import com.extjs.service.EteacherClassService;
+import com.extjs.service.UserService;
+import com.extjs.util.SysException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,14 +31,15 @@ public class EcalssController {
     @Autowired
     private EteacherClassService eteacherClassService;
 
+    @Autowired
+    private EschoolService eschoolService;
+
     @RequestMapping("/viewEclassByDTO")
     @ResponseBody
     public Map queryEclassByDTO(EClassDTO eClassDTO) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<EClassDTO> eClassDTOList = new ArrayList<EClassDTO>();
-        if (null != eClassDTO.getSchoolno() && "noselected".equals(eClassDTO.getSchoolno())) {
-            eClassDTO.setSchoolno(null);
-        }
+
         if (null != eClassDTO.getGradeno() && "noselected".equals(eClassDTO.getGradeno())) {
             eClassDTO.setGradeno(null);
         }
@@ -64,7 +71,13 @@ public class EcalssController {
         for (ETeacherClassDTO eTeacherClassDTO1 : eTeacherClassDTOList) {
             map.put(eTeacherClassDTO1.getClassno(), eTeacherClassDTO1.getTeacherno());
         }
-
+        if (null == eClassDTO.getSchoolno() || eClassDTO.getSchoolno().length() == 0) {
+            try {
+                eClassDTO.setSchoolno(eschoolService.getSchoolnoByContext());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         Map<String, Object> resultMap = this.queryEclassByDTO(eClassDTO);//查询指定学校下属班级
         List<EClassDTO> eClassDTOList = (List<EClassDTO>) resultMap.get("data");//强制类型转化获取班级list
@@ -87,7 +100,7 @@ public class EcalssController {
     @ResponseBody
     public Map<String, Object> addElclass(EClassDTO eClassDTO) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        eClassDTO.setClassno(eClassDTO.getGradeno() + "-" + eClassDTO.getClassno());
+
         try {
             eclassService.addEclass(eClassDTO);
             resultMap.put("success", true);

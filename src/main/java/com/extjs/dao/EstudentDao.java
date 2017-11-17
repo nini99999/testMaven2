@@ -16,6 +16,8 @@ public interface EstudentDao {
 
     EStudent getEstudentByCountryID(String countryID);
 
+    EStudent getStudentByID(String id);
+
     String addEstudent(EStudentDTO eStudentDTO);//添加学生
 
     void delEstudent(EStudentDTO eStudentDTO);//删除学生

@@ -26,6 +26,9 @@ public class EwrongStudentDaoImpl implements EwrongStudentDao {
     @Override
     public List<EWrongStudent> queryEWrongStudent(EWrongStudentDTO wrongStudent) {
         StringBuilder sb = new StringBuilder("from EWrongStudent where 1=1");
+        if (null!=wrongStudent.getStudentid()&&wrongStudent.getStudentid().length()>0){
+            sb.append(" and studentid='"+wrongStudent.getStudentid()+"'");
+        }
         if (null != wrongStudent.getTestpaperno() && !"".equals(wrongStudent.getTestpaperno())) {
             sb.append(" and testpaperno='" + wrongStudent.getTestpaperno() + "'");
         }
@@ -57,6 +60,9 @@ public class EwrongStudentDaoImpl implements EwrongStudentDao {
             }
             if (null != wrongStudent.getTestpaperno() && !"".equals(wrongStudent.getTestpaperno())) {
                 sb.append(" and testpaperno='" + wrongStudent.getTestpaperno() + "'");
+            }
+            if (null != wrongStudent.getStudentid() && wrongStudent.getStudentid().length() > 0) {
+                sb.append(" and studentid='" + wrongStudent.getStudentid() + "'");
             }
         }
         if (!"delete EWrongStudent where 1=1".equals(sb.toString())) {

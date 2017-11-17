@@ -42,49 +42,18 @@
 //        console.log(row);
 
         return [
-            '<a href="javascript:void(0)" title="编辑教师信息">',
-            '<i class="glyphicon glyphicon-pencil" onclick="queryEteacherBYschool()"></i>',
-            '<i>  </i>',
-            '</a>',
+//            '<a href="javascript:void(0)" title="编辑教师信息">',
+//            '<i class="glyphicon glyphicon-pencil" onclick="queryEteacherBYschool()"></i>',
+//            '<i>  </i>',
+//            '</a>',
 
             '<a href="javascript:void(0)" title="维护教师授课班级">',
-            '<i class="glyphicon glyphicon-list"   data-toggle="modal" data-target="#classModal" onclick="queryEclass(\'' + row.teacherid + '\')"></i>',
+            '<i class="glyphicon glyphicon-edit"   data-toggle="modal" data-target="#classModal" onclick="queryEclass(\'' + row.teacherid + '\')"></i>',
             '</a>'
         ].join('');
     }
 
-    function getschoolList() {//获取下拉学校列表
-        $.ajax({
-            url: "/eschool/viewEschoolList",
-// 数据发送方式
-            type: "get",
-// 接受数据格式
-            dataType: "json",
-// 要传递的数据
-            data: 'data',
-// 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
-//alert(data.data);
 
-                $.each(data.data, function (i) {
-//                    alert(i);
-
-                    $('#schoolno.selectpicker').append("<option value=" + data.data[i].schoolno + ">" + data.data[i].schoolname + "</option>");
-
-                });
-
-                $('#schoolno').selectpicker('refresh');
-                queryEteacherBYschool();
-            },
-
-            error: function (data) {
-
-                alert("查询学校失败" + data);
-
-            }
-        })
-
-    }
     function getsubjectList() {//获取下拉学科列表
         $.ajax({
             url: "/esubjects/viewEsubjectsList",
@@ -104,6 +73,7 @@
                 });
 
                 $('#subjectno').selectpicker('refresh');
+                queryEteacherBYschool();
             },
 
             error: function (data) {
@@ -117,7 +87,7 @@
         console.log(strid);
         var params = {};
 
-        params.schoolno = $('#schoolno').val();
+//        params.schoolno = $('#schoolno').val();
         params.teacherno = strid;
         $.ajax({
             url: "/eclass/viewEclassEstate",
@@ -179,7 +149,7 @@
     function queryEteacherBYschool() {
         var params = {};
 
-        params.schoolno = $('#schoolno').val();
+//        params.schoolno = $('#schoolno').val();
         params.subjectno = $('#subjectno').val();
 
         $.ajax({
@@ -210,7 +180,7 @@
     function addEteacher() {
         var params = {};
 
-        params.schoolno = $('#schoolno').val();
+//        params.schoolno = $('#schoolno').val();
         params.subjectno = $('#subjectno').val();
         params.teacherid = teacherid.value;
         params.teachername = teachername.value;
@@ -336,11 +306,9 @@
     <hr/>
 </div>
 <div id="bs_toolbar">
-    选择学校：
-    <select id="schoolno" name="schoolno" class="selectpicker">
-    </select>
+
     选择学科：
-    <select id="subjectno" name="subjectno" class="selectpicker">
+    <select id="subjectno" name="subjectno" class="selectpicker" onchange="queryEteacherBYschool();">
     </select>
     <button class="btn btn-primary" type="button" onclick="queryEteacherBYschool();">
         <span class="glyphicon glyphicon-eye-open"></span> 查询
@@ -440,8 +408,8 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
-<div id="bs_t" style="float: none;display: block;margin-left: auto;margin-right: auto;width: 90%">
-    <table class="table table-striped" width="80%" id="ds_table" align="center"
+<div id="bs_t" style="float: none;display: block;margin-left: auto;margin-right: auto;width: 95%">
+    <table class="table table-striped" width="100%" id="ds_table" align="center"
            striped="true"
            data-height="566" data-toolbar="#bs_toolbar" data-detail-view="true" data-detail-formatter="getChildTable"
            data-pagination="true" sidePagination="server"
@@ -458,7 +426,7 @@
             <th data-field="tel" data-align="center" data-sortable="true">tel</th>
             <th data-field="creator" data-align="center">创建人</th>
             <th data-field="createdate" data-align="center">创建日期</th>
-            <th data-field="id" data-align="center" data-formatter="operateFormatter" onclick="">编辑
+            <th data-field="id" data-align="center" data-formatter="operateFormatter" onclick="">编辑授课班级
             </th>
 
         </tr>
@@ -469,9 +437,6 @@
 </html>
 <script type="text/javascript">
     $(document).ready(function () {
-        getschoolList();
         getsubjectList();
-
-
     });
 </script>

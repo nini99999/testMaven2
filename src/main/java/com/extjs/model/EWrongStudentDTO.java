@@ -27,6 +27,7 @@ public class EWrongStudentDTO {
     private String testpapername;
     private Boolean estate;
     private String testpoint;
+    private String studentid;
 
     @Id
     @Column(name = "ID", nullable = false, length = 64)
@@ -128,5 +129,13 @@ public class EWrongStudentDTO {
 
     public void setTestpoint(String testpoint) {
         this.testpoint = testpoint;
+    }
+
+    public String getStudentid() {
+        return studentid;
+    }
+
+    public void setStudentid(String studentid) {
+        this.studentid = studentid;
     }
 }

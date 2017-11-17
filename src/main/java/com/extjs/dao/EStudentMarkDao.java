@@ -1,6 +1,7 @@
 package com.extjs.dao;
 
 import com.extjs.model.EStudentMark;
+import com.extjs.model.Page;
 
 import java.util.List;
 
@@ -10,7 +11,9 @@ import java.util.List;
 public interface EStudentMarkDao {
 
 
-    List<EStudentMark> queryEStudentMark(EStudentMark eStudentMark);
+    List<EStudentMark> queryEStudentMark(EStudentMark eStudentMark, Page page);
+
+    int getTotalCount(EStudentMark eStudentMark);
 
     void saveOrUpdateEStudentMark(EStudentMark eStudentMark);
 

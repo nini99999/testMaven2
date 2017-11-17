@@ -1,6 +1,7 @@
 package com.extjs.service;
 
 import com.extjs.model.EStudentMark;
+import com.extjs.model.Page;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * Created by jenny on 2017/5/12.
  */
 public interface EstudentMarkService {
-    List<EStudentMark> queryEStudentMark(EStudentMark eStudentMark);
+    List<EStudentMark> queryEStudentMark(EStudentMark eStudentMark,Page page);
 
     void modifEStudentMark(EStudentMark eStudentMark);
 
@@ -17,4 +18,5 @@ public interface EstudentMarkService {
     void delEStudentMark(EStudentMark eStudentMark);
 
     void delEStudentMark();
+    int getTotalCount(EStudentMark eStudentMark);
 }

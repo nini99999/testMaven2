@@ -12,4 +12,6 @@ public interface EschoolService {
     ESchoolDTO querySchoolByUnique(String id,String schoolno);//根据id或学校编码查询
     void addEschool(ESchoolDTO eSchoolDTO) throws SysException;//添加学校
     void delEschool(ESchoolDTO eSchoolDTO) throws SysException;//删除学校
+
+    String getSchoolnoByContext() throws SysException;//根据当前登录用户获得其所在学校编码
 }

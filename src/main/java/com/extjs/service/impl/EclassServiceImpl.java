@@ -5,7 +5,10 @@ import com.extjs.dao.EgradeDao;
 import com.extjs.model.EClass;
 import com.extjs.model.EClassDTO;
 import com.extjs.model.EGrade;
+import com.extjs.model.EGradeDTO;
 import com.extjs.service.EclassService;
+import com.extjs.service.EgradeService;
+import com.extjs.service.EschoolService;
 import com.extjs.util.ReflectionUtil;
 import com.extjs.util.SysException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,10 @@ import java.util.UUID;
 @Service
 @Scope("prototype")
 public class EclassServiceImpl implements EclassService {
+
+    @Autowired
+    private EschoolService eschoolService;
+
     @Autowired
     private EclassDao eclassDao;
     @Autowired
@@ -58,6 +65,13 @@ public class EclassServiceImpl implements EclassService {
     @Override
     public List<EClassDTO> queryEclassByDTO(EClassDTO eClassDTO) {
         List<EClassDTO> eClassDTOList = new ArrayList<EClassDTO>();
+        if (null == eClassDTO.getSchoolno() || eClassDTO.getSchoolno().length() == 0) {
+            try {
+                eClassDTO.setSchoolno(eschoolService.getSchoolnoByContext());
+            } catch (SysException e) {
+                e.printStackTrace();
+            }
+        }
         List<EClass> eClassList = eclassDao.queryEclass(eClassDTO);
 //         eClassDTO = null;
         for (EClass eClass : eClassList) {
@@ -79,9 +93,13 @@ public class EclassServiceImpl implements EclassService {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
+        if (null == eClassDTO.getSchoolno() || eClassDTO.getSchoolno().length() == 0) {
+            eClassDTO.setSchoolno(eschoolService.getSchoolnoByContext());
+        }
         eClassDTO.setId(uuid.toString());
         eClassDTO.setCreatedate(date);
         eClassDTO.setCreator(userDetails.getUsername());
+        eClassDTO.setClassno(eClassDTO.getGradeno() + "-" + eClassDTO.getClassno());
         eClassDTO.setClassname(eGrade.getGradename() + "-" + eClassDTO.getClassname());//设置班级名称格式：年级名称-班级名称
         String flag = eclassDao.addEclass(eClassDTO);
         return flag;

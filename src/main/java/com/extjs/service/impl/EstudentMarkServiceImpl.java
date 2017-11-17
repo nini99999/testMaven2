@@ -4,6 +4,7 @@ import com.extjs.dao.EStudentMarkDao;
 import com.extjs.model.EStudentMark;
 import com.extjs.model.ETestpaper;
 import com.extjs.model.ETestpaperDTO;
+import com.extjs.model.Page;
 import com.extjs.service.EstudentMarkService;
 import com.extjs.service.EtestpaperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
     private EtestpaperService etestpaperService;
 
     @Override
-    public List<EStudentMark> queryEStudentMark(EStudentMark eStudentMark) {
+    public List<EStudentMark> queryEStudentMark(EStudentMark eStudentMark, Page page) {
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
@@ -36,7 +37,7 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
 //        Date date = new Date(System.currentTimeMillis());
         eStudentMark.setCreator(userDetails.getUsername());
 //        eStudentMark.setCreatedate(date);
-        List<EStudentMark> studentMarks = studentMarkDao.queryEStudentMark(eStudentMark);
+        List<EStudentMark> studentMarks = studentMarkDao.queryEStudentMark(eStudentMark,page);
         return studentMarks;
     }
 
@@ -73,7 +74,7 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
 
 
 //        if (null == eStudentMark.getId() || eStudentMark.getId().length() == 0) {
-        List<EStudentMark> studentMarkLis = this.queryEStudentMark(eStudentMark);
+        List<EStudentMark> studentMarkLis = this.queryEStudentMark(eStudentMark,null);
         if (studentMarkLis.size() == 0) {
             UUID uuid = UUID.randomUUID();
             eStudentMark.setId(uuid.toString());
@@ -105,5 +106,11 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
                 .getPrincipal();
 //        Date date = new Date(System.currentTimeMillis());
         studentMarkDao.delEStudentMarkByCreator(userDetails.getUsername());
+    }
+
+    @Override
+    public int getTotalCount(EStudentMark eStudentMark) {
+     int res=   studentMarkDao.getTotalCount(eStudentMark);
+     return res;
     }
 }
