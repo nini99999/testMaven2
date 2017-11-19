@@ -168,6 +168,7 @@
 
         var params = {};
         params.gradeno = $('#gradeno').val();
+        params.username = $('#username').val();
         params.classno = $('#classno').val();
         params.chinaid = chinaid.value;
         params.studentname = studentname.value;
@@ -281,7 +282,7 @@
                  * 初始化学习状态**/
                 $('#studystate').empty();
                 $.each(data.studystate, function (i) {
-                    console.log(i+"be");
+                    console.log(i + "be");
                     $('#studystate.selectpicker').append("<option value=" + [i] + ">" + data.studystate[i] + "</option>");
                 });
                 $('#studystate').selectpicker('refresh');
@@ -342,10 +343,15 @@
                 </h4>
             </div>
             <div class="modal-body">
-                学生姓名：<input id="studentname" name="studentname" class="btn-default"></input>
-                所属民族：
-                <select id="nation" name="nation" class="selectpicker"></select></td>
-                <hr/>
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        姓名：<input id="studentname" name="studentname" class="form-control"></div>
+                    <div class="form-group"> 民族：
+                        <select id="nation" name="nation" class="selectpicker"></select></div>
+                    <div class="form-group">
+                        用户名:<input id="username" name="username" class="form-control"/></div>
+                    <hr/>
+                </form>
                 <div class="row">
                     <span class="col-xs-2">入学日期：</span>
                     <div class="input-group date col-xs-6" id="admissiondate">
@@ -364,14 +370,16 @@
                 <hr/>
                 <div class="row">
                     <span class="col-xs-2">身份证号：</span>
-                    <input id="chinaid" name="chinaid" class="col-xs-6"/></div>
+                    <input id="chinaid" name="chinaid" class="form-control" style="width: 70%"/></div>
                 <hr/>
                 <div class="row">
-                    <span class="col-xs-2">学籍辅号：</span><input id="localid" name="localid" class="col-xs-6"></input>
+                    <span class="col-xs-2">学籍辅号：</span>
+                    <input id="localid" name="localid" class="form-control" style="width: 70%"/>
                 </div>
                 <hr/>
                 <div class="row">
-                    <span class="col-xs-2">学籍编号：</span><input id="countryid" name="countryid" class="col-xs-6"></input>
+                    <span class="col-xs-2">学籍编号：</span><input id="countryid" name="countryid"
+                                                              class="form-control" style="width: 70%"/>
                 </div>
                 <hr/>
                 学籍状态：
@@ -404,7 +412,7 @@
             <th data-field="estate" data-checkbox="true"></th>
             <th data-field="index" data-align="center" data-formatter="indexFormatter">序号</th>
             <th data-field="studentname" data-align="center">学生姓名</th>
-
+            <th data-field="username" data-align="center">用户名</th>
             <th data-field="nation" data-align="center">民族</th>
             <th data-field="birthday" data-align="center">生日</th>
             <th data-field="admissiondate" data-align="center">入学日期</th>

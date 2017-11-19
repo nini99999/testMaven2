@@ -25,6 +25,7 @@ public class EStudent {
     private String creator;
     private Date createdate;
     private String studystate;
+    private String username;
 
     @Id
     @Column(name = "ID", nullable = false, length = 64)
@@ -175,5 +176,13 @@ public class EStudent {
     public void setStudystate(String studystate) {
         this.studystate = studystate;
     }
+    @Basic
+    @Column(name = "USERNAME", nullable = true, length = 20)
+    public String getUsername() {
+        return username;
+    }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

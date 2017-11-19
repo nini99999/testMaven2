@@ -104,6 +104,11 @@ public class EConstants {
 
     public static final String exportHtmlPath = "/exportFiles";//html导出路径
 
+    public static final String defaultPassWord = "123";//默认密码（添加学生、教师时自动生成的密码）
+    public static final String defaultStudentRole = "学生";//默认学生角色
+
+    public static final String defaultTeacherRole = "教师";//默认教师角色
+
     public static final String[] markArea = {"500-", "500~550", "550~600", "600~650", "650~700", "700+"};
     public static final String[] subjectMarkArea = {"90-", "90~100", "100~110", "110~120", "120~130", "130+"};
     public static final String[] nation = {"汉族", "壮族", "满族", "回族", "苗族", "维吾尔族", "土家族", "彝族", "蒙古族", "藏族", "布依族", "侗族", "瑶族", "朝鲜族", "白族", "哈尼族",

@@ -67,7 +67,7 @@
 
         var params = {};
         params.tpno = $('#paperid').val();
-        params.studentid = $('#student').val();
+//        params.studentid = $('#student').val();
 //        params.countryid = countryid.value;
 //        params.testdate = '';
         $.ajax({
@@ -100,6 +100,7 @@
 
 //        params.countryid = countryid.value;
         params.tpno = $("#paperid").val();
+        params.student = 'forStudent';
 
         $.ajax({
             url: "/ewrongStudent/viewWrongStudent",
@@ -123,7 +124,32 @@
             }
         })
     }
-
+//    function getUser() {
+//
+//        var params = {};
+//        $.ajax({
+//            url: "/ewrongStudent/getCurrentUser",
+//// 数据发送方式
+//            type: "get",
+//// 接受数据格式
+//            dataType: "json",
+//// 要传递的数据
+//            data: params,
+//// 回调函数，接受服务器端返回给客户端的值，即result值
+//            success: function (data) {
+//                console.log(data);
+////                $("#aaa").bootstrapTable('destroy');
+////                $("#aaa").bootstrapTable({data: data.data});//刷新ds_table的数据
+//
+//            },
+//
+//            error: function (data) {
+//
+//                alert("查询user失败" + data);
+//
+//            }
+//        })
+//    }
     function addWrongStudent() {
         delWrongStudent();
 
@@ -214,13 +240,12 @@
         })
     }
     function openAddModal() {
-        if (paperid.value.length == 0 || classno.value.length == 0) {
+        if (paperid.value.length == 0) {
             alert('请选择试卷编号和年级');
         } else {
-            getStudentByClass();
 
             $("#myModal").modal('show');
-//            getSumQuestionNum();
+            getSumQuestionNum();
         }
     }
 
@@ -255,48 +280,7 @@
             }
         })
     }
-    function getEclassList() {
 
-        var params = {};
-        params.gradeno = $('#gradeno').val();
-        $.ajax({
-            url: "/eclass/viewEclassByDTO",
-// 数据发送方式
-            type: "post",
-// 接受数据格式
-            dataType: "json",
-// 要传递的数据
-            data: params,
-// 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
-                $('#classno').empty();
-
-                $('#classno').selectpicker();
-                $('#classno').append("<option value='noselected'>请选择班级</option>");
-//                console.log(data.data);
-                $.each(data.data, function (i) {
-
-                    $('#classno.selectpicker').append("<option value=" + data.data[i].classno + ">" + data.data[i].classname + "</option>");
-
-
-                });
-                if (params.gradeno != 'noselected') {
-                    $('#classno').selectpicker('refresh');
-                } else {
-//                    $('#classno').selectpicker('destroy');
-                    $('#classno').val('noselected');
-                }
-
-
-            },
-
-            error: function (data) {
-
-                alert("查询班级失败" + data);
-
-            }
-        })
-    }
     function getEsubjects() {//获取下拉学科列表
         $.ajax({
             url: "/esubjects/viewEsubjectsList",
@@ -376,39 +360,7 @@
         document.getElementById("reservation").value = getCurrentMonth();
         queryEgradeListBYschool();
     }
-    function getStudentByClass() {
-        var params = {};
-        params.classno = $('#classno').val();
-        $.ajax({
-            url: "/estudent/viewEstudentByDTO",
-// 数据发送方式
-            type: "post",
-// 接受数据格式
-            dataType: "json",
-// 要传递的数据
-            data: params,
-// 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
-                $('#student').empty();
 
-                $('#student').selectpicker();
-
-                $.each(data.data, function (i) {
-
-                    $('#student.selectpicker').append("<option value=" + data.data[i].id + ">" + data.data[i].studentname + "</option>");
-
-                });
-                $('#student').selectpicker('refresh');
-                getSumQuestionNum();
-            },
-
-            error: function (data) {
-
-                alert("查询学生失败" + data);
-
-            }
-        })
-    }
 </script>
 
 <body>
@@ -429,6 +381,10 @@
                 <div style="float: left">
                     <select id="subjectno" name="subjectno" class="selectpicker fit-width"
                             onchange="getTestPaperList()">
+                    </select>
+                    <select id="gradeno" name="gradeno" class="selectpicker fit-width"
+                            onchange="getTestPaperList()">
+
                     </select>
                     <select id="paperid" name="paperid" class="selectpicker fit-width"></select>
                     <%--<input id="tpname" name="tpname" class="form-control" style="width: 200px;" placeholder="试卷名称"/>--%>
@@ -490,10 +446,11 @@
             </div>
             <div class="modal-body">
                 <form class="form-inline" role="form">
-                    <div class="form-group">
-                        <label for="student">请选择学生：</label> <select id="student" name="student" onchange="getSumQuestionNum();"
-                                                                    class="selectpicker fit-width"></select>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label for="student">请选择学生：</label> <select id="student" name="student"--%>
+                                                                    <%--onchange="getSumQuestionNum();"--%>
+                                                                    <%--class="selectpicker fit-width"></select>--%>
+                    <%--</div>--%>
                     <div id="bbb" style="float: none;display: block;margin-left: auto;margin-right: auto;">
                         <table class="table table-striped" id="aaa" align="center"
                                striped="true" data-height="496" data-click-to-select="true">
@@ -523,8 +480,6 @@
 </html>
 <script type="text/javascript">
     $(function () {
-//
-//        queryEgradeListBYschool();
         getEsubjects();
         initDateSelect();
         queryWrongStudent();

@@ -30,7 +30,7 @@ public class EWrongStudent {
     }
 
     @Basic
-    @Column(name = "COUNTRYID", nullable = true, length = 20)
+    @Column(name = "COUNTRYID", nullable = true, length = 40)
     public String getCountryid() {
         return countryid;
     }

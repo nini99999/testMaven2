@@ -40,6 +40,9 @@ public class EstudentDaoImpl implements EstudentDao {
         if (null != eStudentDTO.getClassno() && !"".equals(eStudentDTO.getClassno())) {
             sb.append(" and classno='" + eStudentDTO.getClassno() + "'");
         }
+        if (null != eStudentDTO.getUsername() && eStudentDTO.getUsername().length() > 0) {
+            sb.append(" and username='" + eStudentDTO.getUsername() + "'");
+        }
 
         Session session = sessionFactory.getCurrentSession();
         Query query = null;

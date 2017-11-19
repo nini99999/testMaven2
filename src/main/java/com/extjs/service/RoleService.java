@@ -10,4 +10,5 @@ public interface RoleService {
     void addRole(RoleDTO roleDTO)throws SysException;
     void saveRole(RoleDTO roleDTO)throws SysException;
     void deleteRole(String roleId)throws SysException;
+    RoleDTO getRole(RoleDTO roleDTO) throws SysException;
 }

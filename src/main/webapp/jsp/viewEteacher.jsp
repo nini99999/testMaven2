@@ -423,7 +423,7 @@
 
             <th data-field="teacherid" data-align="center" data-sortable="true">教职工号</th>
             <th data-field="teachername" data-align="center" data-sortable="true">教师姓名</th>
-            <th data-field="tel" data-align="center" data-sortable="true">tel</th>
+            <th data-field="tel" data-align="center" data-sortable="true">tel/用户名</th>
             <th data-field="creator" data-align="center">创建人</th>
             <th data-field="createdate" data-align="center">创建日期</th>
             <th data-field="id" data-align="center" data-formatter="operateFormatter" onclick="">编辑授课班级

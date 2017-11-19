@@ -6,7 +6,10 @@ import com.extjs.model.EWrongStudentDTO;
 import com.extjs.service.EstudentService;
 import com.extjs.service.EtestpaperService;
 import com.extjs.service.EwrongStudentService;
+import com.extjs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,15 +35,21 @@ public class EwrongStudentController {
     private EtestpaperService etestpaperService;
     @Autowired
     private EstudentService estudentService;
+//    @Autowired
+//    private UserService userService;
 
     @RequestMapping("/viewWrongStudent")
     @ResponseBody
-    public Map<String, Object> queryWrongStudent(String tpno) {
+    public Map<String, Object> queryWrongStudent(String tpno, String student) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
+
         try {
 
             EWrongStudentDTO wrongStudentDTO = new EWrongStudentDTO();
 //            wrongStudentDTO.setCountryid(countryid.trim());
+            if ("forStudent".equals(student)) {
+                wrongStudentDTO.setStudentid(this.getCurrentUser());
+            }
             wrongStudentDTO.setTestpaperno(tpno.trim());
             List<EWrongStudentDTO> wrongStudentDTOS = ewrongStudentService.queryWrongStudent(wrongStudentDTO);
             resultMap.put("data", wrongStudentDTOS);
@@ -49,6 +58,15 @@ public class EwrongStudentController {
             e.printStackTrace();
         }
         return resultMap;
+    }
+
+    @RequestMapping("/getCurrentUser")
+    @ResponseBody
+    public String getCurrentUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        return userDetails.getUsername();
     }
 
     /**
@@ -62,9 +80,12 @@ public class EwrongStudentController {
      */
     @RequestMapping("/getQuestionNumList")
     @ResponseBody
-    public Map<String, Object> getQuestionNumList(String tpno, String studentid, String testdate) {
+    public Map<String, Object> getQuestionNumList(String tpno, String studentid) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Integer num = etestpaperService.getSumQuestionNum(tpno);
+//        if (null == studentid || studentid.length() == 0) {====================待处理==================
+//            studentid = this.getCurrentUser();
+//        }
         EStudentDTO studentDTO = estudentService.getStudentByID(studentid);
         List<EWrongStudentDTO> eWrongStudentDTOList = new ArrayList<EWrongStudentDTO>();
 
@@ -107,7 +128,7 @@ public class EwrongStudentController {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
             String str = ewrongStudentService.modifdSelected(wrongStudentDTOS);
-            if ("success".equals(str)){
+            if ("success".equals(str)) {
                 resultMap.put("success", true);
                 resultMap.put("msg", "保存成功!");
             }
@@ -120,12 +141,13 @@ public class EwrongStudentController {
 
         return resultMap;
     }
+
     @RequestMapping("/delSelects")
     @ResponseBody
-    public Map<String,Object> delSelects(@RequestBody List<EWrongStudentDTO> wrongStudentDTOS){
+    public Map<String, Object> delSelects(@RequestBody List<EWrongStudentDTO> wrongStudentDTOS) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         try {
-            for (EWrongStudentDTO wrongStudentDTO:wrongStudentDTOS){
+            for (EWrongStudentDTO wrongStudentDTO : wrongStudentDTOS) {
                 ewrongStudentService.delWrongStudent(wrongStudentDTO);
                 resultMap.put("success", true);
                 resultMap.put("msg", "删除成功!");
@@ -138,6 +160,7 @@ public class EwrongStudentController {
 
         return resultMap;
     }
+
     @RequestMapping("/delWrongStudent")
     @ResponseBody
     public Map<String, Object> delWrongStudent(String studentid, String countryid, String tpno) {
