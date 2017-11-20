@@ -97,7 +97,11 @@ public class EteacherServicImpl implements EteacherService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
     public void delEteacher(ETeacherDTO eTeacherDTO) throws SysException {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserName(String.valueOf(eTeacherDTO.getTel()));
+        userService.deleteUser(userDTO);//同步删除系统用户
         eteacherDao.delEteacher(eTeacherDTO);
     }
 

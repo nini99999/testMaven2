@@ -18,6 +18,7 @@ public interface UserService {
 
     void addUser(UserDTO userDTO) throws SysException;
     void deleteUser(String  userId) throws SysException;
+    void deleteUser(UserDTO userDTO) throws SysException;
     List<UserDTO> getUser(String userName) throws SysException;
 
     UserDTO getUserByUnique(String userName) throws SysException;

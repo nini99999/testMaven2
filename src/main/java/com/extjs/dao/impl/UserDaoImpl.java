@@ -75,4 +75,20 @@ public class UserDaoImpl implements UserDao {
 //        User user=query.uniqueResult();
         return user;
     }
+
+    @Override
+    public void deleteUser(User user) {
+        StringBuilder stringBuilder = new StringBuilder("delete from User where 1=1");
+        Session session = sessionFactory.getCurrentSession();
+        if (null != user.getUserId() && user.getUserId().length() > 0) {
+            stringBuilder.append(" and userId='" + user.getUserId() + "'");
+        }
+        if (null != user.getUserName() && user.getUserName().length() > 0) {
+            stringBuilder.append(" and userName='" + user.getUserName() + "'");
+        }
+        if (!"from User where 1=1".equals(stringBuilder.toString())) {
+            Query query = session.createQuery(stringBuilder.toString());
+            query.executeUpdate();
+        }
+    }
 }

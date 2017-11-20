@@ -102,6 +102,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void deleteUser(UserDTO userDTO) throws SysException {
+        User user=new User();
+        ReflectionUtil.copyProperties(userDTO,user);
+        userDao.deleteUser(user);
+    }
+
+    @Override
     public List<UserDTO> getUser(String userName) throws SysException {
         List<UserDTO> userDTOList = new ArrayList<UserDTO>();
         List<User> userList = userDao.getUserList(userName);

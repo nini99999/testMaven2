@@ -22,4 +22,5 @@ public interface UserDao {
     List<User> getUserList(String userName);
 
     User getUserByUnique(String userName);
+    void deleteUser(User user);//根据id或用户名删除用户
 }

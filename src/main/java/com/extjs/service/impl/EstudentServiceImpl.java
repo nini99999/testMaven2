@@ -133,7 +133,11 @@ public class EstudentServiceImpl implements EstudentService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
     public void delEstudent(EStudentDTO eStudentDTO) throws SysException {
+        UserDTO userDTO=new UserDTO();
+        userDTO.setUserName(eStudentDTO.getUsername());
+        userService.deleteUser(userDTO);//同步删除系统用户
         estudentDao.delEstudent(eStudentDTO);
     }
 }
