@@ -74,7 +74,7 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
 
 
 //        if (null == eStudentMark.getId() || eStudentMark.getId().length() == 0) {
-        List<EStudentMark> studentMarkLis = this.queryEStudentMark(eStudentMark,null);
+        List<EStudentMark> studentMarkLis = this.queryEStudentMark(eStudentMark,new Page(0,0));
         if (studentMarkLis.size() == 0) {
             UUID uuid = UUID.randomUUID();
             eStudentMark.setId(uuid.toString());
