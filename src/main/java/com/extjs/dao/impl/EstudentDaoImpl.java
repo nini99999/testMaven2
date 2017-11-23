@@ -84,6 +84,21 @@ public class EstudentDaoImpl implements EstudentDao {
         return eStudent;
     }
 
+    @Override
+    public EStudent getStudentByUserName(String userName) {
+
+
+        EStudent eStudent = new EStudent();
+        if (null != userName && userName.length() > 0) {
+            String hql = "from EStudent where username=:str";
+            Session session = sessionFactory.getCurrentSession();
+            Query query = session.createQuery(hql).setString("str", userName);
+            eStudent = (EStudent) query.uniqueResult();
+        }
+        return eStudent;
+    }
+
+    @Override
     public EStudent getEstudentByCountryID(String countryID) {
         EStudent eStudent = new EStudent();
         if (null != countryID && !"".equals(countryID)) {

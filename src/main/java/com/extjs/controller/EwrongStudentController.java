@@ -35,6 +35,8 @@ public class EwrongStudentController {
     private EtestpaperService etestpaperService;
     @Autowired
     private EstudentService estudentService;
+    @Autowired
+    private UserService userService;
 //    @Autowired
 //    private UserService userService;
 
@@ -47,8 +49,9 @@ public class EwrongStudentController {
 
             EWrongStudentDTO wrongStudentDTO = new EWrongStudentDTO();
 //            wrongStudentDTO.setCountryid(countryid.trim());
+
             if ("forStudent".equals(student)) {
-                wrongStudentDTO.setStudentid(this.getCurrentUser());
+                wrongStudentDTO.setStudentid(estudentService.getStudentByUserName(this.getCurrentUser()).getId());
             }
             wrongStudentDTO.setTestpaperno(tpno.trim());
             List<EWrongStudentDTO> wrongStudentDTOS = ewrongStudentService.queryWrongStudent(wrongStudentDTO);
@@ -83,9 +86,9 @@ public class EwrongStudentController {
     public Map<String, Object> getQuestionNumList(String tpno, String studentid) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         Integer num = etestpaperService.getSumQuestionNum(tpno);
-//        if (null == studentid || studentid.length() == 0) {====================待处理==================
-//            studentid = this.getCurrentUser();
-//        }
+        if (null == studentid || studentid.length() == 0) {
+            studentid = estudentService.getStudentByUserName(this.getCurrentUser()).getId();//根据当前登录的学生用户获取其id
+        }
         EStudentDTO studentDTO = estudentService.getStudentByID(studentid);
         List<EWrongStudentDTO> eWrongStudentDTOList = new ArrayList<EWrongStudentDTO>();
 

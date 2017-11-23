@@ -1,9 +1,12 @@
 package com.extjs.controller;
 
 
+import com.extjs.model.EAnswer;
 import com.extjs.model.VPaperQuestionAndInfo;
+import com.extjs.service.EAnswerService;
 import com.extjs.service.EpaperQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +25,40 @@ import java.util.Map;
 public class EpaperQuestionController {
     @Autowired
     EpaperQuestionService epaperQuestionService;
+
+    @Autowired
+    EAnswerService eAnswerService;
+
+
+    @RequestMapping("/getAnswer")
+    @ResponseBody
+    public Map getAnswer(String questionid) {
+        Map resultMap = new HashMap();
+        EAnswer answer = eAnswerService.getAnswer(questionid);
+
+        if (null != answer && null != answer.getAnswer()) {
+            resultMap.put("questionAnswer", answer.getAnswer());
+        } else {
+            resultMap.put("questionAnswer", "本题尚未补充答案");
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/saveAnswer")
+    @ResponseBody
+    public Map saveAnswer(EAnswer answer) {
+        Map resultMap = new HashMap();
+        try {
+            eAnswerService.saveAnswer(answer);
+            resultMap.put("success", true);
+            resultMap.put("msg", "添加成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("success", false);
+            resultMap.put("msg", "添加失败!" + e.getMessage());
+        }
+        return resultMap;
+    }
 
     @RequestMapping("/getPaperQuestionList")
     @ResponseBody

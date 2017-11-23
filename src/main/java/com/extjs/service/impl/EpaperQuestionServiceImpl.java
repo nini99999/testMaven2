@@ -4,10 +4,9 @@ import com.extjs.dao.EpaperQuestionsDao;
 import com.extjs.dao.EquestionInfoDao;
 import com.extjs.model.*;
 import com.extjs.service.*;
-import com.extjs.util.EConstants;
-import com.extjs.util.ExportToHtml;
-import com.extjs.util.ReflectionUtil;
+import com.extjs.util.*;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,17 +32,19 @@ import java.util.UUID;
 @Transactional
 public class EpaperQuestionServiceImpl implements EpaperQuestionService {
     @Autowired
-    EpaperQuestionsDao epaperQuestionsDao;
+    private EpaperQuestionsDao epaperQuestionsDao;
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    EschoolService eschoolService;
+    private EschoolService eschoolService;
     @Autowired
-    EquestionService equestionService;
+    private EquestionService equestionService;
     @Autowired
-    EquestionInfoDao equestionInfoDao;
+    private EquestionInfoDao equestionInfoDao;
     @Autowired
-    EtestpaperService etestpaperService;
+    private EtestpaperService etestpaperService;
+    @Autowired
+    private EAnswerService eAnswerService;
 
     @Override
     public void addOnePaperQuestion(EPaperQuestionsDTO ePaperQuestionsDTO) {
@@ -82,6 +83,31 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
+    public void addPaperQuestionAndInfoList(List<List<String>> questionTypeList, List<EPaperQTypeDTO> paperQTypeDTOList, String paperid, String gradeno, String subjectno) throws SysException {
+        VPaperQuestionAndInfo paperQuestionAndInfo;
+        int j = 0;
+        for (List<String> list : questionTypeList) {
+            j++;
+
+            String questionType = paperQTypeDTOList.get(j).getQuestiontype();
+//                        int m = 0;
+            for (String string : list) {
+                paperQuestionAndInfo = new VPaperQuestionAndInfo();
+                paperQuestionAndInfo.setQuestion(string);
+                paperQuestionAndInfo.setQuestiontype(questionType);
+                paperQuestionAndInfo.setPaperid(paperid);
+                paperQuestionAndInfo.setGradeno(gradeno);
+                paperQuestionAndInfo.setSubjectno(subjectno);
+                this.addPaperQuestionAndInfo(paperQuestionAndInfo);
+            }
+
+//                        equestionService.addOneQuestionAndInfo(string, gradeno, subjectno, questionType, Float.parseFloat("0"));
+//                        dom4JforXML.getPaperQuestionsBySpecify(string, map.size());
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
     public void addPaperQuestionAndInfo(VPaperQuestionAndInfo vPaperQuestionAndInfo) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
@@ -89,10 +115,19 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
         String questionID = UUID.randomUUID().toString();
         int questionLength = EConstants.questionLength;
         String subQuestion;
-        UserDTO userDTO = null;
-        EQuestionInfoDTO equestionInfoDTO;
+        UserDTO userDTO;
+
         EPaperQuestionsDTO ePaperQuestionsDTO;
+        String answerContent = "";
         String question = vPaperQuestionAndInfo.getQuestion();
+        /*****如果题目信息中包括【答案】，则把答案部分删除，仅保留题干信息****/
+        if (vPaperQuestionAndInfo.getQuestion().indexOf(EConstants.answerIdentifier) > -1) {
+            answerContent = vPaperQuestionAndInfo.getQuestion().substring(
+                    vPaperQuestionAndInfo.getQuestion().indexOf(EConstants.answerIdentifier) + EConstants.answerIdentifier.length());
+            question = question.replace(EConstants.answerIdentifier + answerContent, "");
+        }
+
+
         for (int j = 0; j < question.length() / questionLength + 1; j++) {
             if (question.length() < (j + 1) * questionLength - 1) {
                 subQuestion = question.substring(j * questionLength, question.length());
@@ -106,10 +141,6 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
             ePaperQuestionsDTO.setQuestionno(j);
 
             ePaperQuestionsDTO.setQuestionid(questionID);
-
-//            ePaperQuestionsDTO.setPaperid(vPaperQuestionAndInfo.getPaperid());
-//            ePaperQuestionsDTO.setPaperquestionno(vPaperQuestionAndInfo.getPaperquestionno());
-//            ePaperQuestionsDTO.setQuestionpoints(vPaperQuestionAndInfo.getQuestionpoints());
             ePaperQuestionsDTO.setQuestion(StringEscapeUtils.escapeXml11(subQuestion));//转义题干xml
             EQuestionsDTO questionsDTO = new EQuestionsDTO();
             questionsDTO.setId(UUID.randomUUID().toString());
@@ -126,22 +157,29 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
             }
 
         }
+        /**添加试题信息表**/
         EQuestionInfoDTO questionInfoDTO = new EQuestionInfoDTO();
         ReflectionUtil.copyProperties(vPaperQuestionAndInfo, questionInfoDTO);
         questionInfoDTO.setQuestionid(questionID);
         questionInfoDTO.setId(UUID.randomUUID().toString());
-////            questionInfoDTO.setGradeno(gradeNo);
-////            questionInfoDTO.setSubjectno(subjectNo);
         questionInfoDTO.setCreator(userDetails.getUsername());
-////            questionInfoDTO.setDifficulty(difficulty);
-
         try {
             userDTO = userService.getUserByUnique(userDetails.getUsername());
             questionInfoDTO.setSchoolno(eschoolService.querySchoolByUnique(userDTO.getuserSchool(), null).getSchoolno());
-//                questionInfoDTO.setQuestiontype(questionType);
             questionInfoDTO.setCreatedate(new Date(System.currentTimeMillis()));
 
-            equestionService.addOneQuestionInfo(questionInfoDTO);//添加试题信息表
+            equestionService.addOneQuestionInfo(questionInfoDTO);
+
+            /**添加试题答案表*/
+            if (answerContent.length() > 0) {
+                EAnswer answer = new EAnswer();
+                answer.setId(questionID);
+                RegexString regexString = new RegexString();
+
+                answer.setAnswer(regexString.delHTMLTag(answerContent));//删除html元素
+                eAnswerService.saveAnswer(answer);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

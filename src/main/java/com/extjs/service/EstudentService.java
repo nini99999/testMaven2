@@ -17,6 +17,8 @@ public interface EstudentService {
 
     EStudentDTO getStudentByID(String id);
 
+    EStudentDTO getStudentByUserName(String userName);
+
     String addEstudent(EStudentDTO eStudentDTO) throws SysException;//添加
 
     void delEstudent(EStudentDTO eStudentDTO) throws SysException;//删除

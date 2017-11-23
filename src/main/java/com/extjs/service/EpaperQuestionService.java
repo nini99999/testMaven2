@@ -1,8 +1,10 @@
 package com.extjs.service;
 
+import com.extjs.model.EPaperQTypeDTO;
 import com.extjs.model.EPaperQuestionsDTO;
 import com.extjs.model.ETestpaperDTO;
 import com.extjs.model.VPaperQuestionAndInfo;
+import com.extjs.util.SysException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -20,6 +22,17 @@ public interface EpaperQuestionService {
     void mergePaperQuestion(EPaperQuestionsDTO ePaperQuestionsDTO);//修改
 
     void addPaperQuestionAndInfo(VPaperQuestionAndInfo paperQuestionAndInfo);//添加试卷试题表和试题信息表,同步增加至试题基础库
+
+    /**
+     * 循环指定集合，插入至试卷试题表、试题信息表和试题答案表
+     * @param questionTypeList
+     * @param paperQTypeDTOList
+     * @param paperid
+     * @param gradeno
+     * @param subjectno
+     * @throws SysException
+     */
+    void addPaperQuestionAndInfoList(List<List<String>> questionTypeList, List<EPaperQTypeDTO> paperQTypeDTOList, String paperid, String gradeno, String subjectno) throws SysException;
 
     void mergePaperQuestionAndInfo(VPaperQuestionAndInfo vPaperQuestionAndInfo);//修改试卷试题表和试题信息表
 

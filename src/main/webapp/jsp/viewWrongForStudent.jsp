@@ -124,32 +124,7 @@
             }
         })
     }
-//    function getUser() {
-//
-//        var params = {};
-//        $.ajax({
-//            url: "/ewrongStudent/getCurrentUser",
-//// 数据发送方式
-//            type: "get",
-//// 接受数据格式
-//            dataType: "json",
-//// 要传递的数据
-//            data: params,
-//// 回调函数，接受服务器端返回给客户端的值，即result值
-//            success: function (data) {
-//                console.log(data);
-////                $("#aaa").bootstrapTable('destroy');
-////                $("#aaa").bootstrapTable({data: data.data});//刷新ds_table的数据
-//
-//            },
-//
-//            error: function (data) {
-//
-//                alert("查询user失败" + data);
-//
-//            }
-//        })
-//    }
+
     function addWrongStudent() {
         delWrongStudent();
 
@@ -315,7 +290,7 @@
         var params = {};
         params.gradeno = $('#gradeno').val();
         params.subjectno = $('#subjectno').val();
-//        params.creator = 'All';//不根据创建人查询，即查询满足条件的所有试卷
+        params.creator = 'All';//不根据创建人查询，即查询满足条件的所有试卷
         params.startDate = $('#reservation').val().replace(/-/g, "");
         params.endDate = $('#reservation').val().replace(/-/g, "");
         $.ajax({

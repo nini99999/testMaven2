@@ -63,7 +63,7 @@ public class FileUploadController {
             ePaperQTypeDTO.setQuestiontypename(typeName);
             map.put(i, typeName);
         }
-        List<String> questionByType = new ArrayList<>();
+//        List<String> questionByType = new ArrayList<>();
 
         String rootPath = request.getSession().getServletContext().getRealPath("/");
         Date date = new Date(System.currentTimeMillis());
@@ -108,26 +108,27 @@ public class FileUploadController {
                     List<List<String>> questionTypeList = dom4JforXML.getPaperQuestionType(rootPath, startTime + ".html", map);
 
 //                    loop questionList,插入至数据库试卷试题表、试题信息表中
-                    VPaperQuestionAndInfo paperQuestionAndInfo;
-                    int j = 0;
-                    for (List<String> list : questionTypeList) {
-                        j++;
-
-                        String questionType = paperQTypeDTOList.get(j).getQuestiontype();
-//                        int m = 0;
-                        for (String string : list) {
-                            paperQuestionAndInfo = new VPaperQuestionAndInfo();
-                            paperQuestionAndInfo.setQuestion(string);
-                            paperQuestionAndInfo.setQuestiontype(questionType);
-                            paperQuestionAndInfo.setPaperid(paperid);
-                            paperQuestionAndInfo.setGradeno(gradeno);
-                            paperQuestionAndInfo.setSubjectno(subjectno);
-                            epaperQuestionService.addPaperQuestionAndInfo(paperQuestionAndInfo);
-                        }
-
-//                        equestionService.addOneQuestionAndInfo(string, gradeno, subjectno, questionType, Float.parseFloat("0"));
-//                        dom4JforXML.getPaperQuestionsBySpecify(string, map.size());
-                    }
+                    epaperQuestionService.addPaperQuestionAndInfoList(questionTypeList, paperQTypeDTOList, paperid, gradeno, subjectno);
+//                    VPaperQuestionAndInfo paperQuestionAndInfo;
+//                    int j = 0;
+//                    for (List<String> list : questionTypeList) {
+//                        j++;
+//
+//                        String questionType = paperQTypeDTOList.get(j).getQuestiontype();
+////                        int m = 0;
+//                        for (String string : list) {
+//                            paperQuestionAndInfo = new VPaperQuestionAndInfo();
+//                            paperQuestionAndInfo.setQuestion(string);
+//                            paperQuestionAndInfo.setQuestiontype(questionType);
+//                            paperQuestionAndInfo.setPaperid(paperid);
+//                            paperQuestionAndInfo.setGradeno(gradeno);
+//                            paperQuestionAndInfo.setSubjectno(subjectno);
+//                            epaperQuestionService.addPaperQuestionAndInfo(paperQuestionAndInfo);
+//                        }
+//
+////                        equestionService.addOneQuestionAndInfo(string, gradeno, subjectno, questionType, Float.parseFloat("0"));
+////                        dom4JforXML.getPaperQuestionsBySpecify(string, map.size());
+//                    }
                 }
 
             }
@@ -187,9 +188,10 @@ public class FileUploadController {
                     Dom4JforXML dom4JforXML = new Dom4JforXML();
                     List<String> questionList = dom4JforXML.getQuestionList(rootPath, startTime + ".html");
                     //loop questionList,插入至数据库基础试题库表、试题信息表中
-                    for (String string : questionList) {
-                        equestionService.addOneQuestionAndInfo(string, gradeno, subjectno, questionType, Float.parseFloat("0"));
-                    }
+                    equestionService.addQuestionAndInfoList(questionList, gradeno, subjectno, questionType, Float.parseFloat("0"));
+//                    for (String string : questionList) {
+//                        equestionService.addOneQuestionAndInfo(string, gradeno, subjectno, questionType, Float.parseFloat("0"));
+//                    }
                 }
 
             }

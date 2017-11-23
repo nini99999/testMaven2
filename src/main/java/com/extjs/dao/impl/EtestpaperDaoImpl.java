@@ -80,10 +80,11 @@ public class EtestpaperDaoImpl implements EtestpaperDao {
         if (null != tpno && tpno.length() > 0) {
             eTestpaperDTO.setTpno(tpno);
         } else {
-            if (null != tpname && tpno.length() > 0) {
+            if (null != tpname && tpname.length() > 0) {
                 eTestpaperDTO.setTpname(tpname);
             }
         }
+        eTestpaperDTO.setCreator("All");
         List<ETestpaper> eTestpaperList = this.queryEtestPaper(eTestpaperDTO);
 
         for (ETestpaper eTestpaper : eTestpaperList) {

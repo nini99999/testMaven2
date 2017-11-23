@@ -47,12 +47,17 @@
     function indexFormatter(value, row, index) {
         return index + 1;
     }
-    function operateFormatter(value, row, index)
-//row 获取这行的值 ，index 获取索引值
-    {
+    function operateFormatter(value, row, index) {
         return [
             '<a class="edit"  href="javascript:void(0)" title="edit">',
             '<i class="glyphicon glyphicon-edit"></i>',
+            '</a>'
+        ].join('');
+    }
+    function answerFormatter(value, row, index) {
+        return [
+            '<a class="answer"  href="javascript:void(0)" title="答案">',
+            '<i class="glyphicon glyphicon-info-sign"></i>',
             '</a>'
         ].join('');
     }
@@ -61,7 +66,7 @@
         'click .edit': function (e, value, row, index) {
             //init修改操作
             mqueryQTypeBySubject(row.subjectno);
-            console.log('row', row.questiontype);
+//            console.log('row', row.questiontype);
             $("#myModal").modal('show');
             $('#sid').val(row.id);
             $('#spaperid').val(row.paperid);
@@ -73,13 +78,7 @@
             $('#mgradeno').selectpicker('val', row.gradeno);
             $('#msubjectno').selectpicker('val', row.subjectno);
 
-//            $('#mquestiontype').selectpicker('val',row.questiontype);
-////
-//                        console.log('ss',row.gradeno);
-//            console.log('questiontype',row.questiontype);
-//            $('#mquestiontype').selectpicker('refresh');
-//            $('#mquestiontype').selectpicker('render');
-//console.log('yy',$('#mquestiontype').val());
+
             ue = UE.getEditor('editor', {
                 toolbars: [[
                     'fullscreen', 'source', '|',
@@ -95,8 +94,60 @@
                 // 执行一些动作...
                 $('#mquestiontype').selectpicker('val', row.questiontype);
             })
+        },
+        'click .answer': function (e, value, row, index) {
+//            console.log('rrrr',row);
+            //查询指定id的答案并赋值
+            var params = {};
+            params.questionid = row.questionid;
+            $.ajax({
+                url: "/paperQuestion/getAnswer",
+// 数据发送方式
+                type: "get",
+// 接受数据格式
+                dataType: "json",
+// 要传递的数据
+                data: params,
+// 回调函数，接受服务器端返回给客户端的值，即result值
+                success: function (data) {
+//                    console.log('3sd',data);
+                    $('#answer').val(data.questionAnswer);
+                    $("#answerModal").modal('show');
+                    $('#qid').val(row.questionid);
+                }
+                ,
+                error: function (data) {
+                    console.log("错误信息 :", data);
+                    alert("保存失败" + data);
+                }
+            })
         }
     }
+    function saveAnswer() {
+        var params = {};
+        params.id = $('#qid').val();
+        params.answer = $('#answer').val();
+        $.ajax({
+            url: "/paperQuestion/saveAnswer",
+// 数据发送方式
+            type: "post",
+// 接受数据格式
+            dataType: "json",
+// 要传递的数据
+            data: params,
+// 回调函数，接受服务器端返回给客户端的值，即result值
+            success: function (data) {
+               queryQuestions();
+               alert("记录已保存！");
+            }
+            ,
+            error: function (data) {
+                console.log("错误信息 :", data);
+                alert("保存失败" + data);
+            }
+        })
+    }
+
     function add() {
         $("#myModal").modal('show');
         $('#sid').val('');
@@ -137,7 +188,7 @@
         })
     }
     function doModif(content) {
-        console.log($('#mquestiontype').val());
+//        console.log($('#mquestiontype').val());
         if ('noselected' == $('#mquestiontype').val() || $('#mdifficulty').val() > 1) {
             alert('请选择题型！(难度系数应<=1)');
         } else {
@@ -206,7 +257,7 @@
                 data: params,
 // 回调函数，接受服务器端返回给客户端的值，即result值
                 success: function (data) {
-                    console.log(data.data);
+//                    console.log(data.data);
                     $('#ds_table').bootstrapTable('destroy');
                     $('#ds_table').bootstrapTable({data: data.data});//刷新ds_table的数据
                 },
@@ -393,7 +444,42 @@
 </script>
 <body>
 
-<!-- 模态框（Modal） -->
+<!-- 答案模态框（Modal） -->
+<div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="answerModalModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" style="width: 70%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="answerModalModalLabel">
+                    答案维护
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <input id="qid" name="qid" class="form-control" type="hidden"/>
+                        <label for="answer">本题答案</label>
+                        <textarea id="answer" name="answer" class="form-control" rows="6"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+                <button class="btn btn-primary" type="button" onclick="saveAnswer();">
+                    <span class="glyphicon glyphicon-floppy-save"></span> 保存
+                </button>
+                <button class="btn btn-primary" type="button" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-log-out"></span> 关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal end-->
+<!-- 维护模态框（Modal） -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="width: 90%">
         <div class="modal-content">
@@ -500,6 +586,8 @@
             <%--<th data-field="questionid" hidden>题目ID</th>--%>
             <th data-field="question">题目</th>
             <th data-field="id" data-align="center" data-formatter="operateFormatter" data-events="operateEvent">编辑
+            </th>
+            <th data-field="answer" data-align="center" data-formatter="answerFormatter" data-events="operateEvent">答案
             </th>
         </tr>
         </thead>
