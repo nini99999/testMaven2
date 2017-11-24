@@ -62,39 +62,68 @@
             "<button type='button' class='btn btn-info';' id='m-callback-this-start' onclick='btnEntry(" + row.bs_rowid + ")'  > <span class='glyphicon glyphicon-pencil' onclick='queryEgradeList()'></span>  </button>"].join('');
 
     }
-    function getSumQuestionNum() {
+//    function getSumQuestionNum() {
+//
+//
+//        var params = {};
+//        params.tpno = $('#paperid').val();
+////        params.studentid = $('#student').val();
+////        params.countryid = countryid.value;
+////        params.testdate = '';
+//        $.ajax({
+//            url: "/ewrongStudent/getQuestionNumList",
+//// 数据发送方式
+//            type: "get",
+//// 接受数据格式
+//            dataType: "json",
+//// 要传递的数据
+//            data: params,
+//// 回调函数，接受服务器端返回给客户端的值，即result值
+//            success: function (data) {
+//                console.log(data);
+//                $("#aaa").bootstrapTable('destroy');
+//                $("#aaa").bootstrapTable({data: data.data});//刷新ds_table的数据
+//
+//            },
+//
+//            error: function (data) {
+//
+//                alert("查询学生错题失败" + data);
+//
+//            }
+//        })
+//
+//    }
+    function queryQuestions() {
+        if (!$('#paperid').val()) {
+            alert('请选择试卷！');
 
+        } else {
+            var params = {};
 
-        var params = {};
-        params.tpno = $('#paperid').val();
-//        params.studentid = $('#student').val();
-//        params.countryid = countryid.value;
-//        params.testdate = '';
-        $.ajax({
-            url: "/ewrongStudent/getQuestionNumList",
+            params.paperid = $('#paperid').val();
+            params.studentid = $('#student').val();
+            $.ajax({
+                url: "/ewrongStudent/getQuestionListWithState",
 // 数据发送方式
-            type: "get",
+                type: "get",
 // 接受数据格式
-            dataType: "json",
+                dataType: "json",
 // 要传递的数据
-            data: params,
+                data: params,
 // 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
-                console.log(data);
-                $("#aaa").bootstrapTable('destroy');
-                $("#aaa").bootstrapTable({data: data.data});//刷新ds_table的数据
-
-            },
-
-            error: function (data) {
-
-                alert("查询学生错题失败" + data);
-
-            }
-        })
-
+                success: function (data) {
+//                    console.log(data.data);
+                    $('#aaa').bootstrapTable('destroy');
+                    $('#aaa').bootstrapTable({data: data.data});//刷新ds_table的数据
+                },
+                error: function (data) {
+                    alert("查询失败" + data);
+                    console.log(data.data);
+                }
+            })
+        }
     }
-
     function queryWrongStudent() {
         var params = {};
 
@@ -220,7 +249,7 @@
         } else {
 
             $("#myModal").modal('show');
-            getSumQuestionNum();
+            queryQuestions();
         }
     }
 
@@ -335,6 +364,14 @@
         document.getElementById("reservation").value = getCurrentMonth();
         queryEgradeListBYschool();
     }
+    function exportWrongQuestions() {
+        if (paperid.value.length == 0 || classno.value.length == 0) {
+            alert('请选择试卷编号和年级');
+        } else {
+            var form = document.getElementById("exportForm");
+            form.submit();
+        }
+    }
 
 </script>
 
@@ -381,7 +418,9 @@
         <button class="btn btn-primary" type="button" onclick="delSelections();"><span
                 class="glyphicon glyphicon-export"></span>删除已选
         </button>
-
+        <button class="btn btn-primary" type="button" onclick="exportWrongQuestions();"><span
+                class="glyphicon glyphicon-export"></span>导出错题
+        </button>
     </div>
 
     <table class="table table-striped" width="95%" id="ds_table" align="center"
@@ -432,6 +471,7 @@
                             <thead>
                             <tr>
                                 <th data-field="estate" data-align="center" data-checkbox="true">选择</th>
+                                <th data-field="questionid" data-align="center">ID</th>
                                 <th data-field="questionno" data-align="center">题号</th>
 
                             </tr>

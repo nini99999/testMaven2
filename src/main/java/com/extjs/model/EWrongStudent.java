@@ -18,6 +18,7 @@ public class EWrongStudent {
     private Date testdate;
     private String testpoint;
     private String studentid;
+    private String questionid;
 
     @Id
     @Column(name = "ID", nullable = false, length = 64)
@@ -90,7 +91,7 @@ public class EWrongStudent {
     }
 
     @Basic
-    @Column(name = "testpoint", nullable = true,length = 128)
+    @Column(name = "testpoint", nullable = true, length = 128)
     public String getTestpoint() {
         return testpoint;
     }
@@ -98,13 +99,24 @@ public class EWrongStudent {
     public void setTestpoint(String testpoint) {
         this.testpoint = testpoint;
     }
+
     @Basic
-    @Column(name = "studentid", nullable = true,length = 64)
+    @Column(name = "studentid", nullable = true, length = 64)
     public String getStudentid() {
         return studentid;
     }
 
     public void setStudentid(String studentid) {
         this.studentid = studentid;
+    }
+
+    @Basic
+    @Column(name = "questionid", nullable = true, length = 64)
+    public String getQuestionid() {
+        return questionid;
+    }
+
+    public void setQuestionid(String questionid) {
+        this.questionid = questionid;
     }
 }

@@ -56,51 +56,78 @@
     }
     function operateFormatter(value, row, index) {
         var PySheDingID = row.bs_rowid;
-// 利用 row 获取点击这行的ID
-
         return [
             "<button type='button' class='btn btn-info';' id='m-callback-this-start' onclick='btnEntry(" + row.bs_rowid + ")'  > <span class='glyphicon glyphicon-pencil' onclick='queryEgradeList()'></span>  </button>"].join('');
 
     }
-    function getSumQuestionNum() {
+    //    function getSumQuestionNum() {
+    //
+    //
+    //        var params = {};
+    //        params.tpno = $('#paperid').val();
+    //        params.studentid = $('#student').val();
+    ////        params.countryid = countryid.value;
+    ////        params.testdate = '';
+    //        $.ajax({
+    //            url: "/ewrongStudent/getQuestionNumList",
+    //// 数据发送方式
+    //            type: "get",
+    //// 接受数据格式
+    //            dataType: "json",
+    //// 要传递的数据
+    //            data: params,
+    //// 回调函数，接受服务器端返回给客户端的值，即result值
+    //            success: function (data) {
+    //                console.log(data);
+    //                $("#aaa").bootstrapTable('destroy');
+    //                $("#aaa").bootstrapTable({data: data.data});//刷新ds_table的数据
+    //
+    //            },
+    //
+    //            error: function (data) {
+    //
+    //                alert("查询学生错题失败" + data);
+    //
+    //            }
+    //        })
+    //
+    //    }
+    function queryQuestions() {
+        if (!$('#paperid').val()) {
+            alert('请选择试卷！');
 
+        } else {
+            var params = {};
 
-        var params = {};
-        params.tpno = $('#paperid').val();
-        params.studentid = $('#student').val();
-//        params.countryid = countryid.value;
-//        params.testdate = '';
-        $.ajax({
-            url: "/ewrongStudent/getQuestionNumList",
+            params.paperid = $('#paperid').val();
+            params.studentid = $('#student').val();
+            $.ajax({
+                url: "/ewrongStudent/getQuestionListWithState",
 // 数据发送方式
-            type: "get",
+                type: "get",
 // 接受数据格式
-            dataType: "json",
+                dataType: "json",
 // 要传递的数据
-            data: params,
+                data: params,
 // 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
-                console.log(data);
-                $("#aaa").bootstrapTable('destroy');
-                $("#aaa").bootstrapTable({data: data.data});//刷新ds_table的数据
-
-            },
-
-            error: function (data) {
-
-                alert("查询学生错题失败" + data);
-
-            }
-        })
-
+                success: function (data) {
+//                    console.log(data.data);
+                    $('#aaa').bootstrapTable('destroy');
+                    $('#aaa').bootstrapTable({data: data.data});//刷新ds_table的数据
+                },
+                error: function (data) {
+                    alert("查询失败" + data);
+                    console.log(data.data);
+                }
+            })
+        }
     }
-
     function queryWrongStudent() {
         var params = {};
 
 //        params.countryid = countryid.value;
         params.tpno = $("#paperid").val();
-
+        params.classno = $("#classno").val();
         $.ajax({
             url: "/ewrongStudent/viewWrongStudent",
 // 数据发送方式
@@ -399,7 +426,7 @@
 
                 });
                 $('#student').selectpicker('refresh');
-                getSumQuestionNum();
+                queryQuestions();
             },
 
             error: function (data) {
@@ -409,41 +436,50 @@
             }
         })
     }
+    function exportWrongQuestions() {
+        if (paperid.value.length == 0 || classno.value.length == 0) {
+            alert('请选择试卷编号和年级');
+        } else {
+            var form = document.getElementById("exportForm");
+            form.submit();
+        }
+    }
 </script>
 
 <body>
 <div class="container" style="float:center;width: 99%;">
     <div class="well">
-
-        <div class="input-prepend input-group">
+        <form action="/ewrongStudent/exportWrongQuestions" method="post" id="exportForm" name="exportForm">
+            <div class="input-prepend input-group">
 
                <span class="add-on input-group-addon">
                 <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                 </span>
-            <input type="text" readonly
-                   style="width: 200px"
-                   name="reservation"
-                   id="reservation"
-                   class="form-control"/>
-            <div class="input-prepend input-group">
-                <div style="float: left">
-                    <select id="subjectno" name="subjectno" class="selectpicker fit-width"
-                            onchange="getTestPaperList()">
+                <input type="text" readonly
+                       style="width: 200px"
+                       name="reservation"
+                       id="reservation"
+                       class="form-control"/>
+                <div class="input-prepend input-group">
+                    <div style="float: left">
+                        <select id="subjectno" name="subjectno" class="selectpicker fit-width"
+                                onchange="getTestPaperList()">
 
-                    </select>
-                    <select id="gradeno" name="gradeno" class="selectpicker fit-width"
-                            onchange="getEclassList();getTestPaperList()">
+                        </select>
+                        <select id="gradeno" name="gradeno" class="selectpicker fit-width"
+                                onchange="getEclassList();getTestPaperList()">
 
-                    </select>
-                    <select id="classno" name="classno" class="selectpicker fit-width">
+                        </select>
+                        <select id="classno" name="classno" class="selectpicker fit-width">
 
-                    </select>
-                    <select id="paperid" name="paperid" class="selectpicker fit-width"></select>
-                    <%--<input id="tpname" name="tpname" class="form-control" style="width: 200px;" placeholder="试卷名称"/>--%>
+                        </select>
+                        <select id="paperid" name="paperid" class="selectpicker fit-width"></select>
+                        <%--<input id="tpname" name="tpname" class="form-control" style="width: 200px;" placeholder="试卷名称"/>--%>
+                    </div>
                 </div>
-            </div>
 
-        </div>
+            </div>
+        </form>
     </div>
 
     <div id="b_toobar">
@@ -456,7 +492,10 @@
             <span class="glyphicon glyphicon-plus-sign"></span> 维护错题
         </button>
         <button class="btn btn-primary" type="button" onclick="delSelections();"><span
-                class="glyphicon glyphicon-export"></span>删除已选
+                class="glyphicon glyphicon-minus-sign"></span>删除已选
+        </button>
+        <button class="btn btn-primary" type="button" onclick="exportWrongQuestions();"><span
+                class="glyphicon glyphicon-export"></span>导出错题
         </button>
 
     </div>
@@ -499,7 +538,8 @@
             <div class="modal-body">
                 <form class="form-inline" role="form">
                     <div class="form-group">
-                        <label for="student">请选择学生：</label> <select id="student" name="student" onchange="getSumQuestionNum();"
+                        <label for="student">请选择学生：</label> <select id="student" name="student"
+                                                                    onchange="queryQuestions();"
                                                                     class="selectpicker fit-width"></select>
                     </div>
                     <div id="bbb" style="float: none;display: block;margin-left: auto;margin-right: auto;">
@@ -508,6 +548,7 @@
                             <thead>
                             <tr>
                                 <th data-field="estate" data-align="center" data-checkbox="true">选择</th>
+                                <th data-field="questionid" data-align="center">ID</th>
                                 <th data-field="questionno" data-align="center">题号</th>
 
                             </tr>

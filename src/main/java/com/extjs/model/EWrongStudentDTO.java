@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.Date;
 
 /**
@@ -18,19 +19,20 @@ public class EWrongStudentDTO {
     private Integer questionno;
     private String creator;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createdate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date testdate;
     private String studentname;
     private String testpapername;
     private Boolean estate;
     private String testpoint;
     private String studentid;
+    private String classno;
+    private String questionid;
 
-    @Id
-    @Column(name = "ID", nullable = false, length = 64)
+
     public String getId() {
         return id;
     }
@@ -39,8 +41,7 @@ public class EWrongStudentDTO {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "COUNTRYID", nullable = true, length = 20)
+
     public String getCountryid() {
         return countryid;
     }
@@ -49,8 +50,7 @@ public class EWrongStudentDTO {
         this.countryid = countryid;
     }
 
-    @Basic
-    @Column(name = "TESTPAPERNO", nullable = true, length = 20)
+
     public String getTestpaperno() {
         return testpaperno;
     }
@@ -59,8 +59,7 @@ public class EWrongStudentDTO {
         this.testpaperno = testpaperno;
     }
 
-    @Basic
-    @Column(name = "QUESTIONNO", nullable = true, length = 4)
+
     public Integer getQuestionno() {
         return questionno;
     }
@@ -69,8 +68,7 @@ public class EWrongStudentDTO {
         this.questionno = questionno;
     }
 
-    @Basic
-    @Column(name = "CREATOR", nullable = true, length = 20)
+
     public String getCreator() {
         return creator;
     }
@@ -79,8 +77,7 @@ public class EWrongStudentDTO {
         this.creator = creator;
     }
 
-    @Basic
-    @Column(name = "CREATEDATE", nullable = true)
+
     public Date getCreatedate() {
         return createdate;
     }
@@ -89,8 +86,7 @@ public class EWrongStudentDTO {
         this.createdate = createdate;
     }
 
-    @Basic
-    @Column(name = "TESTDATE", nullable = true)
+
     public Date getTestdate() {
         return testdate;
     }
@@ -137,5 +133,21 @@ public class EWrongStudentDTO {
 
     public void setStudentid(String studentid) {
         this.studentid = studentid;
+    }
+
+    public String getClassno() {
+        return classno;
+    }
+
+    public void setClassno(String classno) {
+        this.classno = classno;
+    }
+
+    public String getQuestionid() {
+        return questionid;
+    }
+
+    public void setQuestionid(String questionid) {
+        this.questionid = questionid;
     }
 }

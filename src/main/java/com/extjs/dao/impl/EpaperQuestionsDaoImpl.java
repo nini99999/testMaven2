@@ -121,7 +121,7 @@ public class EpaperQuestionsDaoImpl implements EpaperQuestionsDao {
 //            }
         }
         try {
-            hql.append(" order by questionid,questionno");
+            hql.append(" order by paperid,paperquestionno,questionno");
             Session session = sessionFactory.getCurrentSession();
             Query query = session.createQuery(hql.toString());
             List<VPaperQuestionAndInfo> paperQuestionAndInfoList = query.list();

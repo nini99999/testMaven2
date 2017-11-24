@@ -86,18 +86,21 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
     public void addPaperQuestionAndInfoList(List<List<String>> questionTypeList, List<EPaperQTypeDTO> paperQTypeDTOList, String paperid, String gradeno, String subjectno) throws SysException {
         VPaperQuestionAndInfo paperQuestionAndInfo;
         int j = 0;
+        int paperQuestionNo = 0;
         for (List<String> list : questionTypeList) {
             j++;
 
             String questionType = paperQTypeDTOList.get(j).getQuestiontype();
-//                        int m = 0;
+
             for (String string : list) {
+                paperQuestionNo++;
                 paperQuestionAndInfo = new VPaperQuestionAndInfo();
                 paperQuestionAndInfo.setQuestion(string);
                 paperQuestionAndInfo.setQuestiontype(questionType);
                 paperQuestionAndInfo.setPaperid(paperid);
                 paperQuestionAndInfo.setGradeno(gradeno);
                 paperQuestionAndInfo.setSubjectno(subjectno);
+                paperQuestionAndInfo.setPaperquestionno(paperQuestionNo);//设置试卷中的题号
                 this.addPaperQuestionAndInfo(paperQuestionAndInfo);
             }
 
@@ -150,7 +153,7 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
             questionsDTO.setCreator(userDetails.getUsername());
             try {
                 equestionService.addOneQuestion(questionsDTO);//添加至试题基础库
-                this.addOnePaperQuestion(ePaperQuestionsDTO);
+                this.addOnePaperQuestion(ePaperQuestionsDTO);//添加至试卷试题表
 
             } catch (Exception e) {
                 e.printStackTrace();

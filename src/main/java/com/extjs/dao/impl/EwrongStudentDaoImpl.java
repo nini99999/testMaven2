@@ -26,14 +26,17 @@ public class EwrongStudentDaoImpl implements EwrongStudentDao {
     @Override
     public List<EWrongStudent> queryEWrongStudent(EWrongStudentDTO wrongStudent) {
         StringBuilder sb = new StringBuilder("from EWrongStudent where 1=1");
-        if (null!=wrongStudent.getStudentid()&&wrongStudent.getStudentid().length()>0){
-            sb.append(" and studentid='"+wrongStudent.getStudentid()+"'");
+        if (null != wrongStudent.getStudentid() && wrongStudent.getStudentid().length() > 0) {
+            sb.append(" and studentid='" + wrongStudent.getStudentid() + "'");
         }
         if (null != wrongStudent.getTestpaperno() && !"".equals(wrongStudent.getTestpaperno())) {
             sb.append(" and testpaperno='" + wrongStudent.getTestpaperno() + "'");
         }
         if (null != wrongStudent.getCountryid() && !"".equals(wrongStudent.getCountryid())) {
             sb.append(" and countryid='" + wrongStudent.getCountryid() + "'");
+        }
+        if (null != wrongStudent.getClassno() && wrongStudent.getClassno().length() > 0) {
+            sb.append(" and studentid in (select id from EStudent where classno='" + wrongStudent.getClassno() + "')");
         }
         sb.append(" order by countryid,testpaperno,questionno");
         Session session = sessionFactory.getCurrentSession();
