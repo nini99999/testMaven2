@@ -189,10 +189,11 @@ public class EwrongStudentController {
 
     @RequestMapping("/exportWrongQuestions")
     @ResponseBody
-    public void exportWrongQuestions(HttpServletRequest request, HttpServletResponse response, String studentid, String subjectno, String gradeno, String classno, String paperid) {
+    public void exportWrongQuestions(HttpServletRequest request, HttpServletResponse response,String classno, String paperid) {
         String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/" + request.getContextPath();
         try {
-            String path = ewrongStudentService.exportHTML(response, studentid, subjectno, gradeno, classno, paperid, url);
+
+            String path = ewrongStudentService.exportHTML(response, this.getCurrentUser(),  classno, paperid, url);
         } catch (Exception e) {
             e.printStackTrace();
         }

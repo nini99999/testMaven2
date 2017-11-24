@@ -57,7 +57,7 @@ public interface EwrongStudentService {
      * @param paperid
      * @return
      */
-    List<VPaperQuestionAndInfo> getQuestionsByWrong(String studentid, String paperid);
+    List<VPaperQuestionAndInfo> getQuestionsByWrong(String studentid, String paperid,String classno);
 
     /**
      * 按查询条件导出至html
@@ -71,5 +71,5 @@ public interface EwrongStudentService {
      * @return
      * @throws SysException
      */
-    String exportHTML(HttpServletResponse response, String studentid, String subjectno, String gradeno, String classno, String paperid,String url) throws SysException;
+    String exportHTML(HttpServletResponse response, String studentid, String classno, String paperid,String url) throws SysException;
 }

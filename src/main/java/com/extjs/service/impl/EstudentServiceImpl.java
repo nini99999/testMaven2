@@ -91,17 +91,20 @@ public class EstudentServiceImpl implements EstudentService {
 
     @Override
     public EStudentDTO getStudentByUserName(String userName) {
-        EStudent student=estudentDao.getStudentByUserName(userName);
+        EStudent student = estudentDao.getStudentByUserName(userName);
         EStudentDTO studentDTO = new EStudentDTO();
-        ReflectionUtil.copyProperties(student, studentDTO);
-        EConstants eConstants = new EConstants();
-        studentDTO.setStudystate(eConstants.studyStateMap.get(studentDTO.getStudystate()));
-        studentDTO.setSchoolstate(eConstants.schoolStateMap.get(studentDTO.getSchoolstate()));
+        if (null != studentDTO) {
+            ReflectionUtil.copyProperties(student, studentDTO);
+            EConstants eConstants = new EConstants();
+            studentDTO.setStudystate(eConstants.studyStateMap.get(studentDTO.getStudystate()));
+            studentDTO.setSchoolstate(eConstants.schoolStateMap.get(studentDTO.getSchoolstate()));
+        }
         return studentDTO;
     }
 
     /**
      * 添加学生时，同步添加User表
+     *
      * @param eStudentDTO
      * @return
      * @throws SysException
@@ -146,7 +149,7 @@ public class EstudentServiceImpl implements EstudentService {
     @Override
     @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
     public void delEstudent(EStudentDTO eStudentDTO) throws SysException {
-        UserDTO userDTO=new UserDTO();
+        UserDTO userDTO = new UserDTO();
         userDTO.setUserName(eStudentDTO.getUsername());
         userService.deleteUser(userDTO);//同步删除系统用户
         estudentDao.delEstudent(eStudentDTO);

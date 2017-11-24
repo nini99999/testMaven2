@@ -242,7 +242,7 @@
     }
     function openAddModal() {
         if (paperid.value.length == 0 || classno.value.length == 0) {
-            alert('请选择试卷编号和年级');
+            alert('请选择试卷和年级!');
         } else {
             getStudentByClass();
 
@@ -438,7 +438,7 @@
     }
     function exportWrongQuestions() {
         if (paperid.value.length == 0 || classno.value.length == 0) {
-            alert('请选择试卷编号和年级');
+            alert('请选择试卷和年级!');
         } else {
             var form = document.getElementById("exportForm");
             form.submit();

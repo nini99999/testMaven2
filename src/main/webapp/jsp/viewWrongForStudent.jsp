@@ -62,38 +62,38 @@
             "<button type='button' class='btn btn-info';' id='m-callback-this-start' onclick='btnEntry(" + row.bs_rowid + ")'  > <span class='glyphicon glyphicon-pencil' onclick='queryEgradeList()'></span>  </button>"].join('');
 
     }
-//    function getSumQuestionNum() {
-//
-//
-//        var params = {};
-//        params.tpno = $('#paperid').val();
-////        params.studentid = $('#student').val();
-////        params.countryid = countryid.value;
-////        params.testdate = '';
-//        $.ajax({
-//            url: "/ewrongStudent/getQuestionNumList",
-//// 数据发送方式
-//            type: "get",
-//// 接受数据格式
-//            dataType: "json",
-//// 要传递的数据
-//            data: params,
-//// 回调函数，接受服务器端返回给客户端的值，即result值
-//            success: function (data) {
-//                console.log(data);
-//                $("#aaa").bootstrapTable('destroy');
-//                $("#aaa").bootstrapTable({data: data.data});//刷新ds_table的数据
-//
-//            },
-//
-//            error: function (data) {
-//
-//                alert("查询学生错题失败" + data);
-//
-//            }
-//        })
-//
-//    }
+    //    function getSumQuestionNum() {
+    //
+    //
+    //        var params = {};
+    //        params.tpno = $('#paperid').val();
+    ////        params.studentid = $('#student').val();
+    ////        params.countryid = countryid.value;
+    ////        params.testdate = '';
+    //        $.ajax({
+    //            url: "/ewrongStudent/getQuestionNumList",
+    //// 数据发送方式
+    //            type: "get",
+    //// 接受数据格式
+    //            dataType: "json",
+    //// 要传递的数据
+    //            data: params,
+    //// 回调函数，接受服务器端返回给客户端的值，即result值
+    //            success: function (data) {
+    //                console.log(data);
+    //                $("#aaa").bootstrapTable('destroy');
+    //                $("#aaa").bootstrapTable({data: data.data});//刷新ds_table的数据
+    //
+    //            },
+    //
+    //            error: function (data) {
+    //
+    //                alert("查询学生错题失败" + data);
+    //
+    //            }
+    //        })
+    //
+    //    }
     function queryQuestions() {
         if (!$('#paperid').val()) {
             alert('请选择试卷！');
@@ -365,8 +365,8 @@
         queryEgradeListBYschool();
     }
     function exportWrongQuestions() {
-        if (paperid.value.length == 0 || classno.value.length == 0) {
-            alert('请选择试卷编号和年级');
+        if (paperid.value.length == 0) {
+            alert('请选择试卷!');
         } else {
             var form = document.getElementById("exportForm");
             form.submit();
@@ -378,32 +378,33 @@
 <body>
 <div class="container" style="float:center;width: 99%;">
     <div class="well">
-
-        <div class="input-prepend input-group">
+        <form action="/ewrongStudent/exportWrongQuestions" method="post" id="exportForm" name="exportForm">
+            <div class="input-prepend input-group">
 
                <span class="add-on input-group-addon">
                 <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                 </span>
-            <input type="text" readonly
-                   style="width: 200px"
-                   name="reservation"
-                   id="reservation"
-                   class="form-control"/>
-            <div class="input-prepend input-group">
-                <div style="float: left">
-                    <select id="subjectno" name="subjectno" class="selectpicker fit-width"
-                            onchange="getTestPaperList()">
-                    </select>
-                    <select id="gradeno" name="gradeno" class="selectpicker fit-width"
-                            onchange="getTestPaperList()">
+                <input type="text" readonly
+                       style="width: 200px"
+                       name="reservation"
+                       id="reservation"
+                       class="form-control"/>
+                <div class="input-prepend input-group">
+                    <div style="float: left">
+                        <select id="subjectno" name="subjectno" class="selectpicker fit-width"
+                                onchange="getTestPaperList()">
+                        </select>
+                        <select id="gradeno" name="gradeno" class="selectpicker fit-width"
+                                onchange="getTestPaperList()">
 
-                    </select>
-                    <select id="paperid" name="paperid" class="selectpicker fit-width"></select>
-                    <%--<input id="tpname" name="tpname" class="form-control" style="width: 200px;" placeholder="试卷名称"/>--%>
+                        </select>
+                        <select id="paperid" name="paperid" class="selectpicker fit-width"></select>
+                        <%--<input id="tpname" name="tpname" class="form-control" style="width: 200px;" placeholder="试卷名称"/>--%>
+                    </div>
                 </div>
-            </div>
 
-        </div>
+            </div>
+        </form>
     </div>
 
     <div id="b_toobar">
@@ -461,9 +462,9 @@
             <div class="modal-body">
                 <form class="form-inline" role="form">
                     <%--<div class="form-group">--%>
-                        <%--<label for="student">请选择学生：</label> <select id="student" name="student"--%>
-                                                                    <%--onchange="getSumQuestionNum();"--%>
-                                                                    <%--class="selectpicker fit-width"></select>--%>
+                    <%--<label for="student">请选择学生：</label> <select id="student" name="student"--%>
+                    <%--onchange="getSumQuestionNum();"--%>
+                    <%--class="selectpicker fit-width"></select>--%>
                     <%--</div>--%>
                     <div id="bbb" style="float: none;display: block;margin-left: auto;margin-right: auto;">
                         <table class="table table-striped" id="aaa" align="center"

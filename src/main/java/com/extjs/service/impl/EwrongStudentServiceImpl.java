@@ -178,7 +178,7 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
     }
 
     @Override
-    public List<VPaperQuestionAndInfo> getQuestionsByWrong(String studentid, String paperid) {
+    public List<VPaperQuestionAndInfo> getQuestionsByWrong(String userName, String paperid, String classno) {
 
         /*****查询指定试卷的所有题目,形成HashMap*****/
         HashMap<String, VPaperQuestionAndInfo> questionMap = new HashMap<>();
@@ -188,11 +188,18 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
         for (VPaperQuestionAndInfo vPaperQuestionAndInfo : paperQuestionAndInfoList) {
             questionMap.put(vPaperQuestionAndInfo.getQuestionid(), vPaperQuestionAndInfo);
         }
-        /*****查询学生指定试卷错题记录（含questionid）*****/
+        /*****查询学生(或班级的)指定试卷错题记录（含questionid）*****/
         paperQuestionAndInfoList = new ArrayList<>();
         EWrongStudentDTO wrongStudentDTO = new EWrongStudentDTO();
-        wrongStudentDTO.setStudentid(studentid);
+
         wrongStudentDTO.setTestpaperno(paperid);
+        if (null != classno && classno.length() > 0) {//说明按班级查询,则把studentid置为空
+            wrongStudentDTO.setClassno(classno);
+            wrongStudentDTO.setStudentid(null);
+        } else {//说明当前登录用户为学生，则根据当前登录用户名获取其studentid
+            wrongStudentDTO.setStudentid(estudentService.getStudentByUserName(userName).getId());
+        }
+
         List<EWrongStudentDTO> wrongStudentDTOList = this.queryWrongStudent(wrongStudentDTO);
         VPaperQuestionAndInfo vPaperQuestionAndInfo = new VPaperQuestionAndInfo();
         for (EWrongStudentDTO eWrongStudentDTO : wrongStudentDTOList) {//循环获取题目集合
@@ -203,9 +210,9 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
     }
 
     @Override
-    public String exportHTML(HttpServletResponse response, String studentid, String subjectno, String gradeno, String classno, String paperid,String url) throws SysException {
+    public String exportHTML(HttpServletResponse response, String userName, String classno, String paperid, String url) throws SysException {
 
-        List<VPaperQuestionAndInfo> paperQuestionAndInfoList = this.getQuestionsByWrong(studentid, paperid);
+        List<VPaperQuestionAndInfo> paperQuestionAndInfoList = this.getQuestionsByWrong(userName, paperid, classno);
         StringBuilder stringBuilder = new StringBuilder("");
         for (VPaperQuestionAndInfo paperQuestionAndInfo : paperQuestionAndInfoList) {
             stringBuilder.append("(" + paperQuestionAndInfo.getPaperquestionno() + ")." + paperQuestionAndInfo.getQuestion());
