@@ -299,7 +299,6 @@
                 $('#classno').empty();
 
                 $('#classno').selectpicker();
-                $('#classno').append("<option value='noselected'>请选择班级</option>");
 //                console.log(data.data);
                 $.each(data.data, function (i) {
 

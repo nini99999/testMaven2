@@ -145,36 +145,8 @@
             }
         })
     }
-    function getschoolList() {//获取下拉学校列表
-        $.ajax({
-            url: "/eschool/viewEschoolList",
-// 数据发送方式
-            type: "get",
-// 接受数据格式
-            dataType: "json",
-// 要传递的数据
-            data: 'data',
-// 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
 
-                $.each(data.data, function (i) {
-                    $('#schoolno.selectpicker').append("<option value=" + data.data[i].schoolno + ">" + data.data[i].schoolname + "</option>");
-
-                });
-                $('#schoolno').selectpicker('refresh');
-                queryEgradeListBYschool();
-                queryEtestpaper();
-            },
-
-            error: function (data) {
-                alert("查询学校失败" + data);
-            }
-        })
-    }
-    function queryEgradeListBYschool() {
-        var params = {};
-
-        params.schoolno = $('#schoolno').val();
+    function queryEgradeListBYschool() {//年级下拉列表加载
 
         $.ajax({
             url: "/egrade/viewEgradeListByschoolno",
@@ -182,20 +154,18 @@
             type: "post",
 // 接受数据格式
             dataType: "json",
-// 要传递的数据
-            data: params,
+
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {
                 $('#gradeno').empty();
-                $('#gradeno').append("<option value='noselected'>请选择</option>");
+
+                $('#gradeno').append("<option value='noselected'>请选择年级</option>");
                 $.each(data.data, function (i) {
 
                     $('#gradeno.selectpicker').append("<option value=" + data.data[i].gradeno + ">" + data.data[i].gradename + "</option>");
 
                 });
 
-
-//                $('#schoolno').selectpicker('render');
                 $('#gradeno').selectpicker('refresh');
 
             },
@@ -207,6 +177,7 @@
             }
         })
     }
+
     function getsubjectList() {//获取下拉学科列表
         $.ajax({
             url: "/esubjects/viewEsubjectsList",
@@ -485,9 +456,6 @@
             <div>
                 <form class="form-inline">
 
-                    <select id="schoolno" name="schoolno" class="selectpicker fit-width"
-                            onchange="queryEgradeListBYschool()">
-                    </select>
 
                     <select id="gradeno" name="gradeno" class="selectpicker fit-width">
                     </select>
@@ -640,7 +608,8 @@
 </html>
 <script type="text/javascript">
     $(document).ready(function () {
-        getschoolList();
+
+        queryEgradeListBYschool();
         getsubjectList();
         getTermList();
         getExamType();
