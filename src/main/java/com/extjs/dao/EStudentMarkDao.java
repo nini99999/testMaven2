@@ -12,6 +12,7 @@ public interface EStudentMarkDao {
 
 
     List<EStudentMark> queryEStudentMark(EStudentMark eStudentMark, Page page);
+    List<EStudentMark> getAverageMark(EStudentMark studentMark,String gradeno);
 
     int getTotalCount(EStudentMark eStudentMark);
 

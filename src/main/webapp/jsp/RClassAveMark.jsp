@@ -82,6 +82,8 @@
     function bandData(questionColumns, subjectNames) {//查询班级成绩表，并绑定数据至table
         var params = {};
         params.gradeno = $('#gradeno').val();
+        params.beginDate = $('#reservation').val().replace(/-/g, "");
+        params.endDate = $('#reservation').val().replace(/-/g, "");
         $.ajax({
             url: "/report/queryRClassMark",         //请求后台的URL（*）
             type: "post",                    //请求方式（*）
@@ -204,9 +206,9 @@
             xAxis: [
                 {
                     type: 'category',
-                    axisLabel:{
-                        interval:0,
-                        rotate:60//倾斜度 -90 至 90 默认为0
+                    axisLabel: {
+                        interval: 0,
+                        rotate: 60//倾斜度 -90 至 90 默认为0
                     },
                     data: strdata,
 //                    data: ['一班', '二班', '三班', '四班', '五班', '六班', '七班', '八班', '九班',],
@@ -256,8 +258,6 @@
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {
                 $('#gradeno').empty();
-
-                $('#gradeno').append("<option value='noselected'>请选择年级</option>");
                 $.each(data.data, function (i) {
 
                     $('#gradeno.selectpicker').append("<option value=" + data.data[i].gradeno + ">" + data.data[i].gradename + "</option>");
@@ -312,9 +312,9 @@
             </div>
         </div>
     </div>
-</div>
-</div>
-<div style="float: none;display: block;margin-left: auto;margin-right: auto;">
+<%--</div>--%>
+
+    <%--<div style="float: none;width:95%;display: block;margin-left: auto;margin-right: auto;">--%>
     <div style="height: 45%">
         <table class="table table-striped" id="class_mark" align="center"
                striped="true">

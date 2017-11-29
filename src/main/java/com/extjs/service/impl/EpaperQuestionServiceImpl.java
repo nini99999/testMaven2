@@ -247,13 +247,14 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
     @Override
     public List<ETestpaperDTO> getTestPaperListByTimeInterval(VPaperQuestionAndInfo vPaperQuestionAndInfo) {
         List<VPaperQuestionAndInfo> paperQuestionAndInfoList = this.getPaperQuestionAndInfo(vPaperQuestionAndInfo);
-        HashMap<String, String> testPaperMap = etestpaperService.getEtestPaper();
+        HashMap<String, ETestpaperDTO> testPaperMap = etestpaperService.getEtestPaper();
         ETestpaperDTO testpaperDTO = null;
         List<ETestpaperDTO> resultMap = new ArrayList<>();
         for (VPaperQuestionAndInfo paperQuestionAndInfo : paperQuestionAndInfoList) {
             testpaperDTO = new ETestpaperDTO();
-            testpaperDTO.setTpno(paperQuestionAndInfo.getPaperid());
-            testpaperDTO.setTpname(testPaperMap.get(paperQuestionAndInfo.getPaperid()));
+            testpaperDTO = testPaperMap.get(paperQuestionAndInfo.getPaperid());
+//            testpaperDTO.setTpno(paperQuestionAndInfo.getPaperid());
+//            testpaperDTO.setTpname(testPaperMap.get(paperQuestionAndInfo.getPaperid()));
             resultMap.add(testpaperDTO);
         }
         return resultMap;

@@ -3,6 +3,7 @@ package com.extjs.dao.impl;
 import com.extjs.dao.EStudentMarkDao;
 import com.extjs.model.EStudentMark;
 import com.extjs.model.Page;
+import org.hibernate.type.*;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,7 +32,7 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(hql);
         if (null != page.getPageno() && page.getPageno() > 0 && null != page.getPagesize() && page.getPagesize() > 0) {
-            query.setFirstResult((page.getPageno()-1)*page.getPagesize());
+            query.setFirstResult((page.getPageno() - 1) * page.getPagesize());
             query.setMaxResults(page.getPagesize());
         }
         studentMarks = query.list();
@@ -40,13 +42,45 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
     @Override
     public int getTotalCount(EStudentMark eStudentMark) {
         StringBuilder sb = new StringBuilder("select count(rowid) ");
-        sb.append(this.getHql(eStudentMark)).append(")");
+        sb.append(this.getHql(eStudentMark));
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(sb.toString());
         int res = Integer.parseInt(query.uniqueResult().toString());
         return res;
     }
 
+    @Override
+    public List<EStudentMark> getAverageMark(EStudentMark studentMark, String gradeno) {
+        StringBuilder sb = new StringBuilder("SELECT sum(MARK) / count(ROWID) AS aveMark, classno, subjectno FROM E_Student_Mark where testdate between to_date('");
+        sb.append(studentMark.getBeginDate()).append("','yyyy-MM-dd') and to_date('").append(studentMark.getEndDate())
+                .append("','yyyy-MM-dd') and classno in (")
+                .append("select classno from e_class where gradeno='").append(gradeno).append("')")
+                .append(" GROUP BY CLASSNO, SUBJECTNO ORDER BY SUBJECTNO,CLASSNO");
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery(sb.toString())
+                .addScalar("aveMark", FloatType.INSTANCE)
+                .addScalar("classno", StringType.INSTANCE)
+//                .addScalar("tpno", StringType.INSTANCE)
+                .addScalar("subjectno", StringType.INSTANCE);
+
+        List list = query.list();
+
+        List<EStudentMark> eStudentMarks = new ArrayList<>();
+
+        for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
+            Object[] objects = (Object[]) iterator.next();
+            studentMark = new EStudentMark();
+
+            studentMark.setAveMark(Float.parseFloat(objects[0].toString()));
+            studentMark.setClassno(objects[1].toString());
+//            studentMark.setTpno(objects[2].toString());
+            studentMark.setSubjectno(objects[2].toString());
+            eStudentMarks.add(studentMark);
+        }
+
+//        List<EStudentMark> studentMarks = query.list();
+        return eStudentMarks;
+    }
 
     private String getHql(EStudentMark eStudentMark) {
         StringBuilder sb = new StringBuilder("from EStudentMark where 1=1");

@@ -53,11 +53,14 @@ public class EclassServiceImpl implements EclassService {
     }
 
     @Override
-    public HashMap<String, String> queryEclassMap() {
-        HashMap<String, String> resultMap = new HashMap<String, String>();
+    public HashMap<String, EClassDTO> queryEclassMap() {
+        HashMap<String, EClassDTO> resultMap = new HashMap<String, EClassDTO>();
         List<EClass> eClassList = eclassDao.queryEclass();
+        EClassDTO classDTO;
         for (EClass eClass : eClassList) {
-            resultMap.put(eClass.getClassno(), eClass.getClassname());
+            classDTO = new EClassDTO();
+            ReflectionUtil.copyProperties(eClass,classDTO);
+            resultMap.put(eClass.getClassno(), classDTO);
         }
         return resultMap;
     }

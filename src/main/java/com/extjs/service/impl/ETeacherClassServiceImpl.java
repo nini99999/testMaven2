@@ -1,6 +1,7 @@
 package com.extjs.service.impl;
 
 import com.extjs.dao.EteacherClassDao;
+import com.extjs.model.EClassDTO;
 import com.extjs.model.ETeacherClass;
 import com.extjs.model.ETeacherClassDTO;
 import com.extjs.service.EclassService;
@@ -34,11 +35,11 @@ public class ETeacherClassServiceImpl implements EteacherClassService {
     public List<ETeacherClassDTO> queryETeacherClass(ETeacherClassDTO eTeacherClassDTO) {
         List<ETeacherClassDTO> eTeacherClassDTOList = new ArrayList<ETeacherClassDTO>();
         List<ETeacherClass> eTeacherClassList = eteacherClassDao.queryETeacherClass(eTeacherClassDTO);
-        HashMap<String, String> classMap = eclassService.queryEclassMap();
+        HashMap<String, EClassDTO> classMap = eclassService.queryEclassMap();
         for (ETeacherClass eTeacherClass : eTeacherClassList) {
             eTeacherClassDTO = new ETeacherClassDTO();
             ReflectionUtil.copyProperties(eTeacherClass, eTeacherClassDTO);
-            eTeacherClassDTO.setClassname(classMap.get(eTeacherClassDTO.getClassno()));
+            eTeacherClassDTO.setClassname(classMap.get(eTeacherClassDTO.getClassno()).getClassname());
             eTeacherClassDTOList.add(eTeacherClassDTO);
         }
         return eTeacherClassDTOList;

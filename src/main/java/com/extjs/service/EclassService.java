@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface EclassService {
     List<EClassDTO> queryEclass();
-    HashMap<String,String> queryEclassMap();
+    HashMap<String,EClassDTO> queryEclassMap();
     List<EClassDTO> queryEclassByDTO(EClassDTO eClassDTO);
     String addEclass(EClassDTO eClassDTO) throws SysException;
     void delEclass(EClassDTO eClassDTO) throws SysException;

@@ -19,7 +19,7 @@ public interface EtestpaperService {
 
     void addEtestpaper(ETestpaperDTO eTestpaperDTO) throws SysException;
 
-    HashMap<String, String> getEtestPaper();//获取所有试卷编号和名称
+    HashMap<String, ETestpaperDTO> getEtestPaper();//获取所有试卷编号和名称
 
     void delEtestpaper(ETestpaperDTO eTestpaperDTO) throws SysException;
 

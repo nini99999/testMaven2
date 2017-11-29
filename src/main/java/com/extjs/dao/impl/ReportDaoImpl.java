@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by jenny on 2017/4/9.
@@ -33,14 +30,15 @@ public class ReportDaoImpl implements ReportDao {
     public List<RClassMark> queryRClassMark(RClassMark rClassMark) {
         List<RClassMark> rClassMarkList = new ArrayList<RClassMark>();
         StringBuilder sb = new StringBuilder("from RClassMark where 1=1");
-        if (null != rClassMark.getTpno() && !"".equals(rClassMark.getTpno())) {
-            sb.append(" and tpno in (" + rClassMark.getTpno() + ")");
-        }
+
         if (null != rClassMark.getGradeno() && !"".equals(rClassMark.getGradeno())) {
             sb.append(" and gradeno='" + rClassMark.getGradeno() + "'");
         }
         if (null != rClassMark.getClassno() && !"".equals(rClassMark.getClassno())) {
             sb.append(" and classno='" + rClassMark.getClassno() + "'");
+        }
+        if (null != rClassMark.getSubjectno() && rClassMark.getSubjectno().length() > 0) {
+            sb.append(" and subjectno='" + rClassMark.getSubjectno() + "'");
         }
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(sb.toString());
@@ -50,7 +48,13 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public void addRClassMark(RClassMark rClassMark) {
-
+        if (null == rClassMark.getId() || rClassMark.getId().length() == 0) {
+            UUID uuid = UUID.randomUUID();
+            rClassMark.setId(uuid.toString());
+        }
+        Session session = sessionFactory.getCurrentSession();
+        session.merge(rClassMark);
+        session.flush();
     }
 
     /**

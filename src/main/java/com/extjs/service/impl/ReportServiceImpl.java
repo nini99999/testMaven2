@@ -1,12 +1,9 @@
 package com.extjs.service.impl;
 
-import com.extjs.dao.EStudentMarkDao;
-import com.extjs.dao.EclassDao;
-import com.extjs.dao.EstudentDao;
+
 import com.extjs.dao.ReportDao;
 import com.extjs.model.*;
-import com.extjs.service.EclassService;
-import com.extjs.service.ReportService;
+import com.extjs.service.*;
 import com.extjs.util.EConstants;
 import com.extjs.util.SysException;
 
@@ -22,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by jenny on 2017/4/9.
@@ -31,15 +30,59 @@ import org.apache.commons.lang3.ArrayUtils;
 public class ReportServiceImpl implements ReportService {
     @Autowired
     private ReportDao reportDao;
+    //    @Autowired
+//    private EclassDao eclassDao;
     @Autowired
-    private EclassDao eclassDao;
+    private EclassService eclassService;
     @Autowired
-    private EstudentDao estudentDao;
+//    private EstudentDao estudentDao;
+    private EstudentService estudentService;
+
+    @Autowired
+    private EschoolService eschoolService;
+    @Autowired
+    private EsubjectsService esubjectsService;
+    @Autowired
+    private EstudentMarkService estudentMarkService;
+    @Autowired
+    private EtestpaperService etestpaperService;
 
     @Override
     public List<RClassMark> queryRClassMark(RClassMark rClassMark) {
         List<RClassMark> rClassMarkList = reportDao.queryRClassMark(rClassMark);
         return rClassMarkList;
+    }
+
+    private HashMap<String, String> getRClassMark(String gradeno) {
+        HashMap<String, String> resultMap = new HashMap<>();
+        RClassMark rClassMark = new RClassMark();
+        List<RClassMark> rClassMarkList = reportDao.queryRClassMark(rClassMark);
+        for (RClassMark classMark : rClassMarkList) {
+            resultMap.put(classMark.getClassno() + classMark.getSubjectno(), String.valueOf(classMark.getMark()));
+        }
+        rClassMark.setGradeno(gradeno);
+
+        return resultMap;
+    }
+
+    //    public UserDTO getCurrentUser() {
+//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+//                .getAuthentication()
+//                .getPrincipal();
+//        UserDTO userDTO = new UserDTO();
+//        try {
+//            userDTO = userService.getUserByUnique(userDetails.getUsername());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return userDTO;
+//    }
+//
+    public String getUserName() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        return userDetails.getUsername();
     }
 
     /**
@@ -55,49 +98,107 @@ public class ReportServiceImpl implements ReportService {
      * @return
      */
     @Override
-    public List reckonClassMark(String gradeno) {
-        RClassMark rClassMark;
-        EClassDTO eClassDTO = new EClassDTO();
-        eClassDTO.setGradeno(gradeno);
-
-        List<EClass> eClassList = eclassDao.queryEclass(eClassDTO);//获取指定学校、年级所对应班级列表
+    @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
+    public List reckonClassMark(RClassMark rClassMark) {
+        List<EsubjectsDTO> esubjectsDTOS = esubjectsService.queryEsubjectsList();//获取学科列表
         List resultList = new ArrayList();
-        for (EClass eClass : eClassList) {
-            rClassMark = new RClassMark();
-            rClassMark.setClassno(eClass.getClassno());
-            List<RClassMark> rClassMarkList = this.queryRClassMark(rClassMark);//查询指定班级对应的成绩数据
+//        RClassMark rClassMark;
+        EClassDTO eClassDTO = new EClassDTO();
+        try {
+            this.delRClassMark();//删除当前用户的报表数据
+            this.autoAddClassMark(rClassMark);//生成数据至班级平均成绩表
+
+            eClassDTO.setSchoolno(eschoolService.getSchoolnoByContext());
+            eClassDTO.setGradeno(rClassMark.getGradeno());
+//            List<EClass> eClassList = eclassDao.queryEclass(eClassDTO);//获取指定学校、年级所对应班级列表
+            List<EClassDTO> eClassDTOList = eclassService.queryEclassByDTO(eClassDTO);
+            HashMap<String, String> aveMarkMap = this.getRClassMark(rClassMark.getGradeno());//获取平均成绩map
+            for (EClassDTO classDTO : eClassDTOList) {
+                rClassMark = new RClassMark();
+                rClassMark.setClassno(classDTO.getClassno());
+                List<RClassMark> rClassMarkList = this.queryRClassMark(rClassMark);//查询指定班级对应的成绩数据
 /**
  * 生成classno+Mark+sum（Mark）的组合数组String【】str，添加至List中
  */
-            String[] str = new String[rClassMarkList.size() + 2];
-            int i = 0;
-            float sum = 0.0f;
-            str[0] = eClass.getClassname();
+                String[] str = new String[esubjectsDTOS.size() + 2];
+//                String[] str = new String[rClassMarkList.size() + 2];
+                int i = 0;
+                float sum = 0.0f;
+                str[0] = classDTO.getClassname();
 //            str[0] = rClassMark.getClassno();
-            for (RClassMark classMark : rClassMarkList) {
-                i++;
-                str[i] = String.valueOf(classMark.getMark());
-                if (i == 1) {
-                    sum = Float.parseFloat(str[i]);
-                } else {
+                //循环学科列表，新城str[]
+                for (EsubjectsDTO esubjectsDTO : esubjectsDTOS) {
+                    i++;
+                    str[i] = aveMarkMap.get(classDTO.getClassno()+esubjectsDTO.getSubjectno());//根据年级和学科获取平均成绩（唯一性约束：班级+学科+creator）
+                    if (null==str[i]){
+                        str[i]=String.valueOf(0);
+                    }
                     sum = Float.parseFloat(str[i]) + sum;
+
                 }
+//
+//                for (RClassMark classMark : rClassMarkList) {
+//                    i++;
+//                    str[i] = String.valueOf(classMark.getMark());
+//                    if (i == 1) {
+//                        sum = Float.parseFloat(str[i]);
+//                    } else {
+//                        sum = Float.parseFloat(str[i]) + sum;
+//                    }
+//                }
+                DecimalFormat df = new DecimalFormat("##,###,###.##");
+                String sdf = df.format(sum).toString();
+                str[i + 1] = sdf;
+                resultList.add(str);
             }
-            DecimalFormat df = new DecimalFormat("##,###,###.##");
-            String sdf = df.format(sum).toString();
-            str[i + 1] = sdf;
-            resultList.add(str);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return resultList;
     }
 
+    /**
+     * 获取指定条件的平均成绩列表，循环插入数据库中
+     *
+     * @param classMark
+     * @throws SysException
+     */
+    @Override
+    public void autoAddClassMark(RClassMark classMark) throws SysException {
+        HashMap<String, EClassDTO> classMap = eclassService.queryEclassMap();//获取所有班级集合
+        HashMap<String, ETestpaperDTO> testPaperMap = etestpaperService.getEtestPaper();//获取所有试卷信息
+        EClassDTO classDTO;
+        EStudentMark studentMark = new EStudentMark();
+        studentMark.setBeginDate(classMark.getBeginDate());
+        studentMark.setEndDate(classMark.getEndDate());
+        List<EStudentMark> studentMarks = estudentMarkService.getAverageMark(studentMark, classMark.getGradeno());//获取指定条件的平均成绩列表
+        for (EStudentMark eStudentMark : studentMarks) {
+            classMark = new RClassMark();
+            classDTO = classMap.get(eStudentMark.getClassno());
+            classMark.setClassno(eStudentMark.getClassno());
+            classMark.setGradeno(classDTO.getGradeno());
+            classMark.setSchoolno(classDTO.getSchoolno());
+            classMark.setMark(eStudentMark.getAveMark());
+//            classMark.setTpno(eStudentMark.getTpno());
+            classMark.setSubjectno(eStudentMark.getSubjectno());
+//            classMark.setTestdate(testPaperMap.get(eStudentMark.getTpno()).getTestdate());
+            //...add to RClassMark
+            this.addClassMark(classMark);
+        }
+
+    }
+
+    @Override
+    public void addClassMark(RClassMark classMark) throws SysException {
+
+        classMark.setCreator(this.getUserName());
+        classMark.setCreatedate(new java.sql.Date(System.currentTimeMillis()));
+        reportDao.addRClassMark(classMark);
+    }
+
     @Override
     public void delRClassMark() throws SysException {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
-
-        reportDao.delRClassMark(userDetails.getUsername());
+        reportDao.delRClassMark(this.getUserName());
     }
 
     @Override
@@ -111,9 +212,10 @@ public class ReportServiceImpl implements ReportService {
         rYearMark.setYear(year);
         rYearMark.setSubjectno(subjectno);
         if (null != studentno && !"".equals(studentno)) {//根据学籍号查询唯一学生记录；
-            EStudent eStudent = new EStudent();
-            eStudent = estudentDao.getEstudentByCountryID(studentno);
-            rYearMark.setClassno(eStudent.getClassno());
+            EStudentDTO eStudentDTO = new EStudentDTO();
+            eStudentDTO = estudentService.getStudentByID(studentno);
+//            eStudent = estudentDao.getEstudentByCountryID(studentno);
+            rYearMark.setClassno(eStudentDTO.getClassno());
         }
         rYearMarks = reportDao.queryRYearMark(rYearMark);
         return rYearMarks;
@@ -163,11 +265,11 @@ public class ReportServiceImpl implements ReportService {
 //        resultList.add(cons);
         EClassDTO eClassDTO = new EClassDTO();
         eClassDTO.setGradeno(gradeno);
-        List<EClass> eClassList = eclassDao.queryEclass(eClassDTO);//获取指定学校、年级所对应班级列表
+        List<EClassDTO> eClassDTOList = eclassService.queryEclassByDTO(eClassDTO);//获取指定学校、年级所对应班级列表
         RMarkArea rMarkArea = new RMarkArea();
-        for (EClass eClass : eClassList) {
+        for (EClassDTO classDTO : eClassDTOList) {
             rMarkArea.setCreator(userDetails.getUsername());
-            rMarkArea.setClassno(eClass.getClassno());
+            rMarkArea.setClassno(classDTO.getClassno());
             rMarkArea.setSubjectno(subjectno);
             int sumStudent = 0;
             try {
@@ -176,7 +278,7 @@ public class ReportServiceImpl implements ReportService {
                  * 生成classno+Mark+sum（MarkAreaNum）的组合数组String【】str，添加至List中
                  */
                 String[] str = new String[cons.length + 2];
-                str[0] = eClass.getClassname();
+                str[0] = classDTO.getClassname();
                 int i = 0;
                 for (RMarkArea area : rMarkAreaList) {
                     i++;
@@ -221,12 +323,12 @@ public class ReportServiceImpl implements ReportService {
 
         EClassDTO eClassDTO = new EClassDTO();
         eClassDTO.setGradeno(gradeno);
-        List<EClass> eClassList = eclassDao.queryEclass(eClassDTO);//获取指定学校、年级所对应班级列表
+        List<EClassDTO> eClassDTOList = eclassService.queryEclassByDTO(eClassDTO);//获取指定学校、年级所对应班级列表
         RMarkArea rMarkArea = new RMarkArea();
-        for (EClass eClass : eClassList) {
+        for (EClassDTO classDTO : eClassDTOList) {
 
             rMarkArea.setCreator(userDetails.getUsername());
-            rMarkArea.setClassno(eClass.getClassno());
+            rMarkArea.setClassno(classDTO.getClassno());
             int sumStudent = 0;
             try {
                 List<RMarkArea> rMarkAreaList = reportDao.queryRMarkArea(rMarkArea);//查询指定班级的成绩分布
@@ -234,7 +336,7 @@ public class ReportServiceImpl implements ReportService {
                  * 生成classno+Mark+sum（MarkAreaNum）的组合数组String【】str，添加至List中
                  */
                 String[] str = new String[cons.length + 3];
-                str[0] = eClass.getClassname();
+                str[0] = classDTO.getClassname();
                 int i = 0;
                 for (RMarkArea area : rMarkAreaList) {
                     i++;
@@ -247,7 +349,7 @@ public class ReportServiceImpl implements ReportService {
                     }
                 }
                 str[i + 1] = String.valueOf(sumStudent);
-                str[i + 2] = String.valueOf(markMap.get(eClass.getClassno()));
+                str[i + 2] = String.valueOf(markMap.get(classDTO.getClassno()));
                 resultList.add(str);
             } catch (Exception e) {
                 e.printStackTrace();

@@ -115,12 +115,12 @@ public class EtestpaperServiceImpl implements EtestpaperService {
     }
 
     @Override
-    public HashMap<String, String> getEtestPaper() {
-        HashMap resultMap = new HashMap<String, String>();
+    public HashMap<String, ETestpaperDTO> getEtestPaper() {
+        HashMap resultMap = new HashMap<String, ETestpaperDTO>();
         ETestpaperDTO etestpaperDTO = new ETestpaperDTO();
         List<ETestpaperDTO> testpaperDTOList = this.queryEtestpaper(etestpaperDTO);
         for (ETestpaperDTO testpaperDTO : testpaperDTOList) {
-            resultMap.put(testpaperDTO.getTpno(), testpaperDTO.getTpname());
+            resultMap.put(testpaperDTO.getTpno(), testpaperDTO);
         }
         return resultMap;
     }

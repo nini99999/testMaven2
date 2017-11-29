@@ -18,16 +18,18 @@ public class RClassMark {
     private String schoolno;
     private String gradeno;
     private String classno;
-    private String tpno;
+//    private String tpno;
     private String subjectno;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
-    private Date testdate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+//    private Date testdate;
     private Float mark;
     private String creator;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createdate;
+    private String beginDate;
+    private String endDate;
 
     @Id
     @Column(name = "ID", nullable = false, length = 64)
@@ -69,15 +71,15 @@ public class RClassMark {
         this.classno = classno;
     }
 
-    @Basic
-    @Column(name = "TPNO", nullable = true, length = 20)
-    public String getTpno() {
-        return tpno;
-    }
-
-    public void setTpno(String tpno) {
-        this.tpno = tpno;
-    }
+//    @Basic
+//    @Column(name = "TPNO", nullable = true, length = 32)
+//    public String getTpno() {
+//        return tpno;
+//    }
+//
+//    public void setTpno(String tpno) {
+//        this.tpno = tpno;
+//    }
 
     @Basic
     @Column(name = "SUBJECTNO", nullable = true, length = 20)
@@ -88,16 +90,16 @@ public class RClassMark {
     public void setSubjectno(String subjectno) {
         this.subjectno = subjectno;
     }
-
-    @Basic
-    @Column(name = "TESTDATE", nullable = true)
-    public Date getTestdate() {
-        return testdate;
-    }
-
-    public void setTestdate(Date testdate) {
-        this.testdate = testdate;
-    }
+//
+//    @Basic
+//    @Column(name = "TESTDATE", nullable = true)
+//    public Date getTestdate() {
+//        return testdate;
+//    }
+//
+//    public void setTestdate(Date testdate) {
+//        this.testdate = testdate;
+//    }
 
     @Basic
     @Column(name = "MARK", nullable = true, precision = 2)
@@ -129,4 +131,21 @@ public class RClassMark {
         this.createdate = createdate;
     }
 
+    @Transient
+    public String getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(String beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    @Transient
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
 }

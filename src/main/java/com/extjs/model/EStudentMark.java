@@ -25,6 +25,9 @@ public class EStudentMark {
     private String studentno;
     private String tpno;
     private String classno;
+    private String beginDate;
+    private String endDate;
+    private Float aveMark;
 
     @Id
     @Column(name = "ID", nullable = false, length = 64)
@@ -154,5 +157,32 @@ public class EStudentMark {
 
     public void setClassno(String classno) {
         this.classno = classno;
+    }
+
+    @Transient
+    public String getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(String beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    @Transient
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    @Transient
+    public Float getAveMark() {
+        return aveMark;
+    }
+
+    public void setAveMark(Float aveMark) {
+        this.aveMark = aveMark;
     }
 }

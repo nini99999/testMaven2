@@ -28,7 +28,7 @@ public class EsubjectsDaoImpl implements EsubjectsDao {
     @Override
     public List<Esubjects> queryEsubjectsList() {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Esubjects");
+        Query query = session.createQuery("from Esubjects order by subjectno");
         List<Esubjects> esubjects = query.list();
         return esubjects;
     }

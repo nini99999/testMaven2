@@ -24,21 +24,27 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
+    public HashMap<String, String> getDateArea(String beginDate, String endDate) {
+        HashMap<String, String> resultMap = new HashMap<>();
+        resultMap.put("begin", beginDate.substring(0, 8));
+
+        resultMap.put("end", endDate.substring(endDate.length() - 8, endDate.length()));
+        return resultMap;
+    }
+
     @RequestMapping("/queryRClassMark")
     @ResponseBody
-    public Map queryRClassMark(String gradeno) {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-
-        RClassMark rClassMark = new RClassMark();
-        if (null != gradeno && !"noselected".equals(gradeno)) {
-            rClassMark.setGradeno(gradeno);
-            try {
-                List resultList = reportService.reckonClassMark(rClassMark.getGradeno());
-                resultMap.put("data", resultList);
-                resultMap.put("total", resultList.size());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public Map queryRClassMark(RClassMark rClassMark) {
+        Map<String, String> dateArea = this.getDateArea(rClassMark.getBeginDate(), rClassMark.getEndDate());
+        HashMap<String, Object> resultMap = new HashMap<>();
+        try {
+            rClassMark.setBeginDate(dateArea.get("begin"));
+            rClassMark.setEndDate(dateArea.get("end"));
+            List resultList = reportService.reckonClassMark(rClassMark);
+            resultMap.put("data", resultList);
+            resultMap.put("total", resultList.size());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return resultMap;
@@ -111,9 +117,9 @@ public class ReportController {
      */
     @RequestMapping("/queryYearMark")
     @ResponseBody
-    public Map queryYearMark(String year, String gradeno, String subjectno,String studentno,String studentname) {
+    public Map queryYearMark(String year, String gradeno, String subjectno, String studentno, String studentname) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<RYearMark> rYearMarks = reportService.queryRYearMark(year, gradeno, subjectno,studentno,studentname);
+        List<RYearMark> rYearMarks = reportService.queryRYearMark(year, gradeno, subjectno, studentno, studentname);
         resultMap.put("data", rYearMarks);
         resultMap.put("total", rYearMarks.size());
         return resultMap;
@@ -129,12 +135,12 @@ public class ReportController {
      */
     @RequestMapping("/queryYearMarkStudent")
     @ResponseBody
-    public Map queryYearMarkStudent(String year, String studentname, String subjectno,String studentno) {
+    public Map queryYearMarkStudent(String year, String studentname, String subjectno, String studentno) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         if ("noselected".equals(subjectno)) {
             subjectno = null;
         }
-        List<RYearMarkStudent> rYearMarkStudents = reportService.queryRYearMarkStudent(year, studentname, subjectno,studentno);
+        List<RYearMarkStudent> rYearMarkStudents = reportService.queryRYearMarkStudent(year, studentname, subjectno, studentno);
         resultMap.put("data", rYearMarkStudents);
         resultMap.put("total", rYearMarkStudents.size());
         return resultMap;

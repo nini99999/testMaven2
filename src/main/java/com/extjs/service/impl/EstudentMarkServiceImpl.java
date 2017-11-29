@@ -37,7 +37,13 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
 //        Date date = new Date(System.currentTimeMillis());
         eStudentMark.setCreator(userDetails.getUsername());
 //        eStudentMark.setCreatedate(date);
-        List<EStudentMark> studentMarks = studentMarkDao.queryEStudentMark(eStudentMark,page);
+        List<EStudentMark> studentMarks = studentMarkDao.queryEStudentMark(eStudentMark, page);
+        return studentMarks;
+    }
+
+    @Override
+    public List<EStudentMark> getAverageMark(EStudentMark eStudentMark, String gradeno) {
+        List<EStudentMark> studentMarks = studentMarkDao.getAverageMark(eStudentMark, gradeno);
         return studentMarks;
     }
 
@@ -74,7 +80,7 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
 
 
 //        if (null == eStudentMark.getId() || eStudentMark.getId().length() == 0) {
-        List<EStudentMark> studentMarkLis = this.queryEStudentMark(eStudentMark,new Page(0,0));
+        List<EStudentMark> studentMarkLis = this.queryEStudentMark(eStudentMark, new Page(0, 0));
         if (studentMarkLis.size() == 0) {
             UUID uuid = UUID.randomUUID();
             eStudentMark.setId(uuid.toString());
@@ -110,7 +116,7 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
 
     @Override
     public int getTotalCount(EStudentMark eStudentMark) {
-     int res=   studentMarkDao.getTotalCount(eStudentMark);
-     return res;
+        int res = studentMarkDao.getTotalCount(eStudentMark);
+        return res;
     }
 }
