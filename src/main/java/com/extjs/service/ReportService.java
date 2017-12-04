@@ -34,7 +34,29 @@ public interface ReportService {
     /**
      * 班级成绩分布
      */
-    List<RMarkArea> queryRMarkArea(String gradeno, String subjectno);
+    List<RMarkArea> queryRMarkArea(String gradeno, String tpno, String subjectno);
+
+    void delMarkArea(String creator) throws SysException;
+
+    void addMarkArea(RMarkArea markArea) throws SysException;
+
+    /**
+     * 自动计算符合条件的学生成绩分布(指定试卷和年级)，并写入至表中
+     *
+     * @param tpno
+     * @param gradeno
+     * @throws SysException
+     */
+    void autoAddMarkAreaBySubject(String tpno, String gradeno) throws SysException;
+
+    /**
+     * 自动计算符合条件的学生成绩分布(指定试卷列表和年级)，并写入至表中
+     *
+     * @param gradeno
+     * @param tpnoString
+     * @throws SysException
+     */
+    void autoAddMarkAreaTotal(String gradeno, String tpnoString) throws SysException;
 
     /**
      * 错题统计

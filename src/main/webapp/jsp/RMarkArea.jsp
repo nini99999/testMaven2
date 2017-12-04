@@ -43,11 +43,13 @@
 </head>
 <script type="text/javascript">
     $(function () {
+        $('#paperid').multiselect();
         initSelect();
 
         queryEgradeListBYschool();//填充年级下拉列表
 
     });
+
     function getCurrentMonth() {
         var firstDate = new Date();
         firstDate.setDate(1); //第一天
@@ -57,7 +59,8 @@
         return new XDate(firstDate).toString('yyyy-MM-dd') + " - " + new XDate(endDate).toString('yyyy-MM-dd');
 //        alert("第一天：" + new XDate(firstDate).toString('yyyy-MM-dd') + " 最后一天：" + new XDate(endDate).toString('yyyy-MM-dd'));
     }
-    function queryRClassMark() {//动态生成表头，并调用数据进行绑定
+
+    function queryRMarkArea() {//动态生成表头，并调用数据进行绑定
         var questionColumns = [];
         $.ajax({
             url: "/report/getMarkArea",
@@ -85,16 +88,24 @@
             }
         })
     }
+
     function bandData(questionColumns, paramData) {//查询班级成绩表，并绑定数据至table
         var params = {};
         params.gradeno = $('#gradeno').val();
-        params.subjectno='noselected';
+        params.tpno='';
+        params.subjectno = '';//赋空值--取总成绩
+        params.tpnoString=JSON.stringify($('#paperid').val());
+        console.log('dbb',params.tpnoString);
+        console.log("params",params);
         $.ajax({
             url: "/report/queryRMarkArea",         //请求后台的URL（*）
             type: "post",                    //请求方式（*）
-            dataType: "json",
-            data: params,
+//            contentType : 'application/json;charset=utf-8', //设置请求头信息
 
+            dataType: "json",
+// 要传递的数据
+//            data: JSON.stringify(params),    //将Json对象序列化成Json字符串，JSON.stringify()原生态方法
+            data: params,
             success: function (data) {
 //                console.log(data);
                 $('#class_mark').bootstrapTable('destroy');
@@ -113,11 +124,13 @@
     function initSelect() {
         $(document).ready(function () {
             $('#reservation').daterangepicker(null, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
+//                console.log(start.toISOString(), end.toISOString(), label);
+                getTestPaperList();
             });
         });
         document.getElementById("reservation").value = getCurrentMonth();
     }
+
     function queryEgradeListBYschool() {//年级下拉列表加载
 
         $.ajax({
@@ -149,6 +162,7 @@
             }
         })
     }
+
     function initEcharts(data, paramData) {
         var classData = [];
 
@@ -222,6 +236,38 @@
         }
         myChart.setOption(option);
     }
+
+    function getTestPaperList() {
+        var params = {};
+        params.gradeno = $('#gradeno').val();
+        params.creator = 'All';//不根据创建人查询，即查询满足条件的所有试卷
+        params.startDate = $('#reservation').val().replace(/-/g, "");
+        params.endDate = $('#reservation').val().replace(/-/g, "");
+        $.ajax({
+            url: "/etestpaper/viewTestPaper",
+// 数据发送方式
+            type: "get",
+// 接受数据格式
+            dataType: "json",
+// 要传递的数据
+            data: params,
+// 回调函数，接受服务器端返回给客户端的值，即result值
+            success: function (data) {
+                $('#paperid').empty();
+                $.each(data.data, function (i) {
+//                    $('#paperid.multiselect').append("<option value=" + data.data[i].tpno + ">" + data.data[i].tpname + "</option>");
+                    $('#paperid').append($('<option></option>').text(data.data[i].tpname).val(data.data[i].tpno));
+                });
+                $('#paperid').multiselect('rebuild');
+                $('#paperid').multiselect('refresh');
+            },
+            error: function (data) {
+                alert("查询失败" + data);
+                console.log("error", data);
+            }
+        })
+
+    }
 </script>
 <body>
 <div class="container" style="float:center;width: 99%;">
@@ -240,11 +286,14 @@
                    value="2017-1-1 - 2017-12-30"/>
             <div style="float: left">
 
-                <select id="gradeno" name="gradeno" class="selectpicker">
+                <select id="gradeno" name="gradeno" class="selectpicker" onchange="getTestPaperList()">
+
+                </select>
+                <select id="paperid" name="paperid" class="form-control" multiple="multiple" style="include">
 
                 </select>
 
-                <button class="btn btn-primary" type="button" onclick="queryRClassMark()"><span
+                <button class="btn btn-primary" type="button" onclick="queryRMarkArea()"><span
                         class="glyphicon glyphicon-eye-open"></span>查询
                 </button>
             </div>

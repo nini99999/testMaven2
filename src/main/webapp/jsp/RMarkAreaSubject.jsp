@@ -95,6 +95,8 @@
         var params = {};
         params.subjectno = $('#subjectno').val();
         params.gradeno = $('#gradeno').val();
+        params.tpno=$('#paperid').val();
+        params.tpnoString=JSON.stringify('');
         $.ajax({
             url: "/report/queryRMarkArea",         //请求后台的URL（*）
             type: "post",                    //请求方式（*）
@@ -120,6 +122,7 @@
         $(document).ready(function () {
             $('#reservation').daterangepicker(null, function (start, end, label) {
                 console.log(start.toISOString(), end.toISOString(), label);
+                getTestPaperList();
             });
         });
         document.getElementById("reservation").value = getCurrentMonth();
@@ -258,6 +261,36 @@
         })
 
     }
+    function getTestPaperList() {
+        var params = {};
+        params.gradeno = $('#gradeno').val();
+        params.subjectno = $('#subjectno').val();
+        params.creator = 'All';//不根据创建人查询，即查询满足条件的所有试卷
+        params.startDate = $('#reservation').val().replace(/-/g, "");
+        params.endDate = $('#reservation').val().replace(/-/g, "");
+        $.ajax({
+            url: "/etestpaper/viewTestPaper",
+// 数据发送方式
+            type: "get",
+// 接受数据格式
+            dataType: "json",
+// 要传递的数据
+            data: params,
+// 回调函数，接受服务器端返回给客户端的值，即result值
+            success: function (data) {
+                $('#paperid').empty();
+                $.each(data.data, function (i) {
+                    $('#paperid.selectpicker').append("<option value=" + data.data[i].tpno + ">" + data.data[i].tpname + "</option>");
+                });
+                $('#paperid').selectpicker('refresh');
+            },
+            error: function (data) {
+                alert("查询失败" + data);
+                console.log("error", data);
+            }
+        })
+
+    }
 </script>
 <body>
 <div class="container" style="float:center;width: 99%;">
@@ -276,10 +309,13 @@
                    value="2017-1-1 - 2017-12-30"/>
             <div style="float: left">
 
-                <select id="gradeno" name="gradeno" class="selectpicker">
+                <select id="gradeno" name="gradeno" class="selectpicker fit-width"  onchange="getTestPaperList()">
 
                 </select>
-                <select id="subjectno" name="subjectno" class="selectpicker">
+                <select id="subjectno" name="subjectno" class="selectpicker fit-width"  onchange="getTestPaperList()">
+
+                </select>
+                <select id="paperid" name="paperid" class="selectpicker fit-width" >
 
                 </select>
 

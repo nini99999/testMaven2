@@ -13,16 +13,16 @@ import java.util.Date;
 @Table(name = "R_MARKAREA")
 public class RMarkArea {
     private String id;
-    private String gradeno;
-    private String schoolno;
+//    private String gradeno;
+//    private String schoolno;
     private String classno;
     private String markarea;
-    private Float markareanum;
+    private Integer markareanum;
     private String creator;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date createdate;
-    private String subjectno;
+//    private String subjectno;
 
     @Id
     @Column(name = "ID", nullable = true, length = 64)
@@ -34,25 +34,25 @@ public class RMarkArea {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "GRADENO", nullable = true, length = 20)
-    public String getGradeno() {
-        return gradeno;
-    }
-
-    public void setGradeno(String gradeno) {
-        this.gradeno = gradeno;
-    }
-
-    @Basic
-    @Column(name = "SCHOOLNO", nullable = true, length = 20)
-    public String getSchoolno() {
-        return schoolno;
-    }
-
-    public void setSchoolno(String schoolno) {
-        this.schoolno = schoolno;
-    }
+//    @Basic
+//    @Column(name = "GRADENO", nullable = true, length = 20)
+//    public String getGradeno() {
+//        return gradeno;
+//    }
+//
+//    public void setGradeno(String gradeno) {
+//        this.gradeno = gradeno;
+//    }
+//
+//    @Basic
+//    @Column(name = "SCHOOLNO", nullable = true, length = 20)
+//    public String getSchoolno() {
+//        return schoolno;
+//    }
+//
+//    public void setSchoolno(String schoolno) {
+//        this.schoolno = schoolno;
+//    }
 
     @Basic
     @Column(name = "CLASSNO", nullable = true, length = 20)
@@ -75,12 +75,12 @@ public class RMarkArea {
     }
 
     @Basic
-    @Column(name = "MARKAREANUM", nullable = true, precision = 2)
-    public Float getMarkareanum() {
+    @Column(name = "MARKAREANUM", nullable = true)
+    public Integer getMarkareanum() {
         return markareanum;
     }
 
-    public void setMarkareanum(Float markareanum) {
+    public void setMarkareanum(Integer markareanum) {
         this.markareanum = markareanum;
     }
 
@@ -105,14 +105,14 @@ public class RMarkArea {
     }
 
 
-
-    @Basic
-    @Column(name = "SUBJECTNO", nullable = true, length = 10)
-    public String getSubjectno() {
-        return subjectno;
-    }
-
-    public void setSubjectno(String subjectno) {
-        this.subjectno = subjectno;
-    }
+//
+//    @Basic
+//    @Column(name = "SUBJECTNO", nullable = true, length = 10)
+//    public String getSubjectno() {
+//        return subjectno;
+//    }
+//
+//    public void setSubjectno(String subjectno) {
+//        this.subjectno = subjectno;
+//    }
 }

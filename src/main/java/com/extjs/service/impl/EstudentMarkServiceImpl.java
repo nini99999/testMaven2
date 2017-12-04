@@ -47,6 +47,18 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
         return studentMarks;
     }
 
+    @Override
+    public int getMarkAreaNum(String tpno, String classno, String markArea) {
+        int res = studentMarkDao.getMarkAreaNum(tpno, classno, markArea);
+        return res;
+    }
+
+    @Override
+    public int getMareAreaTotalNum(String classno, String markArea, String tpnoString) {
+        int res = studentMarkDao.getMarkAreaTotalNum(classno, markArea, tpnoString);
+        return res;
+    }
+
     /**
      * id为空说明要执行新增或未取得已有记录的id值，根据paperid、studentno（联合主键）查询是否存在记录，不存在-生成id新增，存在-取已有id赋值更新
      *

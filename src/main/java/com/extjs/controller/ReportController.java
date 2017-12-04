@@ -4,10 +4,10 @@ import com.extjs.model.*;
 import com.extjs.service.ReportService;
 import com.extjs.util.EConstants;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,12 +50,24 @@ public class ReportController {
         return resultMap;
     }
 
-    @RequestMapping("/queryRMarkArea")
+    @RequestMapping(value = "/queryRMarkArea", method = RequestMethod.POST)
     @ResponseBody
-    public Map queryRMarkArea(String gradeno, String subjectno) {
+    public Map queryRMarkArea(String gradeno, String subjectno, String tpno, String tpnoString) {
+        if (tpnoString.replace("\"", "").length() > 0) {
+
+            String[] array = tpnoString.substring(1, tpnoString.length() - 1).split(",");
+            if (array.length > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 0; i < array.length; i++) {
+                    stringBuilder.append("'" + array[i].substring(1, array[i].length() - 1) + "',");
+                }
+
+                tpno = stringBuilder.toString().substring(0, stringBuilder.toString().length() - 1);
+            }
+        }
         Map<String, Object> resultMap = new HashMap<String, Object>();
         RMarkArea rMarkArea = new RMarkArea();
-        List resultList = reportService.queryRMarkArea(gradeno, subjectno);
+        List resultList = reportService.queryRMarkArea(gradeno, tpno, subjectno);
 //        List<RMarkArea> rMarkAreaList = reportService.queryRMarkArea(rMarkArea);
         resultMap.put("data", resultList);
         resultMap.put("total", resultList.size());

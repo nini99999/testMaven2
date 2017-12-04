@@ -82,6 +82,34 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
         return eStudentMarks;
     }
 
+    @Override
+    public int getMarkAreaNum(String tpno, String classno, String markArea) {
+        String beginMark = markArea.substring(0, markArea.indexOf(","));
+        String endMark = markArea.substring(markArea.indexOf(",") + 1, markArea.length());
+        StringBuilder stringBuilder = new StringBuilder("select count(*) from EStudentMark where tpno='").append(tpno).append("' and classno='").append(classno)
+                .append("' and mark between '").append(Float.parseFloat(beginMark)).append("' and '").append(Float.parseFloat(endMark)).append("'");
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(stringBuilder.toString());
+        int res = Integer.parseInt(query.uniqueResult().toString());
+        return res;
+
+    }
+
+    @Override
+    public int getMarkAreaTotalNum(String classno, String markArea, String tpnoString) {
+        String beginMark = markArea.substring(0, markArea.indexOf(","));
+        String endMark = markArea.substring(markArea.indexOf(",") + 1, markArea.length());
+        StringBuilder stringBuilder = new StringBuilder(
+                "SELECT * from (SELECT sum(a.mark) as totalMark,a.classno,a.studentno FROM (SELECT * FROM E_STUDENT_MARK t WHERE  t.CLASSNO = '");
+        stringBuilder.append(classno).append("' and tpno in (").append(tpnoString)
+                .append(")) a GROUP BY a.classno,a.STUDENTNO) where totalMark BETWEEN ")
+                .append(Float.parseFloat(beginMark)).append(" and ").append(Float.parseFloat(endMark));
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery(stringBuilder.toString());
+        List list = query.list();
+        return list.size();
+    }
+
     private String getHql(EStudentMark eStudentMark) {
         StringBuilder sb = new StringBuilder("from EStudentMark where 1=1");
         if (null != eStudentMark.getCreator() && !"".equals(eStudentMark.getCreator())) {

@@ -40,6 +40,9 @@ public class ReportDaoImpl implements ReportDao {
         if (null != rClassMark.getSubjectno() && rClassMark.getSubjectno().length() > 0) {
             sb.append(" and subjectno='" + rClassMark.getSubjectno() + "'");
         }
+        if (null != rClassMark.getCreator() && rClassMark.getCreator().length() > 0) {
+            sb.append(" and creator='" + rClassMark.getCreator() + "'");
+        }
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(sb.toString());
         rClassMarkList = query.list();
@@ -77,18 +80,18 @@ public class ReportDaoImpl implements ReportDao {
         if (null != rMarkArea.getClassno() && !"".equals(rMarkArea.getClassno())) {
             sb.append(" and classno='" + rMarkArea.getClassno() + "'");
         }
-        if (null != rMarkArea.getGradeno() && !"".equals(rMarkArea.getGradeno())) {
-            sb.append(" and gradeno='" + rMarkArea.getGradeno() + "'");
-        }
+//        if (null != rMarkArea.getGradeno() && !"".equals(rMarkArea.getGradeno())) {
+//            sb.append(" and gradeno='" + rMarkArea.getGradeno() + "'");
+//        }
         if (null != rMarkArea.getCreator() && !"".equals(rMarkArea.getCreator())) {
             sb.append(" and creator='" + rMarkArea.getCreator() + "'");
         }
-        if (null != rMarkArea.getSubjectno() && !"".equals(rMarkArea.getSubjectno())) {
-            sb.append(" and subjectno='" + rMarkArea.getSubjectno() + "'");
-        } else {
-            sb.append(" and subjectno='noselected'");
-        }
-        sb.append(" order by classno,to_number(markarea)");
+//        if (null != rMarkArea.getSubjectno() && !"".equals(rMarkArea.getSubjectno())) {
+//            sb.append(" and subjectno='" + rMarkArea.getSubjectno() + "'");
+//        } else {
+//            sb.append(" and subjectno='noselected'");
+//        }
+        sb.append(" order by classno,to_number(replace(markarea,',',''))");
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(sb.toString());
         rMarkAreaList = query.list();
@@ -98,7 +101,13 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public void addRMarkArea(RMarkArea rMarkArea) {
-
+        if (null == rMarkArea.getId() || rMarkArea.getId().length() == 0) {
+            UUID uuid = UUID.randomUUID();
+            rMarkArea.setId(uuid.toString());
+        }
+        Session session = sessionFactory.getCurrentSession();
+        session.merge(rMarkArea);
+        session.flush();
     }
 
     @Override

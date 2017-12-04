@@ -56,11 +56,13 @@ public class ReportServiceImpl implements ReportService {
     private HashMap<String, String> getRClassMark(String gradeno) {
         HashMap<String, String> resultMap = new HashMap<>();
         RClassMark rClassMark = new RClassMark();
+        rClassMark.setGradeno(gradeno);
+        rClassMark.setCreator(this.getUserName());
         List<RClassMark> rClassMarkList = reportDao.queryRClassMark(rClassMark);
         for (RClassMark classMark : rClassMarkList) {
             resultMap.put(classMark.getClassno() + classMark.getSubjectno(), String.valueOf(classMark.getMark()));
         }
-        rClassMark.setGradeno(gradeno);
+
 
         return resultMap;
     }
@@ -129,23 +131,13 @@ public class ReportServiceImpl implements ReportService {
                 //循环学科列表，新城str[]
                 for (EsubjectsDTO esubjectsDTO : esubjectsDTOS) {
                     i++;
-                    str[i] = aveMarkMap.get(classDTO.getClassno()+esubjectsDTO.getSubjectno());//根据年级和学科获取平均成绩（唯一性约束：班级+学科+creator）
-                    if (null==str[i]){
-                        str[i]=String.valueOf(0);
+                    str[i] = aveMarkMap.get(classDTO.getClassno() + esubjectsDTO.getSubjectno());//根据年级和学科获取平均成绩（唯一性约束：班级+学科+creator）
+                    if (null == str[i]) {
+                        str[i] = String.valueOf(0);
                     }
                     sum = Float.parseFloat(str[i]) + sum;
 
                 }
-//
-//                for (RClassMark classMark : rClassMarkList) {
-//                    i++;
-//                    str[i] = String.valueOf(classMark.getMark());
-//                    if (i == 1) {
-//                        sum = Float.parseFloat(str[i]);
-//                    } else {
-//                        sum = Float.parseFloat(str[i]) + sum;
-//                    }
-//                }
                 DecimalFormat df = new DecimalFormat("##,###,###.##");
                 String sdf = df.format(sum).toString();
                 str[i + 1] = sdf;
@@ -246,57 +238,108 @@ public class ReportServiceImpl implements ReportService {
      * @return
      */
     @Override
-    public List<RMarkArea> queryRMarkArea(String gradeno, String subjectno) {
+    @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
+    public List<RMarkArea> queryRMarkArea(String gradeno, String tpno, String subjectno) {
         List resultList = new ArrayList();
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
-//        reportDao.delRMarkArea(userDetails.getUsername());
-        String[] cons;
-        if (null != subjectno && !"".equals(subjectno)) {//判断是取总成绩还是取单科成绩：空-总成绩；非空-学科成绩
+        String userName = this.getUserName();
+        try {
+            this.delMarkArea(userName);//delete 当前用户记录
 
-            cons = EConstants.subjectMarkArea;
-        } else {
-            cons = EConstants.markArea;
-        }
+            String[] cons;
+            if (null != subjectno && !"".equals(subjectno)) {//判断是取总成绩还是取单科成绩：空-总成绩；非空-学科成绩
 
-        ArrayUtils.add(cons, 0, "班级");
+                cons = EConstants.subjectMarkArea;
+                this.autoAddMarkAreaBySubject(tpno, gradeno);//自动生成数据至成绩区间分布表（按学科）
+            } else {
+                cons = EConstants.markArea;
+                this.autoAddMarkAreaTotal(gradeno,tpno);
+            }
+
+            ArrayUtils.add(cons, 0, "班级");
 
 //        resultList.add(cons);
-        EClassDTO eClassDTO = new EClassDTO();
-        eClassDTO.setGradeno(gradeno);
-        List<EClassDTO> eClassDTOList = eclassService.queryEclassByDTO(eClassDTO);//获取指定学校、年级所对应班级列表
-        RMarkArea rMarkArea = new RMarkArea();
-        for (EClassDTO classDTO : eClassDTOList) {
-            rMarkArea.setCreator(userDetails.getUsername());
-            rMarkArea.setClassno(classDTO.getClassno());
-            rMarkArea.setSubjectno(subjectno);
-            int sumStudent = 0;
-            try {
-                List<RMarkArea> rMarkAreaList = reportDao.queryRMarkArea(rMarkArea);//查询指定班级的成绩分布
-                /**
-                 * 生成classno+Mark+sum（MarkAreaNum）的组合数组String【】str，添加至List中
-                 */
-                String[] str = new String[cons.length + 2];
-                str[0] = classDTO.getClassname();
-                int i = 0;
-                for (RMarkArea area : rMarkAreaList) {
-                    i++;
-                    DecimalFormat df = new DecimalFormat("##,###,###");
-                    str[i] = df.format(area.getMarkareanum()).toString();
-                    if (i == 1) {
-                        sumStudent = Integer.valueOf(str[1]);
-                    } else {
+            EClassDTO eClassDTO = new EClassDTO();
+            eClassDTO.setGradeno(gradeno);
+            List<EClassDTO> eClassDTOList = eclassService.queryEclassByDTO(eClassDTO);//获取指定学校、年级所对应班级列表
+            RMarkArea rMarkArea = new RMarkArea();
+            for (EClassDTO classDTO : eClassDTOList) {
+                rMarkArea.setCreator(userName);
+                rMarkArea.setClassno(classDTO.getClassno());
+//            rMarkArea.setSubjectno(subjectno);
+                int sumStudent = 0;
+                try {
+                    List<RMarkArea> rMarkAreaList = reportDao.queryRMarkArea(rMarkArea);//查询指定班级的成绩分布
+                    /**
+                     * 生成classno+Mark+sum（MarkAreaNum）的组合数组String【】str，添加至List中
+                     */
+                    String[] str = new String[cons.length + 2];
+                    str[0] = classDTO.getClassname();
+                    int i = 0;
+                    for (RMarkArea area : rMarkAreaList) {
+                        i++;
+                        DecimalFormat df = new DecimalFormat("##,###,###");
+                        str[i] = df.format(area.getMarkareanum()).toString();
                         sumStudent = Integer.valueOf(str[i]) + sumStudent;
                     }
+                    str[i + 1] = String.valueOf(sumStudent);
+                    resultList.add(str);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                str[i + 1] = String.valueOf(sumStudent);
-                resultList.add(str);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return resultList;
+    }
+
+    @Override
+    public void delMarkArea(String creator) throws SysException {
+        reportDao.delRMarkArea(this.getUserName());
+    }
+
+    @Override
+    public void addMarkArea(RMarkArea markArea) throws SysException {
+        markArea.setCreator(this.getUserName());
+        markArea.setCreatedate(new java.sql.Date(System.currentTimeMillis()));
+        reportDao.addRMarkArea(markArea);
+    }
+
+    @Override
+    public void autoAddMarkAreaBySubject(String tpno, String gradeno) throws SysException {
+        String[] strings = EConstants.subjectMarkArea;
+        EClassDTO classDTO = new EClassDTO();
+        classDTO.setGradeno(gradeno);
+        List<EClassDTO> classDTOList = eclassService.queryEclassByDTO(classDTO);//根据年级查询班级列表
+        for (EClassDTO eClassDTO : classDTOList) {//按班级循环，逐条插入成绩区间表
+            for (int i = 0; i < strings.length; i++) {//按成绩区间循环，插入指定班级、试卷和成绩区间的数据
+                int studentCount = estudentMarkService.getMarkAreaNum(tpno, eClassDTO.getClassno(), strings[i]);//获取指定试卷、班级的成绩区间分布数
+
+                RMarkArea rMarkArea = new RMarkArea();
+                rMarkArea.setClassno(eClassDTO.getClassno());
+                rMarkArea.setMarkarea(strings[i]);
+                rMarkArea.setMarkareanum(studentCount);
+                this.addMarkArea(rMarkArea);
+            }
+        }
+    }
+
+    @Override
+    public void autoAddMarkAreaTotal(String gradeno, String tpnoString) throws SysException {
+        String[] strings = EConstants.markArea;
+        EClassDTO classDTO = new EClassDTO();
+        classDTO.setGradeno(gradeno);
+        List<EClassDTO> classDTOList = eclassService.queryEclassByDTO(classDTO);//根据年级查询班级列表
+        for (EClassDTO eClassDTO : classDTOList) {//按班级循环，逐条插入成绩区间表
+            for (int i = 0; i < strings.length; i++) {//按成绩区间循环，插入指定班级、试卷和成绩区间的数据
+                int studentCount = estudentMarkService.getMareAreaTotalNum(eClassDTO.getClassno(), strings[i], tpnoString);
+                RMarkArea rMarkArea = new RMarkArea();
+                rMarkArea.setClassno(eClassDTO.getClassno());
+                rMarkArea.setMarkarea(strings[i]);
+                rMarkArea.setMarkareanum(studentCount);
+                this.addMarkArea(rMarkArea);
+            }
+        }
     }
 
     @Override
