@@ -131,7 +131,7 @@ public class ReportController {
     @ResponseBody
     public Map queryYearMark(String year, String gradeno, String subjectno, String studentno, String studentname) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<RYearMark> rYearMarks = reportService.queryRYearMark(year, gradeno, subjectno, studentno, studentname);
+        List<String[]> rYearMarks = reportService.queryRYearMark(year, gradeno, subjectno, studentno, studentname);
         resultMap.put("data", rYearMarks);
         resultMap.put("total", rYearMarks.size());
         return resultMap;

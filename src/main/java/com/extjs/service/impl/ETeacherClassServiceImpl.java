@@ -4,6 +4,7 @@ import com.extjs.dao.EteacherClassDao;
 import com.extjs.model.EClassDTO;
 import com.extjs.model.ETeacherClass;
 import com.extjs.model.ETeacherClassDTO;
+import com.extjs.model.VTeacherClass;
 import com.extjs.service.EclassService;
 import com.extjs.service.EteacherClassService;
 import com.extjs.util.ReflectionUtil;
@@ -43,6 +44,13 @@ public class ETeacherClassServiceImpl implements EteacherClassService {
             eTeacherClassDTOList.add(eTeacherClassDTO);
         }
         return eTeacherClassDTOList;
+    }
+
+    @Override
+    public VTeacherClass getTeacherClass(VTeacherClass teacherClass) {
+        VTeacherClass vteacherClass=eteacherClassDao.getTeacherClass(teacherClass);
+
+        return vteacherClass;
     }
 
     @Override

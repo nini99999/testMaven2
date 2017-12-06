@@ -71,7 +71,7 @@ public interface ReportService {
     /**
      * 年度教学成绩统计
      */
-    List<RYearMark> queryRYearMark(String year, String gradeno, String subjectno, String studentno, String studentname);
+    List<String[]> queryRYearMark(String year, String gradeno, String subjectno, String studentno, String studentname);
 
     /**
      * 学生年度成绩统计

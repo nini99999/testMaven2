@@ -54,6 +54,18 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
     }
 
     @Override
+    public Float getAvgMark(String classno, String testDate, String subjectno) {
+        Float res = studentMarkDao.getAvgMark(classno, testDate, subjectno);
+        return res;
+    }
+
+    @Override
+    public Float getAvgMiddleOrFinal(String classno, String year, String subjectno, String examType) {
+        Float res = studentMarkDao.getAvgMiddleOrFinal(classno, year, subjectno, examType);
+        return res;
+    }
+
+    @Override
     public int getMareAreaTotalNum(String classno, String markArea, String tpnoString) {
         int res = studentMarkDao.getMarkAreaTotalNum(classno, markArea, tpnoString);
         return res;

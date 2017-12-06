@@ -40,6 +40,25 @@ public interface EStudentMarkDao {
      */
     int getMarkAreaTotalNum(String classno,String markArea,String tpnoString);
 
+    /**
+     * 根据班级、试卷考试日期（月）、学科统计平均分
+     * @param classno
+     * @param testDate 格式应为："201706"的月份
+     * @param subjectno
+     * @return
+     */
+    Float getAvgMark(String classno,String testDate,String subjectno);
+
+    /**
+     * 期中或期末平均分
+     * @param classno
+     * @param year
+     * @param subjectno
+     * @return
+     */
+    Float getAvgMiddleOrFinal(String classno,String year,String subjectno,String examType);
+
+
     int getTotalCount(EStudentMark eStudentMark);
 
     void saveOrUpdateEStudentMark(EStudentMark eStudentMark);

@@ -46,6 +46,8 @@ public class ReportServiceImpl implements ReportService {
     private EstudentMarkService estudentMarkService;
     @Autowired
     private EtestpaperService etestpaperService;
+    @Autowired
+    private EteacherClassService eteacherClassService;
 
     @Override
     public List<RClassMark> queryRClassMark(RClassMark rClassMark) {
@@ -194,23 +196,69 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<RYearMark> queryRYearMark(String year, String gradeno, String subjectno, String studentno, String studentname) {
-        List<RYearMark> rYearMarks = new ArrayList<RYearMark>();
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
-        RYearMark rYearMark = new RYearMark();
-        rYearMark.setCreator(userDetails.getUsername());
-        rYearMark.setYear(year);
-        rYearMark.setSubjectno(subjectno);
-        if (null != studentno && !"".equals(studentno)) {//根据学籍号查询唯一学生记录；
-            EStudentDTO eStudentDTO = new EStudentDTO();
-            eStudentDTO = estudentService.getStudentByID(studentno);
-//            eStudent = estudentDao.getEstudentByCountryID(studentno);
-            rYearMark.setClassno(eStudentDTO.getClassno());
+    public List<String[]> queryRYearMark(String year, String gradeno, String subjectno, String studentno, String studentname) {
+        List<String[]> resultList = new ArrayList<String[]>();
+
+        EClassDTO eClassDTO = new EClassDTO();
+        try {
+            DecimalFormat df = new DecimalFormat("##,###,###.##");
+            String testDate = "";
+            Float aveMark = 0.0f;//月考平均分
+            Float middleMark = 0.0f;//期中平均分
+            Float finalMark = 0.0f;//期末平均分
+            Float yearAvgMark;//全年平均分
+            eClassDTO.setSchoolno(eschoolService.getSchoolnoByContext());
+            eClassDTO.setGradeno(gradeno);
+            List<EClassDTO> eClassDTOList = eclassService.queryEclassByDTO(eClassDTO);//获取指定学校、年级所对应班级列表
+            for (EClassDTO classDTO : eClassDTOList) {//循环班级
+                yearAvgMark=0.0f;
+                //根据班级、指定学科查找的授课教师
+                VTeacherClass vTeacherClass = new VTeacherClass();
+                vTeacherClass.setClassno(classDTO.getClassno());
+                vTeacherClass.setSubjectno(subjectno);
+                VTeacherClass teacherClass = eteacherClassService.getTeacherClass(vTeacherClass);
+                //按查询表头定义该格式的数据
+                String[] strings = new String[18];
+                strings[0] = teacherClass.getClassno();
+                strings[1] = teacherClass.getTeachername();
+                for (int i = 1; i <= 12; i++) {//12个月循环，获取每个月、月考的平均成绩
+                    if (i < 10) {
+                        testDate = year + "0" + String.valueOf(i);
+                    } else {
+                        testDate = year + String.valueOf(i);
+                    }
+                    aveMark = estudentMarkService.getAvgMark(classDTO.getClassno(), testDate, subjectno);
+                    yearAvgMark+=aveMark;
+                    strings[i + 1] = df.format(aveMark).toString();
+
+                }
+                middleMark = estudentMarkService.getAvgMiddleOrFinal(classDTO.getClassno(), year, subjectno, "4");//期中平均分
+                finalMark = estudentMarkService.getAvgMiddleOrFinal(classDTO.getClassno(), year, subjectno, "5");//期末平均分
+                yearAvgMark+=middleMark;
+                yearAvgMark+=finalMark;
+                strings[14] = df.format(middleMark).toString();
+                strings[15]=df.format(finalMark).toString();
+                strings[16]=df.format(yearAvgMark/16).toString();
+                resultList.add(strings);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        rYearMarks = reportDao.queryRYearMark(rYearMark);
-        return rYearMarks;
+//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+//                .getAuthentication()
+//                .getPrincipal();
+//        RYearMark rYearMark = new RYearMark();
+//        rYearMark.setCreator(userDetails.getUsername());
+//        rYearMark.setYear(year);
+//        rYearMark.setSubjectno(subjectno);
+//        if (null != studentno && !"".equals(studentno)) {//根据学籍号查询唯一学生记录；
+//            EStudentDTO eStudentDTO = new EStudentDTO();
+//            eStudentDTO = estudentService.getStudentByID(studentno);
+////            eStudent = estudentDao.getEstudentByCountryID(studentno);
+//            rYearMark.setClassno(eStudentDTO.getClassno());
+//        }
+//        rYearMarks = reportDao.queryRYearMark(rYearMark);
+        return resultList;
     }
 
     @Override
@@ -252,7 +300,7 @@ public class ReportServiceImpl implements ReportService {
                 this.autoAddMarkAreaBySubject(tpno, gradeno);//自动生成数据至成绩区间分布表（按学科）
             } else {
                 cons = EConstants.markArea;
-                this.autoAddMarkAreaTotal(gradeno,tpno);
+                this.autoAddMarkAreaTotal(gradeno, tpno);
             }
 
             ArrayUtils.add(cons, 0, "班级");

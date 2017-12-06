@@ -1,6 +1,7 @@
 package com.extjs.service;
 
 import com.extjs.model.ETeacherClassDTO;
+import com.extjs.model.VTeacherClass;
 import com.extjs.util.SysException;
 
 import java.util.List;
@@ -10,6 +11,8 @@ import java.util.List;
  */
 public interface EteacherClassService {
     List<ETeacherClassDTO> queryETeacherClass(ETeacherClassDTO eTeacherClassDTO);
+
+    VTeacherClass getTeacherClass(VTeacherClass teacherClass);
 
     String addETeacherClass(ETeacherClassDTO eTeacherClassDTO) throws SysException;
 

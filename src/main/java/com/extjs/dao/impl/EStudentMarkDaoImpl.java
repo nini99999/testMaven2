@@ -96,6 +96,38 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
     }
 
     @Override
+    public Float getAvgMark(String classno, String testDate, String subjectno) {
+        StringBuilder stringBuilder = new StringBuilder("SELECT avg(mark) from EStudentMark WHERE CLASSNO='" + classno + "'")
+                .append(" and to_char(TESTDATE,'yyyyMM')='" + testDate + "' and SUBJECTNO='" + subjectno + "'")
+                .append(" and TPNO in (SELECT tpno from ETestpaper where examtype='2')");//考试类型=月考
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(stringBuilder.toString());
+        Float res = 0.0f;
+
+        if (null != query.uniqueResult()) {
+            res = Float.parseFloat(query.uniqueResult().toString());
+        } else {
+        }
+        return res;
+    }
+
+    @Override
+    public Float getAvgMiddleOrFinal(String classno, String year, String subjectno, String examType) {
+        StringBuilder stringBuilder = new StringBuilder("SELECT avg(mark) from EStudentMark WHERE CLASSNO='" + classno + "'")
+                .append(" and to_char(TESTDATE,'yyyy')='" + year + "' and SUBJECTNO='" + subjectno + "'")
+                .append(" and TPNO in (SELECT tpno from ETestpaper where examtype='"+examType).append("')");//考试类型=4期中或5期末
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(stringBuilder.toString());
+        Float res = 0.0f;
+
+        if (null != query.uniqueResult()) {
+            res = Float.parseFloat(query.uniqueResult().toString());
+        } else {
+        }
+        return res;
+    }
+
+    @Override
     public int getMarkAreaTotalNum(String classno, String markArea, String tpnoString) {
         String beginMark = markArea.substring(0, markArea.indexOf(","));
         String endMark = markArea.substring(markArea.indexOf(",") + 1, markArea.length());
