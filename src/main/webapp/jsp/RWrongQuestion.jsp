@@ -34,6 +34,15 @@
     <script src="<%=path%>/bootstrap/bootstrap-table.js"></script>
     <script src="<%=path%>/bootstrap/bootstrap-table-zh-CN.js"></script>
     <script src="<%=path%>/utils/xdate.js"></script>
+    <!-- UEditor配置文件 -->
+    <script type="text/javascript" src="<%=path%>/UEditor/ueditor.config.js"></script>
+    <!-- UEditor编辑器源码文件 -->
+    <script type="text/javascript" src="<%=path%>/UEditor/ueditor.all.js"></script>
+    <script type="text/javascript" charset="utf-8"
+            src="<%=path%>/UEditor/kityformula-plugin/addKityFormulaDialog.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%=path%>/UEditor/kityformula-plugin/getKfContent.js"></script>
+    <script type="text/javascript" charset="utf-8"
+            src="<%=path%>/UEditor/kityformula-plugin/defaultFilterFix.js"></script>
 </head>
 <script type="text/javascript">
 
@@ -42,24 +51,79 @@
         queryEgradeListBYschool();
         getEsubjects();
         queryWrongQuestion();
+        var form = document.getElementById('mForm');
+        form.onsubmit = function () {
+            kfSubmit();
+            return false;
+        };
     });
+
     function wrongPercent(value, row, index) {
         var res = 100 * row.wrongnums / row.testnums;
         return ["<div class='progress'> <div class='progress-bar' role='progressbar' aria-valuenow='50' aria-valuemin='0' aria-valuemax='100' style='width:" + res.toFixed(2) + "%'>" + res.toFixed(2) + "</div> </div>"];
 //        return res.toFixed(2);
     }
+
     function indexFormatter(value, row, index) {
         return index + 1;
     }
+
     function operateFormatter(value, row, index) {
-        var PySheDingID = row.bs_rowid;
-// 利用 row 获取点击这行的ID
-
         return [
-            "<button type='button' class='btn btn-info';' id='m-callback-this-start' onclick='btnEntry(" + row.bs_rowid + ")'  > <span class='glyphicon glyphicon-th-list' onclick='queryEgradeList()'></span>  </button>"].join('');
-
+            '<a class="viewinfo"  href="javascript:void(0)" title="题目信息">',
+            '<i class="glyphicon glyphicon-info-sign"></i>',
+            '</a>'
+        ].join('');
     }
+
+    var ue;
+    window.operateEvent = {
+        'click .viewinfo': function (e, value, row, index) {
+            var params = {};
+            params.questionID = row.id;
+
+            $.ajax({
+                url: "/equestions/viewOneQuestion",
+// 数据发送方式
+                type: "get",
+// 接受数据格式
+                dataType: "json",
+// 要传递的数据
+                data: params,
+                contentType: 'application/json',
+// 回调函数，接受服务器端返回给客户端的值，即result值
+                success: function (data) {
+//                    console.log('sssssss',data);
+                    $("#myModal").modal('show');
+
+                    ue = UE.getEditor('editor', {
+                        toolbars: [[
+                            'fullscreen', 'source', '|',
+                            'bold', 'italic', 'underline', '|', 'fontsize', '|', 'fontfamily', '|', 'kityformula', 'simpleupload', 'preview'
+                        ]]
+                    });
+                    ue.ready(function () {
+                        ue.setContent(data.data);
+                        ue.setHeight(250);
+                    })
+                },
+
+                error: function (data) {
+                    alert("查询失败" + data);
+                    console.log("data",data);
+                }
+            })
+        }
+    }
+
     function queryWrongQuestion() {
+        var params = {};
+        params.gradeno = $('#gradeno').val();
+        params.subjectno = $('#subjectno').val();
+
+        params.beginDate = $('#reservation').val().replace(/-/g, "");
+        params.endDate = $('#reservation').val().replace(/-/g, "");
+        console.log('sbb', params);
         $.ajax({
             url: "/report/queryWrongQuestion",
 // 数据发送方式
@@ -67,7 +131,7 @@
 // 接受数据格式
             dataType: "json",
 // 要传递的数据
-//            data: params,
+            data: params,
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {
 
@@ -81,6 +145,7 @@
             }
         })
     }
+
     function getCurrentMonth() {
         var firstDate = new Date();
         firstDate.setDate(1); //第一天
@@ -90,6 +155,7 @@
         return new XDate(firstDate).toString('yyyy-MM-dd') + " - " + new XDate(endDate).toString('yyyy-MM-dd');
 //        alert("第一天：" + new XDate(firstDate).toString('yyyy-MM-dd') + " 最后一天：" + new XDate(endDate).toString('yyyy-MM-dd'));
     }
+
     function initDateSelect() {
         $(document).ready(function () {
             $('#reservation').daterangepicker(null, function (start, end, label) {
@@ -98,6 +164,7 @@
         });
         document.getElementById("reservation").value = getCurrentMonth();
     }
+
     function queryEgradeListBYschool() {//年级下拉列表加载
 
         $.ajax({
@@ -129,48 +196,8 @@
             }
         })
     }
-    function getEclassList() {
-
-        var params = {};
-        params.gradeno = $('#gradeno').val();
-        $.ajax({
-            url: "/eclass/viewEclassByDTO",
-// 数据发送方式
-            type: "post",
-// 接受数据格式
-            dataType: "json",
-// 要传递的数据
-            data: params,
-// 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
-                $('#classno').empty();
-
-                $('#classno').selectpicker();
-                $('#classno').append("<option value='noselected'>请选择班级</option>");
-//                console.log(data.data);
-                $.each(data.data, function (i) {
-
-                    $('#classno.selectpicker').append("<option value=" + data.data[i].classno + ">" + data.data[i].classname + "</option>");
 
 
-                });
-                if (params.gradeno != 'noselected') {
-                    $('#classno').selectpicker('refresh');
-                }else {
-//                    $('#classno').selectpicker('destroy');
-                    $('#classno').val('noselected');
-                }
-
-
-            },
-
-            error: function (data) {
-
-                alert("查询班级失败" + data);
-
-            }
-        })
-    }
     function getEsubjects() {//获取下拉学科列表
         $.ajax({
             url: "/esubjects/viewEsubjectsList",
@@ -224,12 +251,10 @@
 
                 </select>
 
-                <select id="gradeno" name="gradeno" class="selectpicker fit-width" onchange="getEclassList()">
+                <select id="gradeno" name="gradeno" class="selectpicker fit-width">
 
                 </select>
-                <select id="classno" name="classno" class="selectpicker fit-width">
 
-                </select>
                 <div style="float: right">
 
                     <button class="btn btn-primary" type="button" onclick="queryWrongQuestion()"><span
@@ -259,12 +284,39 @@
                 <th data-field="wrongnums" data-align="center" data-sortable="true">错误数</th>
                 <th data-field="testnums" data-align="center">考生数</th>
                 <th data-field="wrongpercent" data-align="center" data-formatter="wrongPercent">错误率%</th>
-                <th data-field="testpoint" data-align="center" data-sortable="true">考点</th>
-                <th data-field="bs_rowid" data-align="center" data-formatter="operateFormatter">题目信息</th>
+
+                <th data-field="id" data-align="center" data-formatter="operateFormatter" data-events="operateEvent">题目信息</th>
             </tr>
             </thead>
         </table>
     </div>
 </div>
+<!--题目信息模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 90%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    题目信息
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="mForm" method="post" class="form-inline">
+                    <script id="editor" name="content" type="text/plain"></script>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-log-out"></span> 关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal end-->
 </body>
 </html>

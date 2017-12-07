@@ -228,10 +228,11 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
             paperQuestionAndInfo = new VPaperQuestionAndInfo();
             ReflectionUtil.copyProperties(vPaperQuestionAndInfo1, paperQuestionAndInfo);
             paperQuestionAndInfo.setQuestion(
-                    StringEscapeUtils.unescapeXml(vPaperQuestionAndInfo1.getQuestion().replaceFirst(".？&nbsp", ". &nbsp")));
+                    StringEscapeUtils.unescapeXml(vPaperQuestionAndInfo1.getQuestion()).replaceFirst(".？&nbsp", ". &nbsp"));
             if (vPaperQuestionAndInfo1.getQuestionno() > 0) {
                 resultList.remove(i - 1);
-                paperQuestionAndInfo.setQuestion(question + vPaperQuestionAndInfo1.getQuestion().replaceFirst(".？&nbsp", ". &nbsp"));
+                paperQuestionAndInfo.setQuestion(question
+                        +  StringEscapeUtils.unescapeXml(vPaperQuestionAndInfo1.getQuestion()).replaceFirst(".？&nbsp", ". &nbsp"));
                 resultList.add(paperQuestionAndInfo);
                 question = resultList.get(i - 1).getQuestion();
             } else {

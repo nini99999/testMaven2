@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,6 +70,12 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
     public int getMareAreaTotalNum(String classno, String markArea, String tpnoString) {
         int res = studentMarkDao.getMarkAreaTotalNum(classno, markArea, tpnoString);
         return res;
+    }
+
+    @Override
+    public HashMap<String, Integer> getStudentNum() {
+        HashMap<String,Integer> map=studentMarkDao.getStudentNum();
+        return map;
     }
 
     /**

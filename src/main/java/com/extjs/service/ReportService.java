@@ -61,7 +61,7 @@ public interface ReportService {
     /**
      * 错题统计
      */
-    List<RWrongQuestion> queryRWrongQuestion();
+    List<RWrongQuestion> queryRWrongQuestion(String beginDate,String endDate,String subjectno,String gradeno,String classno);
 
     /**
      * 升学成绩模拟

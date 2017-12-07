@@ -4,6 +4,7 @@ package com.extjs.dao.impl;
 import com.extjs.dao.EwrongStudentDao;
 import com.extjs.model.*;
 import org.hibernate.SessionFactory;
+import org.hibernate.type.StringType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -43,6 +46,34 @@ public class EwrongStudentDaoImpl implements EwrongStudentDao {
         Query query = session.createQuery(sb.toString());
         List<EWrongStudent> wrongStudents = query.list();
         return wrongStudents;
+    }
+
+    @Override
+    public List<RWrongQuestion> getWrongsByDateArea(String beginDate, String endDate, String subjectno, String gradeno) {
+        StringBuilder stringBuilder = new StringBuilder(
+                "select count(*) as rownums,testpaperno,questionno,questionid from E_WRONG_STUDENT where testdate between to_date('")
+                .append(beginDate).append("','yyyy-MM-dd') and to_date('")
+                .append(endDate).append("','yyyy-MM-dd') and testpaperno in(select tpno from E_TESTPAPER where subjectno='")
+                .append(subjectno).append("' and gradeno='" + gradeno + "') group by testpaperno,questionno,questionid");
+
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery(stringBuilder.toString())
+                .addScalar("rownums", StringType.INSTANCE)
+                .addScalar("testpaperno", StringType.INSTANCE)
+                .addScalar("questionno", StringType.INSTANCE).addScalar("questionid", StringType.INSTANCE);
+        List list = query.list();
+        List<RWrongQuestion> wrongQuestions = new ArrayList<>();
+        for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
+            Object[] objects = (Object[]) iterator.next();
+            RWrongQuestion wrongQuestion = new RWrongQuestion();
+            wrongQuestion.setWrongnums(Integer.parseInt(objects[0].toString()));
+            wrongQuestion.setTpno(objects[1].toString());
+            wrongQuestion.setQuestionno(objects[2].toString());
+            wrongQuestion.setId(objects[3].toString());
+            wrongQuestions.add(wrongQuestion);
+        }
+
+        return wrongQuestions;
     }
 
     @Override

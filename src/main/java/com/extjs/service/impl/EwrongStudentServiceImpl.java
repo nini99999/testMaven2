@@ -125,6 +125,12 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
     }
 
     @Override
+    public List<RWrongQuestion> getWrongsByDateArea(String beginDate, String endDate, String subjectno,String gradeno) {
+        List<RWrongQuestion> wrongStudentDTOS = ewrongStudentDao.getWrongsByDateArea(beginDate, endDate, subjectno,gradeno);
+        return wrongStudentDTOS;
+    }
+
+    @Override
     public void saveOrUpdateWrongStudent(EWrongStudentDTO eWrongStudentDTO) {
 
         Date date = new Date(System.currentTimeMillis());

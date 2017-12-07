@@ -34,9 +34,12 @@ public class EquestionController {
 
     @RequestMapping("viewOneQuestion")
     @ResponseBody
-    public String queryOneQuestion(String questionID) {
+    public Map queryOneQuestion(String questionID) {
         String question = equestionService.getOneQuestion(questionID);
-        return question;
+        Map resultMap = new HashMap();
+        resultMap.put("data",question);
+        resultMap.put("tatal",1);
+        return resultMap;
     }
 
     @RequestMapping("/viewQuestionList")

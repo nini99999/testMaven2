@@ -93,9 +93,11 @@ public class ReportController {
 
     @RequestMapping("/queryWrongQuestion")
     @ResponseBody
-    public Map queryWrongQuestion() {
+    public Map queryWrongQuestion(String beginDate,String endDate,String subjectno,String gradeno,String classno) {
+        Map<String, String> dateArea = this.getDateArea(beginDate,endDate);
+
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<RWrongQuestion> rWrongQuestions = reportService.queryRWrongQuestion();
+        List<RWrongQuestion> rWrongQuestions = reportService.queryRWrongQuestion(dateArea.get("begin"), dateArea.get("end"), subjectno, gradeno, classno);
         resultMap.put("data", rWrongQuestions);
         resultMap.put("total", rWrongQuestions.size());
         return resultMap;

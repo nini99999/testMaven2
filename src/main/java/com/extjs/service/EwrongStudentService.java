@@ -1,6 +1,8 @@
 package com.extjs.service;
 
+import com.extjs.model.EWrongStudent;
 import com.extjs.model.EWrongStudentDTO;
+import com.extjs.model.RWrongQuestion;
 import com.extjs.model.VPaperQuestionAndInfo;
 import com.extjs.util.SysException;
 
@@ -34,6 +36,14 @@ public interface EwrongStudentService {
      * @return
      */
     List<EWrongStudentDTO> getQuestionListWithState(String paperid, String studentid, String currentUser);
+
+    /**
+     * 根据考试日期，获取指定日期内的错题信息
+     * @param beginDate
+     * @param endDate
+     * @return
+     */
+    List<RWrongQuestion> getWrongsByDateArea(String beginDate, String endDate,String subjectno,String gradeno);
 
     void saveOrUpdateWrongStudent(EWrongStudentDTO eWrongStudentDTO);
 

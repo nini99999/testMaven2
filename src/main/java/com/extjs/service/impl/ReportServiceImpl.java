@@ -48,6 +48,8 @@ public class ReportServiceImpl implements ReportService {
     private EtestpaperService etestpaperService;
     @Autowired
     private EteacherClassService eteacherClassService;
+    @Autowired
+    private EwrongStudentService ewrongStudentService;
 
     @Override
     public List<RClassMark> queryRClassMark(RClassMark rClassMark) {
@@ -211,7 +213,7 @@ public class ReportServiceImpl implements ReportService {
             eClassDTO.setGradeno(gradeno);
             List<EClassDTO> eClassDTOList = eclassService.queryEclassByDTO(eClassDTO);//获取指定学校、年级所对应班级列表
             for (EClassDTO classDTO : eClassDTOList) {//循环班级
-                yearAvgMark=0.0f;
+                yearAvgMark = 0.0f;
                 //根据班级、指定学科查找的授课教师
                 VTeacherClass vTeacherClass = new VTeacherClass();
                 vTeacherClass.setClassno(classDTO.getClassno());
@@ -228,36 +230,22 @@ public class ReportServiceImpl implements ReportService {
                         testDate = year + String.valueOf(i);
                     }
                     aveMark = estudentMarkService.getAvgMark(classDTO.getClassno(), testDate, subjectno);
-                    yearAvgMark+=aveMark;
+                    yearAvgMark += aveMark;
                     strings[i + 1] = df.format(aveMark).toString();
 
                 }
                 middleMark = estudentMarkService.getAvgMiddleOrFinal(classDTO.getClassno(), year, subjectno, "4");//期中平均分
                 finalMark = estudentMarkService.getAvgMiddleOrFinal(classDTO.getClassno(), year, subjectno, "5");//期末平均分
-                yearAvgMark+=middleMark;
-                yearAvgMark+=finalMark;
+                yearAvgMark += middleMark;
+                yearAvgMark += finalMark;
                 strings[14] = df.format(middleMark).toString();
-                strings[15]=df.format(finalMark).toString();
-                strings[16]=df.format(yearAvgMark/16).toString();
+                strings[15] = df.format(finalMark).toString();
+                strings[16] = df.format(yearAvgMark / 16).toString();
                 resultList.add(strings);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-//                .getAuthentication()
-//                .getPrincipal();
-//        RYearMark rYearMark = new RYearMark();
-//        rYearMark.setCreator(userDetails.getUsername());
-//        rYearMark.setYear(year);
-//        rYearMark.setSubjectno(subjectno);
-//        if (null != studentno && !"".equals(studentno)) {//根据学籍号查询唯一学生记录；
-//            EStudentDTO eStudentDTO = new EStudentDTO();
-//            eStudentDTO = estudentService.getStudentByID(studentno);
-////            eStudent = estudentDao.getEstudentByCountryID(studentno);
-//            rYearMark.setClassno(eStudentDTO.getClassno());
-//        }
-//        rYearMarks = reportDao.queryRYearMark(rYearMark);
         return resultList;
     }
 
@@ -391,14 +379,22 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<RWrongQuestion> queryRWrongQuestion() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
-        RWrongQuestion rWrongQuestion = new RWrongQuestion();
-        rWrongQuestion.setCreator(userDetails.getUsername());
-        List<RWrongQuestion> wrongQuestionList = reportDao.queryRWrongQuestion(rWrongQuestion);
-        return wrongQuestionList;
+    public List<RWrongQuestion> queryRWrongQuestion(String beginDate, String endDate, String subjectno, String gradeno, String classno) {
+        List<RWrongQuestion> wrongQuestions = ewrongStudentService.getWrongsByDateArea(beginDate, endDate, subjectno, gradeno);
+        List<RWrongQuestion> result = new ArrayList<>();
+        HashMap<String, Integer> map = estudentMarkService.getStudentNum();
+        for (RWrongQuestion wrongQuestion : wrongQuestions) {
+            wrongQuestion.setTestnums(map.get(wrongQuestion.getTpno()));
+            result.add(wrongQuestion);
+        }
+        return result;
+//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+//                .getAuthentication()
+//                .getPrincipal();
+//        RWrongQuestion rWrongQuestion = new RWrongQuestion();
+//        rWrongQuestion.setCreator(userDetails.getUsername());
+//        List<RWrongQuestion> wrongQuestionList = reportDao.queryRWrongQuestion(rWrongQuestion);
+//        return wrongQuestionList;
     }
 
     @Override

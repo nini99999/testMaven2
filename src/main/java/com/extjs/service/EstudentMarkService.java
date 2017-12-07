@@ -3,6 +3,7 @@ package com.extjs.service;
 import com.extjs.model.EStudentMark;
 import com.extjs.model.Page;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -51,6 +52,12 @@ public interface EstudentMarkService {
     Float getAvgMiddleOrFinal(String classno, String year, String subjectno, String examType);
 
     int getMareAreaTotalNum(String classno, String markArea, String tpnoString);
+
+    /**
+     * 查询所有试卷的考生数，按tpno分组
+     * @return
+     */
+    HashMap<String, Integer> getStudentNum();
 
     void modifEStudentMark(EStudentMark eStudentMark);
 

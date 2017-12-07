@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -115,7 +116,7 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
     public Float getAvgMiddleOrFinal(String classno, String year, String subjectno, String examType) {
         StringBuilder stringBuilder = new StringBuilder("SELECT avg(mark) from EStudentMark WHERE CLASSNO='" + classno + "'")
                 .append(" and to_char(TESTDATE,'yyyy')='" + year + "' and SUBJECTNO='" + subjectno + "'")
-                .append(" and TPNO in (SELECT tpno from ETestpaper where examtype='"+examType).append("')");//考试类型=4期中或5期末
+                .append(" and TPNO in (SELECT tpno from ETestpaper where examtype='" + examType).append("')");//考试类型=4期中或5期末
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(stringBuilder.toString());
         Float res = 0.0f;
@@ -125,6 +126,22 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
         } else {
         }
         return res;
+    }
+
+    @Override
+    public HashMap<String, Integer> getStudentNum() {
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        String sql = "select count(ROWID) as rownums,tpno from E_STUDENT_MARK t GROUP BY t.TPNO";
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery(sql)
+                .addScalar("rownums", IntegerType.INSTANCE)
+                .addScalar("tpno", StringType.INSTANCE);
+        List list = query.list();
+        for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
+            Object[] objects = (Object[]) iterator.next();
+            hashMap.put(objects[1].toString(), Integer.parseInt(objects[0].toString()));
+        }
+        return hashMap;
     }
 
     @Override

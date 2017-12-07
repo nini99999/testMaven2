@@ -134,7 +134,7 @@ public class EquestionServiceImpl implements EquestionService {
 
     @Override
     public String getOneQuestion(String questionID) {
-        StringBuilder sb = null;
+        StringBuilder sb = new StringBuilder("");
         if (null != questionID && !"".equals(questionID)) {
             EQuestions eQuestions = new EQuestions();
             eQuestions.setQuestionid(questionID);
@@ -143,8 +143,11 @@ public class EquestionServiceImpl implements EquestionService {
                 sb.append(questions.getQuestion());
             }
         }
-
-        return StringEscapeUtils.unescapeXml(sb.toString()).replaceFirst(".？&nbsp", ". &nbsp");
+        if (sb.toString().length() > 0) {
+            return StringEscapeUtils.unescapeXml(sb.toString()).replaceFirst(".？&nbsp", ". &nbsp");
+        } else {
+            return "";
+        }
     }
 
     @Override
