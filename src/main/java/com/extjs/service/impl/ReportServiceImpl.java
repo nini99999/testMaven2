@@ -400,6 +400,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<RAboveSpecifiedMark> queryRAboveSpecifiedMark(String gradeno, String aboveMark, String tpnoString) {
 //        HashMap markMap = reportDao.getRAboveSpecifiedMark(new RAboveSpecifiedMark());//查询升学模拟表
+        this.queryRMarkArea(gradeno,tpnoString,null);//生成数据至成绩分布表
         List resultList = new ArrayList();
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
