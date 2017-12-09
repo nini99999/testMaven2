@@ -9,7 +9,6 @@
 <head>
     <title>--班级成绩统计--</title>
 
-
     <link rel="stylesheet" href="<%=path%>/css/main.css">
 
     <!-- Include Twitter echarts -->
@@ -289,7 +288,7 @@
                 <select id="gradeno" name="gradeno" class="selectpicker" onchange="getTestPaperList()">
 
                 </select>
-                <select id="paperid" name="paperid" class="form-control" multiple="multiple" style="include">
+                <select id="paperid" name="paperid" class="form-control" multiple="multiple">
 
                 </select>
 

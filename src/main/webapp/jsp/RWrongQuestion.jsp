@@ -98,8 +98,7 @@
 
                     ue = UE.getEditor('editor', {
                         toolbars: [[
-                            'fullscreen', 'source', '|',
-                            'bold', 'italic', 'underline', '|', 'fontsize', '|', 'fontfamily', '|', 'kityformula', 'simpleupload', 'preview'
+                            'fullscreen','preview'
                         ]]
                     });
                     ue.ready(function () {
@@ -178,7 +177,7 @@
             success: function (data) {
                 $('#gradeno').empty();
 
-                $('#gradeno').append("<option value='noselected'>请选择年级</option>");
+//                $('#gradeno').append("<option value='noselected'>请选择年级</option>");
                 $.each(data.data, function (i) {
 
                     $('#gradeno.selectpicker').append("<option value=" + data.data[i].gradeno + ">" + data.data[i].gradename + "</option>");
@@ -209,7 +208,7 @@
             data: 'data',
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {
-                $('#subjectno').append("<option value='noselected'>请选择学科</option>");
+//                $('#subjectno').append("<option value='noselected'>请选择学科</option>");
                 $.each(data.data, function (i) {
 
                     $('#subjectno.selectpicker').append("<option value=" + data.data[i].subjectno + ">" + data.data[i].subjectname + "</option>");
@@ -260,9 +259,9 @@
                     <button class="btn btn-primary" type="button" onclick="queryWrongQuestion()"><span
                             class="glyphicon glyphicon-eye-open"></span>查询
                     </button>
-                    <button class="btn btn-primary" type="button" onclick="queryWrongQuestion()"><span
-                            class="glyphicon glyphicon-export"></span>导出
-                    </button>
+                    <%--<button class="btn btn-primary" type="button" onclick="queryWrongQuestion()"><span--%>
+                            <%--class="glyphicon glyphicon-export"></span>导出--%>
+                    <%--</button>--%>
                 </div>
             </div>
         </div>

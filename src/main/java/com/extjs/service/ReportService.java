@@ -66,7 +66,7 @@ public interface ReportService {
     /**
      * 升学成绩模拟
      */
-    List<RAboveSpecifiedMark> queryRAboveSpecifiedMark(String grade, String aboveMark, String dateArea);
+    List<RAboveSpecifiedMark> queryRAboveSpecifiedMark(String grade, String aboveMark,String tpnoString);
 
     /**
      * 年度教学成绩统计

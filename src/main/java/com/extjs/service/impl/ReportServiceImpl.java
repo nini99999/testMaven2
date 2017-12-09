@@ -398,8 +398,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<RAboveSpecifiedMark> queryRAboveSpecifiedMark(String gradeno, String aboveMark, String dateArea) {
-        HashMap markMap = reportDao.getRAboveSpecifiedMark(new RAboveSpecifiedMark());//查询升学模拟表
+    public List<RAboveSpecifiedMark> queryRAboveSpecifiedMark(String gradeno, String aboveMark, String tpnoString) {
+//        HashMap markMap = reportDao.getRAboveSpecifiedMark(new RAboveSpecifiedMark());//查询升学模拟表
         List resultList = new ArrayList();
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
@@ -412,8 +412,10 @@ public class ReportServiceImpl implements ReportService {
         eClassDTO.setGradeno(gradeno);
         List<EClassDTO> eClassDTOList = eclassService.queryEclassByDTO(eClassDTO);//获取指定学校、年级所对应班级列表
         RMarkArea rMarkArea = new RMarkArea();
+        String markArea = aboveMark + "," + String.valueOf(EConstants.maxMark);
         for (EClassDTO classDTO : eClassDTOList) {
-
+            //查指定区间内（aboveMark,MaxMark）、指定班级、指定试卷列表的学生数量
+            Integer above = estudentMarkService.getMareAreaTotalNum(classDTO.getClassno(), markArea, tpnoString);
             rMarkArea.setCreator(userDetails.getUsername());
             rMarkArea.setClassno(classDTO.getClassno());
             int sumStudent = 0;
@@ -436,7 +438,7 @@ public class ReportServiceImpl implements ReportService {
                     }
                 }
                 str[i + 1] = String.valueOf(sumStudent);
-                str[i + 2] = String.valueOf(markMap.get(classDTO.getClassno()));
+                str[i + 2] = String.valueOf(above);
                 resultList.add(str);
             } catch (Exception e) {
                 e.printStackTrace();

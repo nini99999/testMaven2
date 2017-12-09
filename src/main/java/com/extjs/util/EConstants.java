@@ -110,6 +110,7 @@ public class EConstants {
     public static final String defaultTeacherRole = "教师";//默认教师角色
 
     public static final String answerIdentifier = "【答案】";//试题导入中的答案标识符
+    public static final Integer maxMark=750;//正式考试的最大成绩
 
     public static final String[] markArea = {"0,399", "400,450", "451,500", "501,550", "551,600", "601,650","651,700","701,750"};
     public static final String[] subjectMarkArea = {"0,79", "80,89", "90,99", "100,109", "110,119", "120,129", "130,150"};

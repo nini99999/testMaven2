@@ -42,43 +42,54 @@
 </head>
 <script type="text/javascript">
     $(function () {
+        $('#paperid').multiselect();
         initDateSelect();
         queryEgradeListBYschool();//填充年级下拉列表
 
     });
+
     function queryAboveMark() {//动态生成表头，并调用数据进行绑定
-        var questionColumns = [];
-        $.ajax({
-            url: "/report/getMarkArea",
+        if (aboveMark.value.length == 0 || paperid.value.length == 0) {
+            alert('请指定试卷和模拟分数');
+        } else {
+            var questionColumns = [];
+            $.ajax({
+                url: "/report/getMarkArea",
 // 数据发送方式
 
-            type: "get",
+                type: "get",
 // 接受数据格式
-            dataType: "json",
+                dataType: "json",
 // 要传递的数据
-            data: 'data',
-            success: function (data) {
+                data: 'data',
+                success: function (data) {
 
 //                console.log(data);
-                var t0 = {field: "0", title: "班级", align: "center"};
-                var num = data.length + 1;
-                questionColumns.push(t0);
-                for (var i = 0; i < data.length; i++) {
+                    var t0 = {field: "0", title: "班级", align: "center"};
+                    var num = data.length + 1;
+                    questionColumns.push(t0);
+                    for (var i = 0; i < data.length; i++) {
 
-                    var temp = {field: i + 1, title: data[i], align: "center"};//手动拼接columns
-                    questionColumns.push(temp);
+                        var temp = {field: i + 1, title: data[i], align: "center"};//手动拼接columns
+                        questionColumns.push(temp);
+                    }
+                    var t1 = {field: num, title: "考生数", align: "center"};
+                    questionColumns.push(t1);
+                    var t2 = {field: num + 1, title: "模拟分以上", align: "center"};
+                    questionColumns.push(t2);
+                    bandData(questionColumns, data)
                 }
-                var t1 = {field: num, title: "考生数", align: "center"};
-                questionColumns.push(t1);
-                var t2 = {field: num + 1, title: "模拟分以上", align: "center"};
-                questionColumns.push(t2);
-                bandData(questionColumns, data)
-            }
-        })
+            })
+        }
     }
+
     function bandData(questionColumns, paramData) {//查询班级成绩表，并绑定数据至table
         var params = {};
         params.gradeno = $('#gradeno').val();
+        params.aboveMark = aboveMark.value;
+        params.startDate = $('#reservation').val().replace(/-/g, "");
+        params.endDate = $('#reservation').val().replace(/-/g, "");
+        params.tpnoString = JSON.stringify($('#paperid').val());
         $.ajax({
             url: "/report/queryAboveMark",         //请求后台的URL（*）
             type: "post",                    //请求方式（*）
@@ -100,14 +111,18 @@
             }
         })
     }
+
     function initDateSelect() {
         $(document).ready(function () {
             $('#reservation').daterangepicker(null, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
+//                console.log(start.toISOString(), end.toISOString(), label);
+                getTestPaperList();
             });
+
         });
         document.getElementById("reservation").value = getCurrentMonth();
     }
+
     function queryEgradeListBYschool() {//年级下拉列表加载
 
         $.ajax({
@@ -120,8 +135,6 @@
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {
                 $('#gradeno').empty();
-
-                $('#gradeno').append("<option value='noselected'>请选择年级</option>");
                 $.each(data.data, function (i) {
 
                     $('#gradeno.selectpicker').append("<option value=" + data.data[i].gradeno + ">" + data.data[i].gradename + "</option>");
@@ -139,6 +152,7 @@
             }
         })
     }
+
     function initEcharts(data, paramData) {
         var classData = [];
         var serie = [];
@@ -188,6 +202,7 @@
         }
         myChart.setOption(option);
     }
+
     function initbarChart(data, paramData) {
         var classData = [];
         var aboveMark = [];
@@ -196,7 +211,7 @@
             classData.push(data[i][0]);
             var above = data[i].length - 1;
             aboveMark.push(data[i][above]);
-            studentnum.push(data[i][above - 1])
+            studentnum.push(data[i][above - 1] - data[i][above])
         }
         ;
         var myChart = echarts.init(document.getElementById('barchart'));
@@ -217,7 +232,7 @@
             legend: {
                 x: 'right',
                 y: 'top',
-                data: ['模拟分以上', '考生总数']
+                data: ['模拟分以上', '模拟分以下']
 //                data:['高1-1','高1-2','高1-3','高1-4','高1-5','高1-6']
             },
             grid: {
@@ -250,20 +265,20 @@
             ],
             series: [
                 {
-                    name: '模拟分以上',
-                    type: 'bar',
-                    barWidth: '20%',
-
-                    stack: 'test',
-                    data: aboveMark
-                },
-                {
-                    name: '考生总数',
+                    name: '模拟分以下',
                     type: 'bar',
                     barWidth: '20%',
                     stack: 'test',
                     barGap: '-100%',
                     data: studentnum
+                },
+                {
+                    name: '模拟分以上',
+                    type: 'bar',
+                    barWidth: '20%',
+                    barGap: '-100%',
+                    stack: 'test',
+                    data: aboveMark
                 }
             ]
             // 使用刚指定的配置项和数据显示图表。
@@ -271,6 +286,7 @@
         }
         myChart.setOption(option);
     }
+
     function getCurrentMonth() {
         var firstDate = new Date();
         firstDate.setDate(1); //第一天
@@ -280,11 +296,44 @@
         return new XDate(firstDate).toString('yyyy-MM-dd') + " - " + new XDate(endDate).toString('yyyy-MM-dd');
 //        alert("第一天：" + new XDate(firstDate).toString('yyyy-MM-dd') + " 最后一天：" + new XDate(endDate).toString('yyyy-MM-dd'));
     }
+
+    function getTestPaperList() {
+        var params = {};
+        params.gradeno = $('#gradeno').val();
+        params.creator = 'All';//不根据创建人查询，即查询满足条件的所有试卷
+        params.startDate = $('#reservation').val().replace(/-/g, "");
+        params.endDate = $('#reservation').val().replace(/-/g, "");
+        $.ajax({
+            url: "/etestpaper/viewTestPaper",
+// 数据发送方式
+            type: "get",
+// 接受数据格式
+            dataType: "json",
+// 要传递的数据
+            data: params,
+// 回调函数，接受服务器端返回给客户端的值，即result值
+            success: function (data) {
+                $('#paperid').empty();
+                $.each(data.data, function (i) {
+//                    $('#paperid.multiselect').append("<option value=" + data.data[i].tpno + ">" + data.data[i].tpname + "</option>");
+                    $('#paperid').append($('<option></option>').text(data.data[i].tpname).val(data.data[i].tpno));
+                });
+                $('#paperid').multiselect('rebuild');
+                $('#paperid').multiselect('refresh');
+            },
+            error: function (data) {
+                alert("查询失败" + data);
+                console.log("error", data);
+            }
+        })
+
+    }
 </script>
 <body>
 <div class="container" style="float:center;width: 99%">
     <div class="well">
         <div class="input-prepend input-group">
+
             <span class="add-on input-group-addon">
                 <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
             </span>
@@ -294,30 +343,31 @@
                    id="reservation"
                    class="form-control"/>
             <div style="float: left">
-                <select id="gradeno" name="gradeno" class="selectpicker">
-                </select>
-            </div>
-            <div class="col-lg-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="升学成绩设定：">
-                    <span class="input-group-btn">
-	 	         <button class="btn btn-primary" type="button" onclick="queryAboveMark()">
-                     <span class="glyphicon glyphicon-eye-open"></span>查询
-                 </button></span>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div style="float: none;display: block;margin-left: auto;margin-right: auto;">
-        <div style="float: none;display: block;margin-left: auto;margin-right: auto;">
-            <table class="table table-striped" id="class_mark" align="center"
-                   striped="true" data-height="288">
-            </table>
+                <select id="gradeno" name="gradeno" class="selectpicker" onchange="getTestPaperList()">
+                </select>
+                <select id="paperid" name="paperid" class="form-control" multiple="multiple">
+                </select>
+
+                <input id="aboveMark" name="aboveMark" type="text" class="form-control" style="width: 150px"
+                       placeholder="升学成绩："/>
+                <button class="btn btn-primary" type="button" onclick="queryAboveMark()">
+                    <span class="glyphicon glyphicon-eye-open"></span>查询
+                </button>
+
+            </div>
         </div>
-        <div id="main" style="width: 45%;height:47%;float: left"></div>
-        <div id="barchart" style="width: 55%;height:47%;float: left"></div>
     </div>
 </div>
+<div style="float: none;display: block;margin-left: auto;margin-right: auto;">
+    <div style="float: none;display: block;margin-left: auto;margin-right: auto;">
+        <table class="table table-striped" id="class_mark" align="center"
+               striped="true" data-height="288">
+        </table>
+    </div>
+    <div id="main" style="width: 45%;height:47%;float: left"></div>
+    <div id="barchart" style="width: 55%;height:47%;float: left"></div>
+</div>
+
 </body>
 </html>

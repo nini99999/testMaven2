@@ -24,6 +24,23 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
+    private String splitTpnoString(String tpnoString) {
+        String res = "";
+        if (tpnoString.replace("\"", "").length() > 0) {
+
+            String[] array = tpnoString.substring(1, tpnoString.length() - 1).split(",");
+            if (array.length > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 0; i < array.length; i++) {
+                    stringBuilder.append("'" + array[i].substring(1, array[i].length() - 1) + "',");
+                }
+
+                res = stringBuilder.toString().substring(0, stringBuilder.toString().length() - 1);
+            }
+        }
+        return res;
+    }
+
     public HashMap<String, String> getDateArea(String beginDate, String endDate) {
         HashMap<String, String> resultMap = new HashMap<>();
         resultMap.put("begin", beginDate.substring(0, 8));
@@ -53,17 +70,8 @@ public class ReportController {
     @RequestMapping(value = "/queryRMarkArea", method = RequestMethod.POST)
     @ResponseBody
     public Map queryRMarkArea(String gradeno, String subjectno, String tpno, String tpnoString) {
-        if (tpnoString.replace("\"", "").length() > 0) {
-
-            String[] array = tpnoString.substring(1, tpnoString.length() - 1).split(",");
-            if (array.length > 0) {
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < array.length; i++) {
-                    stringBuilder.append("'" + array[i].substring(1, array[i].length() - 1) + "',");
-                }
-
-                tpno = stringBuilder.toString().substring(0, stringBuilder.toString().length() - 1);
-            }
+        if (this.splitTpnoString(tpnoString).length() > 0) {
+            tpno = this.splitTpnoString(tpnoString);
         }
         Map<String, Object> resultMap = new HashMap<String, Object>();
         RMarkArea rMarkArea = new RMarkArea();
@@ -93,8 +101,8 @@ public class ReportController {
 
     @RequestMapping("/queryWrongQuestion")
     @ResponseBody
-    public Map queryWrongQuestion(String beginDate,String endDate,String subjectno,String gradeno,String classno) {
-        Map<String, String> dateArea = this.getDateArea(beginDate,endDate);
+    public Map queryWrongQuestion(String beginDate, String endDate, String subjectno, String gradeno, String classno) {
+        Map<String, String> dateArea = this.getDateArea(beginDate, endDate);
 
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<RWrongQuestion> rWrongQuestions = reportService.queryRWrongQuestion(dateArea.get("begin"), dateArea.get("end"), subjectno, gradeno, classno);
@@ -113,9 +121,12 @@ public class ReportController {
      */
     @RequestMapping("/queryAboveMark")
     @ResponseBody
-    public Map queryAboveMark(String gradeno, String dateArea, String aboveMark) {
+    public Map queryAboveMark(String gradeno,String aboveMark, String tpnoString) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        List<RAboveSpecifiedMark> aboveSpecifiedMarks = reportService.queryRAboveSpecifiedMark(gradeno, aboveMark, dateArea);
+//        Map<String, String> dateArea = this.getDateArea(beginDate,endDate);
+
+        List<RAboveSpecifiedMark> aboveSpecifiedMarks =
+                reportService.queryRAboveSpecifiedMark(gradeno, aboveMark, this.splitTpnoString(tpnoString));
         resultMap.put("data", aboveSpecifiedMarks);
         resultMap.put("total", aboveSpecifiedMarks.size());
         return resultMap;
