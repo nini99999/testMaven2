@@ -256,6 +256,10 @@
                 title: "班级",
                 align: "center"
             }, {
+                field: "tpname",
+                title: "试卷",
+                align: "center"
+            }, {
                 field: "studentname",
                 title: "学生",
                 align: "center"

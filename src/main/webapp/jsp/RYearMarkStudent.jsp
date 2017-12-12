@@ -38,10 +38,16 @@
     <script src="<%=path%>/utils/xdate.js"></script>
 </head>
 <script type="text/javascript">
+    $(function () {
+
+        queryEgradeListBYschool();
+
+    });
 
     function indexFormatter(value, row, index) {
         return index + 1;
     }
+
     function operateFormatter(value, row, index) {
         var PySheDingID = row.bs_rowid;
 // 利用 row 获取点击这行的ID
@@ -50,131 +56,185 @@
             "<button type='button' class='btn btn-info';' id='m-callback-this-start' onclick='btnEntry(" + row.bs_rowid + ")'  > <span class='glyphicon glyphicon-th-list' onclick='queryEgradeList()'></span>  </button>"].join('');
 
     }
-    function queryYearMarkStudent() {
+
+
+    function getTableHead() {//动态生成表头，并调用数据进行绑定
+        var questionColumns = [];
+
+
+//                console.log(data);
+        var t0 = {field: "0", title: "学科", align: "center"};
+
+        questionColumns.push(t0);
+
+        for (var i = 0; i < 12; i++) {
+
+            var temp = {field: i + 1, title: (i + 1).toString() + '月', align: "center"};//手动拼接columns
+            questionColumns.push(temp);
+        }
+        var t1 = {field: 13, title: "期中", align: "center"};
+        questionColumns.push(t1);
+        var t2 = {field: 14, title: "期末", align: "center"};
+        questionColumns.push(t2);
+        var t3 = {field: 15, title: "全年平均", align: "center"};
+        questionColumns.push(t3);
+        bandData(questionColumns)
+    }
+
+    function bandData(questionColumns) {//查询，并绑定数据至table
+        var params = {};
+
+        params.year = myear.value;
+        params.studentID = $('#studentID').val();
+
+        $.ajax({
+            url: "/report/queryYearMarkStudent",         //请求后台的URL（*）
+            type: "get",                    //请求方式（*）
+            dataType: "json",
+// 要传递的数据
+            data: params,
+            success: function (data) {
+                $('#ds_table').bootstrapTable('destroy');
+                $('#ds_table').bootstrapTable({
+                    columns: questionColumns,
+                    data: data.data
+                });
+                if (data.data != null) {
+                    initMarkChart(data.data);
+                }
+
+            }
+        })
+    }
+
+    function beforeRadarChart(subjectData, studentAvgData) {
         var params = {};
         params.year = myear.value;
-//        params.subjectno = $('#subjectno').val();
-        params.studentname = studentname.value;
-        params.studentno = studentno.value;
+        params.studentID = studentID.value;
+        //获取班级平均成绩
         $.ajax({
-            url: "/report/queryYearMarkStudent",
+            url: "/report/getAvgMarkByClass",
+// 数据发送方式
+            type: "get",
+// 接受数据格式
+            dataType: "json",
+
+// 要传递的数据
+            data: params,
+            success: function (classData) {
+                $.ajax({ //获取年级平均成绩
+                    url: "/report/getAvgMarkByGrade",
+// 数据发送方式
+                    type: "get",
+// 接受数据格式
+                    dataType: "json",
+// 要传递的数据
+                    data: params,
+                    success: function (gradeData) {
+                        initRadarChart(subjectData, studentAvgData, classData.data, gradeData.data);
+                    }
+                });
+            }
+        })
+    }
+
+    function initRadarChart(subjectData, studentAvgData, classAvgData, gradeAvgData) {
+
+        var radarChart = echarts.init(document.getElementById('radarChart'));
+        $.ajax({
+            url: "/esubjects/viewEsubjectsList",
 // 数据发送方式
             type: "get",
 // 接受数据格式
             dataType: "json",
 // 要传递的数据
-            data: params,
+            data: 'data',
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {
 
-                $("#ds_table").bootstrapTable('destroy');
-                $("#ds_table").bootstrapTable({data: data.data});//刷新ds_table的数据
-                if (null != data.data) {
-                    $.ajax({
-                        url: "/esubjects/viewEsubjectsList",
-// 数据发送方式
-                        type: "get",
-// 接受数据格式
-                        dataType: "json",
-// 要传递的数据
-                        success: function (mdata) {//查询所有学科
-//                            console.log(data);
-                            $.ajax({
-                                url: "/report/queryYearMark",
-// 数据发送方式
-                                type: "get",
-// 接受数据格式
-                                dataType: "json",
-// 要传递的数据
-                                data:params,
-                                success: function (ydata) {//查询班级平均成绩
-                            console.log(ydata);
-                                    initRadarChart(mdata.data, data.data,ydata.data);
-                                }
-                            });
-//                            initRadarChart(mdata.data, data.data);
-                        }
-                    });
-//                    console.log(data);
-                    initMarkChart(data.data);
+                var subjectsData=[];
+                for (var i = 0; i < data.data.length; i++) {
 
-                }
+                    var item = {
+                        name: data.data[i].subjectname, max: data.data[i].totalscore
+                    }
+                    subjectsData.push(item);
+                };
+                option = {
+                    title: {
+                        subtext: '学生综合能力评定',
+                        x: 'right',
+                        y: 'top',
+                        textAlign: 'center'
+                    },
+                    tooltip: {},
+                    legend: {
+                        orient: 'vertical',
+                        x: 'left',
+                        y: 'center',
+                        data: ['当前学生', '班级平均', '年级平均']
+                    },
+                    radar: {
+                        // shape: 'circle',
+                        indicator: subjectsData
+                    },
+                    series: [{
+
+                        type: 'radar',
+                        // areaStyle: {normal: {}},
+                        data: [
+                            {
+                                value: studentAvgData,
+//                        value: [110, 120, 130, 120, 120, 240, 256],
+                                name: '当前学生'
+                            },
+                            {
+                                value: classAvgData,
+//                        value: [78, 110, 110],
+                                name: '班级平均'
+                            },
+                            {
+                                value: gradeAvgData,
+//                        value: [78, 110, 110],
+                                name: '年级平均'
+                            }
+                        ]
+                    }]
+                };
+                radarChart.setOption(option);
             },
 
             error: function (data) {
-                alert("查询失败" + data);
+
+                alert("查询学科失败" + data);
+
             }
         })
-    }
-    function initRadarChart(mdata, data,ydata) {
-        var radarChart = echarts.init(document.getElementById('radarChart'));
-        var subjectData = [];
-        var aveData = [];
-        var classAveData=[];
-        for (var i = 0; i < mdata.length; i++) {
+//        var aveData = [];
+//        var classAveData = [];
+//
+//        for (var i = 0; i < data.length; i++) {//当前学生平均分设定
+//            aveData.push(data[i].markave);
+//        }
+//        for (var i = 0; i < ydata.length; i++) {//所在班级平均分设定
+//            classAveData.push(ydata[i].avemark);
+//        }
+//        console.log(aveData);
 
-            var item = {
-                name: mdata[i].subjectname, max: mdata[i].totalscore
-            }
-            subjectData.push(item);
-        }
-        for (var i = 0; i < data.length; i++) {//当前学生平均分设定
-            aveData.push(data[i].markave);
-        }
-        for (var i = 0; i < ydata.length; i++) {//所在班级平均分设定
-            classAveData.push(ydata[i].avemark);
-        }
-        console.log(aveData);
-        option = {
-            title: {
-                subtext: '学生综合能力评定',
-                x: 'right',
-                y: 'top',
-                textAlign: 'center'
-            },
-            tooltip: {},
-            legend: {
-                orient: 'vertical',
-                x: 'left',
-                y: 'center',
-                data: ['当前学生', '班级平均']
-            },
-            radar: {
-                // shape: 'circle',
-                indicator: subjectData
-            },
-            series: [{
-
-                type: 'radar',
-                // areaStyle: {normal: {}},
-                data: [
-                    {
-                        value: aveData,
-//                        value: [110, 120, 130, 120, 120, 240, 256],
-                        name: '当前学生'
-                    },
-                    {
-                        value:classAveData,
-//                        value: [78, 110, 110],
-                        name: '班级平均'
-                    }
-                ]
-            }]
-        };
-        radarChart.setOption(option);
     }
+
     function initMarkChart(data) {
         var subjectData = [];
-        var markData = [];
+        var studentAvgData = [];
         var serie = [];
 //        console.log(data);
         for (var i = 0; i < data.length; i++) {
-            subjectData.push(data[i].subjectno);
-
+            subjectData.push(data[i][0]);
+            studentAvgData.push(data[i][15]);
             var item = {
-                name: data[i].subjectno,
+                name: data[i][0],
                 type: 'line',
-                data: [data[i].markone, data[i].marktwo, data[i].markthree, data[i].markfour, data[i].markfive, data[i].marksix, data[i].markseven, data[i].markeight, data[i].marknine, data[i].markten, data[i].markeleven, data[i].marktwelve, data[i].markmidterm, data[i].markfinal, data[i].markave]
+                data: [data[i][1], data[i][2], data[i][3], data[i][4], data[i][5], data[i][6], data[i][7], data[i][8], data[i][9], data[i][10], data[i][11], data[i][12], data[i][13], data[i][14], data[i][15]]
             }
             serie.push(item);
         }
@@ -227,111 +287,119 @@
             series: serie
         };   // 使用刚指定的配置项和数据显示图表。
         markChart.setOption(option);
+        beforeRadarChart(subjectData, studentAvgData);
     }
-    function getSum(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].markone;
-        }
-        return count;
+    function queryEgradeListBYschool() {//年级下拉列表加载
+
+        $.ajax({
+            url: "/egrade/viewEgradeListByschoolno",
+// 数据发送方式
+            type: "post",
+// 接受数据格式
+            dataType: "json",
+
+// 回调函数，接受服务器端返回给客户端的值，即result值
+            success: function (data) {
+                $('#gradeno').empty();
+
+                $.each(data.data, function (i) {
+
+                    $('#gradeno.selectpicker').append("<option value=" + data.data[i].gradeno + ">" + data.data[i].gradename + "</option>");
+
+                });
+
+                $('#gradeno').selectpicker('refresh');
+
+            },
+
+            error: function (data) {
+
+                alert("查询年级失败" + data);
+
+            }
+        })
     }
-    function getSum2(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].marktwo;
-        }
-        return count;
+    function getEclassList() {
+
+        var params = {};
+        params.gradeno = $('#gradeno').val();
+        $.ajax({
+            url: "/eclass/viewEclassByDTO",
+// 数据发送方式
+            type: "post",
+// 接受数据格式
+            dataType: "json",
+// 要传递的数据
+            data: params,
+// 回调函数，接受服务器端返回给客户端的值，即result值
+            success: function (data) {
+                $('#classno').empty();
+
+                $('#classno').selectpicker();
+//                console.log(data.data);
+                $.each(data.data, function (i) {
+
+                    $('#classno.selectpicker').append("<option value=" + data.data[i].classno + ">" + data.data[i].classname + "</option>");
+
+
+                });
+                if (params.gradeno != 'noselected') {
+                    $('#classno').selectpicker('refresh');
+                } else {
+//                    $('#classno').selectpicker('destroy');
+                    $('#classno').val('noselected');
+                }
+
+
+            },
+
+            error: function (data) {
+
+                alert("查询班级失败" + data);
+
+            }
+        })
     }
-    function getSum3(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].markthree;
-        }
-        return count;
-    }
-    function getSum4(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].markfour;
-        }
-        return count;
-    }
-    function getSum5(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].markfive;
-        }
-        return count;
-    }
-    function getSum6(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].marksix;
-        }
-        return count;
-    }
-    function getSum7(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].markseven;
-        }
-        return count;
-    }
-    function getSum8(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].markeight;
-        }
-        return count;
-    }
-    function getSum9(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].marknine;
-        }
-        return count;
-    }
-    function getSum10(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].markten;
-        }
-        return count;
-    }
-    function getSum11(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].markeleven;
-        }
-        return count;
-    }
-    function getSum12(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].marktwelve;
-        }
-        return count;
-    }
-    function getSumAve(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].markave;
-        }
-        return count;
-    }
-    function getSumMidterm(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].markmidterm;
-        }
-        return count;
-    }
-    function getSumFinal(value) {
-        var count = 0;
-        for (var i in value) {
-            count += value[i].markfinal;
-        }
-        return count;
+    function getStudentList() {
+
+        var params = {};
+        params.classno = $('#classno').val();
+        $.ajax({
+            url: "/estudent/viewEstudentByDTO",
+// 数据发送方式
+            type: "get",
+// 接受数据格式
+            dataType: "json",
+// 要传递的数据
+            data: params,
+// 回调函数，接受服务器端返回给客户端的值，即result值
+            success: function (data) {
+                $('#studentID').empty();
+
+                $('#classno').selectpicker();
+//                console.log(data.data);
+                $.each(data.data, function (i) {
+
+                    $('#studentID.selectpicker').append("<option value=" + data.data[i].id + ">" + data.data[i].studentname + "</option>");
+
+
+                });
+                if (params.classno != 'noselected') {
+                    $('#studentID').selectpicker('refresh');
+                } else {
+//                    $('#classno').selectpicker('destroy');
+                    $('#studentID').val('noselected');
+                }
+
+
+            },
+
+            error: function (data) {
+
+                alert("查询班级失败" + data);
+
+            }
+        })
     }
 </script>
 <body>
@@ -345,11 +413,18 @@
 
 
                 <input id="myear" name="myear" class="form-control" style="width: 200px;" placeholder="统计年度："/>
-                <input id="studentname" name="studentname" class="form-control" style="width: 200px;"
-                       placeholder="学生姓名："/>
-                <input id="studentno" name="studentno" class="form-control" style="width: 200px;"
-                       placeholder="学籍号："/>
-                <button class="btn btn-primary" type="button" onclick="queryYearMarkStudent()"><span
+                <select id="gradeno" name="gradeno" class="selectpicker fit-width"
+                        onchange="getEclassList();getStudentList()">
+
+                </select>
+                <select id="classno" name="classno" class="selectpicker fit-width" onchange="getStudentList()">
+
+                </select>
+                <select id="studentID" name="studentID" class="selectpicker show-tick fit-width" data-live-search="true">
+
+                </select>
+
+                <button class="btn btn-primary" type="button" onclick="getTableHead()"><span
                         class="glyphicon glyphicon-eye-open"></span>查询
                 </button>
 
@@ -358,30 +433,11 @@
     </div>
     <div style="float: none;display: block;margin-left: auto;margin-right: auto;">
         <div id="bs_t" style="float: none;display: block;margin-left: auto;margin-right: auto;">
-            <table class="table table-striped" id="ds_table" align="center" data-show-footer="true"
+            <table class="table table-striped" id="ds_table" align="center"
                    striped="true" data-height="300">
                 <thead>
 
                 <tr>
-                    <th data-field="studentno" data-align="center">学籍号</th>
-                    <th data-field="studentname" data-align="center">学生</th>
-                    <th data-field="subjectno" data-align="center" data-footer-formatter="总分">学科</th>
-                    <th data-field="markone" data-align="center" data-footer-formatter="getSum">1月</th>
-                    <th data-field="marktwo" data-align="center" data-footer-formatter="getSum2">2月</th>
-                    <th data-field="markthree" data-align="center" data-footer-formatter="getSum3">3月</th>
-                    <th data-field="markfour" data-align="center" data-footer-formatter="getSum4">4月</th>
-                    <th data-field="markfive" data-align="center" data-footer-formatter="getSum5">5月</th>
-                    <th data-field="marksix" data-align="center" data-footer-formatter="getSum6">6月</th>
-                    <th data-field="markseven" data-align="center" data-footer-formatter="getSum7">7月</th>
-                    <th data-field="markeight" data-align="center" data-footer-formatter="getSum8">8月</th>
-                    <th data-field="marknine" data-align="center" data-footer-formatter="getSum9">9月</th>
-                    <th data-field="markten" data-align="center" data-footer-formatter="getSum10">10月</th>
-                    <th data-field="markeleven" data-align="center" data-footer-formatter="getSum11">11月</th>
-                    <th data-field="marktwelve" data-align="center" data-footer-formatter="getSum12">12月</th>
-
-                    <th data-field="markmidterm" data-align="center" data-footer-formatter="getSumMidterm">期中</th>
-                    <th data-field="markfinal" data-align="center" data-footer-formatter="getSumFinal">期末</th>
-                    <th data-field="markave" data-align="center" data-footer-formatter="getSumAve">平均分</th>
 
                 </tr>
                 </thead>

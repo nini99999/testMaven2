@@ -1,11 +1,9 @@
 package com.extjs.service.impl;
 
 import com.extjs.dao.EStudentMarkDao;
-import com.extjs.model.EStudentMark;
-import com.extjs.model.ETestpaper;
-import com.extjs.model.ETestpaperDTO;
-import com.extjs.model.Page;
+import com.extjs.model.*;
 import com.extjs.service.EstudentMarkService;
+import com.extjs.service.EsubjectsService;
 import com.extjs.service.EtestpaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +27,8 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
     private EStudentMarkDao studentMarkDao;
     @Autowired
     private EtestpaperService etestpaperService;
+    @Autowired
+    private EsubjectsService esubjectsService;
 
     @Override
     public List<EStudentMark> queryEStudentMark(EStudentMark eStudentMark, Page page) {
@@ -49,6 +50,27 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
     }
 
     @Override
+    public Float getAvgMarkByStudent(String studentID, String testDate, String subjectno) {
+        Float res=studentMarkDao.getAvgMarkByStudent(studentID, testDate, subjectno);
+        return res;
+    }
+
+    @Override
+    public LinkedHashMap<String,Float> getAvgMarkByClass(String classno, String year) {
+
+        LinkedHashMap<String, Float> map = studentMarkDao.getAvgMarkByClass(classno, year);
+
+        return map;
+    }
+
+    @Override
+    public LinkedHashMap<String,Float> getAvgMarkByGrade(String gradeno, String year) {
+        LinkedHashMap<String, Float> map = studentMarkDao.getAvgMarkByGrade(gradeno, year);
+
+        return map;
+    }
+
+    @Override
     public int getMarkAreaNum(String tpno, String classno, String markArea) {
         int res = studentMarkDao.getMarkAreaNum(tpno, classno, markArea);
         return res;
@@ -67,6 +89,11 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
     }
 
     @Override
+    public Float getAvgMiddleOrFinalByStudent(String studentID, String year, String subjectno, String examtype) {
+        return studentMarkDao.getAvegMiddleOrFinalByStudent(studentID, year, subjectno, examtype);
+    }
+
+    @Override
     public int getMareAreaTotalNum(String classno, String markArea, String tpnoString) {
         int res = studentMarkDao.getMarkAreaTotalNum(classno, markArea, tpnoString);
         return res;
@@ -74,7 +101,7 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
 
     @Override
     public HashMap<String, Integer> getStudentNum() {
-        HashMap<String,Integer> map=studentMarkDao.getStudentNum();
+        HashMap<String, Integer> map = studentMarkDao.getStudentNum();
         return map;
     }
 

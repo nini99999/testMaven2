@@ -121,7 +121,7 @@ public class ReportController {
      */
     @RequestMapping("/queryAboveMark")
     @ResponseBody
-    public Map queryAboveMark(String gradeno,String aboveMark, String tpnoString) {
+    public Map queryAboveMark(String gradeno, String aboveMark, String tpnoString) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
 //        Map<String, String> dateArea = this.getDateArea(beginDate,endDate);
 
@@ -160,14 +160,31 @@ public class ReportController {
      */
     @RequestMapping("/queryYearMarkStudent")
     @ResponseBody
-    public Map queryYearMarkStudent(String year, String studentname, String subjectno, String studentno) {
+    public Map queryYearMarkStudent(String year, String studentID) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
-        if ("noselected".equals(subjectno)) {
-            subjectno = null;
-        }
-        List<RYearMarkStudent> rYearMarkStudents = reportService.queryRYearMarkStudent(year, studentname, subjectno, studentno);
+
+        List<String[]> rYearMarkStudents = reportService.getYearMarkStudent(year, studentID);
         resultMap.put("data", rYearMarkStudents);
         resultMap.put("total", rYearMarkStudents.size());
+        return resultMap;
+    }
+
+
+    @RequestMapping("/getAvgMarkByClass")
+    @ResponseBody
+    public Map getAvgMarkByClass(String studentID, String year) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Float[] floats = reportService.getAvgMarkByClass(studentID, year);
+        resultMap.put("data", floats);
+        return resultMap;
+    }
+
+    @RequestMapping("/getAvgMarkByGrade")
+    @ResponseBody
+    public Map getAvgMarkByGrade(String studentID, String year) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Float[] floats = reportService.getAvgMarkByGrade(studentID, year);
+        resultMap.put("data", floats);
         return resultMap;
     }
 }

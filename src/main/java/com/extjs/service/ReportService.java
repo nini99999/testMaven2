@@ -61,12 +61,12 @@ public interface ReportService {
     /**
      * 错题统计
      */
-    List<RWrongQuestion> queryRWrongQuestion(String beginDate,String endDate,String subjectno,String gradeno,String classno);
+    List<RWrongQuestion> queryRWrongQuestion(String beginDate, String endDate, String subjectno, String gradeno, String classno);
 
     /**
      * 升学成绩模拟
      */
-    List<RAboveSpecifiedMark> queryRAboveSpecifiedMark(String grade, String aboveMark,String tpnoString);
+    List<RAboveSpecifiedMark> queryRAboveSpecifiedMark(String grade, String aboveMark, String tpnoString);
 
     /**
      * 年度教学成绩统计
@@ -77,5 +77,32 @@ public interface ReportService {
      * 学生年度成绩统计
      */
     List<RYearMarkStudent> queryRYearMarkStudent(String year, String studentname, String subjectno, String studentno);
+
+    /**
+     * 学生年度成绩统计
+     *
+     * @param year
+     * @param studentID
+     * @return
+     */
+    List<String[]> getYearMarkStudent(String year, String studentID);
+
+    /**
+     * 根据指定学生所在班级，查询指定年度的平均成绩（月考、期中、期末），按学科排序
+     *
+     * @param studentID
+     * @param year
+     * @return
+     */
+    Float[] getAvgMarkByClass(String studentID, String year);
+
+    /**
+     * 根据指定学生所在年级，查询指定年度的平均成绩（月考、期中、期末），按学科排序
+     *
+     * @param studentID
+     * @param year
+     * @return
+     */
+    Float[] getAvgMarkByGrade(String studentID, String year);
 
 }

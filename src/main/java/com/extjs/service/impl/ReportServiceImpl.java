@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -30,12 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReportServiceImpl implements ReportService {
     @Autowired
     private ReportDao reportDao;
-    //    @Autowired
-//    private EclassDao eclassDao;
     @Autowired
     private EclassService eclassService;
     @Autowired
-//    private EstudentDao estudentDao;
     private EstudentService estudentService;
 
     @Autowired
@@ -63,27 +61,15 @@ public class ReportServiceImpl implements ReportService {
         rClassMark.setGradeno(gradeno);
         rClassMark.setCreator(this.getUserName());
         List<RClassMark> rClassMarkList = reportDao.queryRClassMark(rClassMark);
+        DecimalFormat df = new DecimalFormat("##,###,###.##");
         for (RClassMark classMark : rClassMarkList) {
-            resultMap.put(classMark.getClassno() + classMark.getSubjectno(), String.valueOf(classMark.getMark()));
+            resultMap.put(classMark.getClassno() + classMark.getSubjectno(), String.valueOf(df.format(classMark.getMark())));
         }
 
 
         return resultMap;
     }
 
-    //    public UserDTO getCurrentUser() {
-//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-//                .getAuthentication()
-//                .getPrincipal();
-//        UserDTO userDTO = new UserDTO();
-//        try {
-//            userDTO = userService.getUserByUnique(userDetails.getUsername());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return userDTO;
-//    }
-//
     public String getUserName() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
@@ -119,6 +105,7 @@ public class ReportServiceImpl implements ReportService {
 //            List<EClass> eClassList = eclassDao.queryEclass(eClassDTO);//获取指定学校、年级所对应班级列表
             List<EClassDTO> eClassDTOList = eclassService.queryEclassByDTO(eClassDTO);
             HashMap<String, String> aveMarkMap = this.getRClassMark(rClassMark.getGradeno());//获取平均成绩map
+            DecimalFormat df = new DecimalFormat("##,###,###.##");
             for (EClassDTO classDTO : eClassDTOList) {
                 rClassMark = new RClassMark();
                 rClassMark.setClassno(classDTO.getClassno());
@@ -142,7 +129,7 @@ public class ReportServiceImpl implements ReportService {
                     sum = Float.parseFloat(str[i]) + sum;
 
                 }
-                DecimalFormat df = new DecimalFormat("##,###,###.##");
+
                 String sdf = df.format(sum).toString();
                 str[i + 1] = sdf;
                 resultList.add(str);
@@ -212,6 +199,7 @@ public class ReportServiceImpl implements ReportService {
             eClassDTO.setSchoolno(eschoolService.getSchoolnoByContext());
             eClassDTO.setGradeno(gradeno);
             List<EClassDTO> eClassDTOList = eclassService.queryEclassByDTO(eClassDTO);//获取指定学校、年级所对应班级列表
+
             for (EClassDTO classDTO : eClassDTOList) {//循环班级
                 yearAvgMark = 0.0f;
                 //根据班级、指定学科查找的授课教师
@@ -223,6 +211,7 @@ public class ReportServiceImpl implements ReportService {
                 String[] strings = new String[18];
                 strings[0] = teacherClass.getClassno();
                 strings[1] = teacherClass.getTeachername();
+                int aboveZero = 0;
                 for (int i = 1; i <= 12; i++) {//12个月循环，获取每个月、月考的平均成绩
                     if (i < 10) {
                         testDate = year + "0" + String.valueOf(i);
@@ -230,17 +219,34 @@ public class ReportServiceImpl implements ReportService {
                         testDate = year + String.valueOf(i);
                     }
                     aveMark = estudentMarkService.getAvgMark(classDTO.getClassno(), testDate, subjectno);
-                    yearAvgMark += aveMark;
+                    if (aveMark > 0) {
+                        aboveZero += 1;
+                        yearAvgMark += aveMark;
+                    }
+
                     strings[i + 1] = df.format(aveMark).toString();
 
                 }
                 middleMark = estudentMarkService.getAvgMiddleOrFinal(classDTO.getClassno(), year, subjectno, "4");//期中平均分
                 finalMark = estudentMarkService.getAvgMiddleOrFinal(classDTO.getClassno(), year, subjectno, "5");//期末平均分
-                yearAvgMark += middleMark;
-                yearAvgMark += finalMark;
+                if (middleMark > 0) {
+                    aboveZero += 1;
+                    yearAvgMark += middleMark;
+                }
+                if (finalMark > 0) {
+                    aboveZero += 1;
+                    yearAvgMark += finalMark;
+                }
+
+
                 strings[14] = df.format(middleMark).toString();
                 strings[15] = df.format(finalMark).toString();
-                strings[16] = df.format(yearAvgMark / 16).toString();
+                if (aboveZero > 0) {
+                    strings[16] = df.format(yearAvgMark / aboveZero).toString();
+                } else {
+                    strings[16] = String.valueOf(0);
+                }
+
                 resultList.add(strings);
             }
         } catch (Exception e) {
@@ -250,18 +256,103 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<RYearMarkStudent> queryRYearMarkStudent(String year, String studentname, String subjectno, String studentno) {
+    public List<RYearMarkStudent> queryRYearMarkStudent(String year, String studentID, String subjectno, String studentno) {
         List<RYearMarkStudent> rYearMarkStudents = new ArrayList<RYearMarkStudent>();
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
         RYearMarkStudent rYearMarkStudent = new RYearMarkStudent();
         rYearMarkStudent.setCreator(userDetails.getUsername());
-        rYearMarkStudent.setStudentname(studentname);
+        rYearMarkStudent.setStudentname(studentID);
         rYearMarkStudent.setSubjectno(subjectno);
         rYearMarkStudent.setStudentno(studentno);
         rYearMarkStudents = reportDao.queryRYearMarkStudent(rYearMarkStudent);
         return rYearMarkStudents;
+    }
+
+    @Override
+    public List<String[]> getYearMarkStudent(String year, String studentID) {
+        List<String[]> resultList = new ArrayList<String[]>();
+        DecimalFormat df = new DecimalFormat("##,###,###.##");
+        Float aveMark = 0.0f;//月考平均分
+        Float middleMark = 0.0f;//期中平均分
+        Float finalMark = 0.0f;//期末平均分
+        Float yearAvgMark;//全年平均分
+
+        String testDate = "";
+//        EsubjectsDTO esubjectsDTO = new EsubjectsDTO();
+        List<EsubjectsDTO> esubjectsDTOS = esubjectsService.queryEsubjectsList();
+        for (EsubjectsDTO esubjectsDTO : esubjectsDTOS) {//循环学科
+            yearAvgMark = 0.0f;
+            //按查询表头定义该格式的数据
+            String[] strings = new String[16];
+            strings[0] = esubjectsDTO.getSubjectname();
+            int aboveZero = 0;
+            for (int i = 1; i <= 12; i++) {//12个月循环，获取每个月、月考的平均成绩(指定学生、指定学科、指定月份)
+                if (i < 10) {
+                    testDate = year + "0" + String.valueOf(i);
+                } else {
+                    testDate = year + String.valueOf(i);
+                }
+                aveMark = estudentMarkService.getAvgMarkByStudent(studentID, testDate, esubjectsDTO.getSubjectno());
+                if (aveMark > 0) {
+                    aboveZero += 1;
+                    yearAvgMark += aveMark;
+                }
+                strings[i] = df.format(aveMark).toString();
+            }
+            middleMark = estudentMarkService.getAvgMiddleOrFinalByStudent(studentID, year, esubjectsDTO.getSubjectno(), "4");//期中平均分
+            finalMark = estudentMarkService.getAvgMiddleOrFinalByStudent(studentID, year, esubjectsDTO.getSubjectno(), "5");//期末平均分
+            if (middleMark > 0) {
+                aboveZero += 1;
+                yearAvgMark += middleMark;
+            }
+            if (finalMark > 0) {
+                aboveZero += 1;
+                yearAvgMark += finalMark;
+            }
+            strings[13] = df.format(middleMark).toString();
+            strings[14] = df.format(finalMark).toString();
+            if (aboveZero > 0) {
+                strings[15] = df.format(yearAvgMark / aboveZero).toString();
+            } else {
+                strings[15] = String.valueOf(0);
+            }
+            resultList.add(strings);
+
+        }
+        return resultList;
+    }
+
+    @Override
+    public Float[] getAvgMarkByClass(String studentID, String year) {
+        EStudentDTO studentDTO = estudentService.getStudentByID(studentID);
+        LinkedHashMap<String, Float> map = estudentMarkService.getAvgMarkByClass(studentDTO.getClassno(), year);
+
+        List<EsubjectsDTO> esubjectsDTOS = esubjectsService.queryEsubjectsList();
+        Float[] floats = new Float[esubjectsDTOS.size()];
+        int i = 0;
+        for (EsubjectsDTO esubjectsDTO : esubjectsDTOS) {
+            floats[i] = map.get(esubjectsDTO.getSubjectno());
+            i++;
+        }
+
+        return floats;
+    }
+
+    @Override
+    public Float[] getAvgMarkByGrade(String studentID, String year) {
+        EStudentDTO studentDTO = estudentService.getStudentByID(studentID);
+        LinkedHashMap<String, Float> map = estudentMarkService.getAvgMarkByGrade(studentDTO.getGradeno(), year);
+
+        List<EsubjectsDTO> esubjectsDTOS = esubjectsService.queryEsubjectsList();
+        Float[] floats = new Float[esubjectsDTOS.size()];
+        int i = 0;
+        for (EsubjectsDTO esubjectsDTO : esubjectsDTOS) {
+            floats[i] = map.get(esubjectsDTO.getSubjectno());
+            i++;
+        }
+        return floats;
     }
 
     /**
@@ -400,7 +491,7 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<RAboveSpecifiedMark> queryRAboveSpecifiedMark(String gradeno, String aboveMark, String tpnoString) {
 //        HashMap markMap = reportDao.getRAboveSpecifiedMark(new RAboveSpecifiedMark());//查询升学模拟表
-        this.queryRMarkArea(gradeno,tpnoString,null);//生成数据至成绩分布表
+        this.queryRMarkArea(gradeno, tpnoString, null);//生成数据至成绩分布表
         List resultList = new ArrayList();
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()

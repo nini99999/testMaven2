@@ -54,7 +54,7 @@ public class EwrongStudentDaoImpl implements EwrongStudentDao {
                 "select count(*) as rownums,testpaperno,questionno,questionid from E_WRONG_STUDENT where testdate between to_date('")
                 .append(beginDate).append("','yyyy-MM-dd') and to_date('")
                 .append(endDate).append("','yyyy-MM-dd') and testpaperno in(select tpno from E_TESTPAPER where subjectno='")
-                .append(subjectno).append("' and gradeno='" + gradeno + "') group by testpaperno,questionno,questionid");
+                .append(subjectno).append("' and gradeno='" + gradeno + "') group by testpaperno,questionno,questionid order by rownums desc");
 
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createSQLQuery(stringBuilder.toString())

@@ -85,10 +85,6 @@
         var t4 = {field: 16, title: "全年平均", align: "center"};
         questionColumns.push(t4);
                 bandData(questionColumns)
-//        $('#ds_table').bootstrapTable({
-//            columns: questionColumns
-//        });
-
     }
     function bandData(questionColumns) {//查询，并绑定数据至table
         var params = {};
@@ -120,35 +116,6 @@
             }
         })
     }
-//    function queryYearMark() {
-//        var params = {};
-//        params.year = myear.value;
-//        params.subjectno = $('#subjectno').val();
-//        params.gradeno = $('#gradeno').val();
-//        $.ajax({
-//            url: "/report/queryYearMark",
-//// 数据发送方式
-//            type: "get",
-//// 接受数据格式
-//            dataType: "json",
-//// 要传递的数据
-//            data: params,
-//// 回调函数，接受服务器端返回给客户端的值，即result值
-//            success: function (data) {
-//
-//                $("#ds_table").bootstrapTable('destroy');
-//                $("#ds_table").bootstrapTable({data: data.data});//刷新ds_table的数据
-//                if (null != data.data) {
-////                    console.log(data);
-//                    initMarkChart(data.data);
-//                }
-//            },
-//
-//            error: function (data) {
-//                alert("查询失败" + data);
-//            }
-//        })
-//    }
 
     function queryEgradeListBYschool() {//年级下拉列表加载
 
@@ -296,9 +263,7 @@
                 <button class="btn btn-primary" type="button" onclick="getTableHead()"><span
                         class="glyphicon glyphicon-eye-open"></span>查询
                 </button>
-                <%--<button class="btn btn-primary" type="button" onclick="queryYearMark()"><span--%>
-                        <%--class="glyphicon glyphicon-export"></span>导出--%>
-                <%--</button>--%>
+
             </div>
         </div>
     </div>
@@ -309,25 +274,7 @@
                 <thead>
 
                 <tr>
-                    <%--<th data-field="classno" data-align="center">班级</th>--%>
-                    <%--<th data-field="teachername" data-align="center">教师</th>--%>
-                    <%--<th data-field="markone" data-align="center">1月</th>--%>
-                    <%--<th data-field="marktwo" data-align="center">2月</th>--%>
-                    <%--<th data-field="markthree" data-align="center">3月</th>--%>
-                    <%--<th data-field="markfour" data-align="center">4月</th>--%>
-                    <%--<th data-field="markfive" data-align="center">5月</th>--%>
-                    <%--<th data-field="marksix" data-align="center">6月</th>--%>
-                    <%--<th data-field="markseven" data-align="center">7月</th>--%>
-                    <%--<th data-field="markeight" data-align="center">8月</th>--%>
-                    <%--<th data-field="marknine" data-align="center">9月</th>--%>
-                    <%--<th data-field="markten" data-align="center">10月</th>--%>
-                    <%--<th data-field="markeleven" data-align="center">11月</th>--%>
-                    <%--<th data-field="marktwevle" data-align="center">12月</th>--%>
 
-                    <%--<th data-field="markmidterm" data-align="center">期中</th>--%>
-                    <%--<th data-field="markfinal" data-align="center">期末</th>--%>
-                    <%--<th data-field="avemark" data-align="center">平均分</th>--%>
-                    <%--<th data-field="avepositon" data-align="center">平均排名</th>--%>
                 </tr>
                 </thead>
             </table>

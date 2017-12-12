@@ -10,11 +10,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import sun.plugin2.os.windows.FLASHWINFO;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by jenny on 2017/5/12.
@@ -84,6 +82,24 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
     }
 
     @Override
+    public Float getAvgMarkByStudent(String studentID, String testDate, String subjectno) {
+        StringBuilder stringBuilder = new StringBuilder("SELECT avg(mark) from EStudentMark  WHERE STUDENTNO='");
+        stringBuilder.append(studentID).append("' and SUBJECTNO='").append(subjectno)
+                .append("' and to_char(TESTDATE,'yyyyMM')='").append(testDate)
+                .append("' and TPNO in (SELECT tpno from ETestpaper where examtype='2')");//考试类型=月考
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(stringBuilder.toString());
+        Object object = query.uniqueResult();
+        Float res = 0.0f;
+
+        if (null != object) {
+            res = Float.parseFloat(object.toString());
+        } else {
+        }
+        return res;
+    }
+
+    @Override
     public int getMarkAreaNum(String tpno, String classno, String markArea) {
         String beginMark = markArea.substring(0, markArea.indexOf(","));
         String endMark = markArea.substring(markArea.indexOf(",") + 1, markArea.length());
@@ -94,6 +110,42 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
         int res = Integer.parseInt(query.uniqueResult().toString());
         return res;
 
+    }
+
+    @Override
+    public LinkedHashMap<String, Float> getAvgMarkByClass(String classno, String year) {
+        LinkedHashMap<String, Float> map = new LinkedHashMap<>();
+        StringBuilder stringBuilder = new StringBuilder("SELECT avg(MARK) as avgMark,SUBJECTNO FROM E_Student_Mark WHERE CLASSNO = '")
+                .append(classno).append("' AND to_char(testdate, 'yyyy') = '").append(year)
+                .append("' AND tpno IN (SELECT tpno FROM E_Testpaper WHERE examtype IN ('2','4','5')) GROUP BY subjectno order by subjectno");
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery(stringBuilder.toString())
+                .addScalar("avgMark", FloatType.INSTANCE)
+                .addScalar("SUBJECTNO", StringType.INSTANCE);
+        List list = query.list();
+        for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
+            Object[] objects = (Object[]) iterator.next();
+            map.put(objects[1].toString(), Float.parseFloat(objects[0].toString()));
+        }
+        return map;
+    }
+
+    @Override
+    public LinkedHashMap<String, Float> getAvgMarkByGrade(String gradeno, String year) {
+        LinkedHashMap<String, Float> map = new LinkedHashMap<>();
+        StringBuilder stringBuilder = new StringBuilder("SELECT avg(MARK) as avgMark,SUBJECTNO FROM E_Student_Mark WHERE CLASSNO in (SELECT CLASSNO from E_CLASS where GRADENO='")
+                .append(gradeno).append("') AND to_char(testdate, 'yyyy') = '").append(year)
+                .append("' AND tpno IN (SELECT tpno FROM E_Testpaper WHERE examtype IN ('2','4','5')) GROUP BY subjectno  order by subjectno");
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery(stringBuilder.toString())
+                .addScalar("avgMark", FloatType.INSTANCE)
+                .addScalar("SUBJECTNO", StringType.INSTANCE);
+        List list = query.list();
+        for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
+            Object[] objects = (Object[]) iterator.next();
+            map.put(objects[1].toString(), Float.parseFloat(objects[0].toString()));
+        }
+        return map;
     }
 
     @Override
@@ -115,6 +167,22 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
     @Override
     public Float getAvgMiddleOrFinal(String classno, String year, String subjectno, String examType) {
         StringBuilder stringBuilder = new StringBuilder("SELECT avg(mark) from EStudentMark WHERE CLASSNO='" + classno + "'")
+                .append(" and to_char(TESTDATE,'yyyy')='" + year + "' and SUBJECTNO='" + subjectno + "'")
+                .append(" and TPNO in (SELECT tpno from ETestpaper where examtype='" + examType).append("')");//考试类型=4期中或5期末
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(stringBuilder.toString());
+        Float res = 0.0f;
+
+        if (null != query.uniqueResult()) {
+            res = Float.parseFloat(query.uniqueResult().toString());
+        } else {
+        }
+        return res;
+    }
+
+    @Override
+    public Float getAvegMiddleOrFinalByStudent(String studentID, String year, String subjectno, String examType) {
+        StringBuilder stringBuilder = new StringBuilder("SELECT avg(mark) from EStudentMark WHERE studentno='" + studentID + "'")
                 .append(" and to_char(TESTDATE,'yyyy')='" + year + "' and SUBJECTNO='" + subjectno + "'")
                 .append(" and TPNO in (SELECT tpno from ETestpaper where examtype='" + examType).append("')");//考试类型=4期中或5期末
         Session session = sessionFactory.getCurrentSession();
