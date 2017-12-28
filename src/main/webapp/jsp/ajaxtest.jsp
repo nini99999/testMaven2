@@ -54,7 +54,7 @@
             });
             $('#testpapers').multiselect();
         });
-        document.getElementById("reservation").value=getTimeArea();
+        document.getElementById("reservation").value = getTimeArea();
     }
 
     function getTimeArea() {
@@ -63,7 +63,7 @@
         var endDate = new Date(firstDate);
         endDate.setMonth(firstDate.getMonth() + 1);
         endDate.setDate(0);
-        return new XDate(firstDate).toString('yyyy-MM-dd')+" - "+new XDate(endDate).toString('yyyy-MM-dd');
+        return new XDate(firstDate).toString('yyyy-MM-dd') + " - " + new XDate(endDate).toString('yyyy-MM-dd');
 //        alert("第一天：" + new XDate(firstDate).toString('yyyy-MM-dd') + " 最后一天：" + new XDate(endDate).toString('yyyy-MM-dd'));
     }
 
@@ -102,5 +102,6 @@
     <div id="main" style="width: 40%;height:37%;float:left;"></div>
     <div id="charts" style="width: 60%;height:49%;float: left;"></div>
 </div>
+
 </body>
 </html>

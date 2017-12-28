@@ -101,7 +101,7 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
                 paperQuestionAndInfo.setGradeno(gradeno);
                 paperQuestionAndInfo.setSubjectno(subjectno);
                 paperQuestionAndInfo.setPaperquestionno(paperQuestionNo);//设置试卷中的题号
-                this.addPaperQuestionAndInfo(paperQuestionAndInfo);
+                this.addPaperQuestionAndInfo(null, paperQuestionAndInfo);
             }
 
 //                        equestionService.addOneQuestionAndInfo(string, gradeno, subjectno, questionType, Float.parseFloat("0"));
@@ -111,11 +111,16 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
-    public void addPaperQuestionAndInfo(VPaperQuestionAndInfo vPaperQuestionAndInfo) {
+    public void addPaperQuestionAndInfo(String uQuestionID, VPaperQuestionAndInfo vPaperQuestionAndInfo) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
-        String questionID = UUID.randomUUID().toString();
+        String questionID = "";
+        if (null != uQuestionID && uQuestionID.length() > 0) {
+            questionID = uQuestionID;
+        } else {
+            questionID = UUID.randomUUID().toString();
+        }
         int questionLength = EConstants.questionLength;
         String subQuestion;
         UserDTO userDTO;
@@ -210,7 +215,7 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
             questionsDTO.setQuestionid(vPaperQuestionAndInfo.getQuestionid());
             equestionService.delOneQuestion(questionsDTO);
             equestionInfoDao.delQuestionInfo(questionInfoDTO.getQuestionid());
-            this.addPaperQuestionAndInfo(vPaperQuestionAndInfo);
+            this.addPaperQuestionAndInfo(questionsDTO.getQuestionid(), vPaperQuestionAndInfo);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -232,7 +237,7 @@ public class EpaperQuestionServiceImpl implements EpaperQuestionService {
             if (vPaperQuestionAndInfo1.getQuestionno() > 0) {
                 resultList.remove(i - 1);
                 paperQuestionAndInfo.setQuestion(question
-                        +  StringEscapeUtils.unescapeXml(vPaperQuestionAndInfo1.getQuestion()).replaceFirst(".？&nbsp", ". &nbsp"));
+                        + StringEscapeUtils.unescapeXml(vPaperQuestionAndInfo1.getQuestion()).replaceFirst(".？&nbsp", ". &nbsp"));
                 resultList.add(paperQuestionAndInfo);
                 question = resultList.get(i - 1).getQuestion();
             } else {

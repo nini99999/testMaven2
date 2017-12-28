@@ -21,7 +21,12 @@ public interface EpaperQuestionService {
 
     void mergePaperQuestion(EPaperQuestionsDTO ePaperQuestionsDTO);//修改
 
-    void addPaperQuestionAndInfo(VPaperQuestionAndInfo paperQuestionAndInfo);//添加试卷试题表和试题信息表,同步增加至试题基础库
+    /**
+     *
+     * @param uQuestionID 如果是删除后调用该方法（修改），保持原题目的questionID不变；新增时自动生成
+     * @param paperQuestionAndInfo
+     */
+    void addPaperQuestionAndInfo(String uQuestionID,VPaperQuestionAndInfo paperQuestionAndInfo);//添加试卷试题表和试题信息表,同步增加至试题基础库
 
     /**
      * 循环指定集合，插入至试卷试题表、试题信息表和试题答案表

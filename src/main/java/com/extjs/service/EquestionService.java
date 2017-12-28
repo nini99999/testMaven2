@@ -26,7 +26,17 @@ public interface EquestionService {
 
 //    void addOnePaperQuestion(EPaperQuestionsDTO ePaperQuestionsDTO);//插入一条试卷题目信息
 
-    void addOneQuestionAndInfo(String question,String gradeNo,String subjectNo,String questionType,Float difficulty);//插入试题及信息记录
+    /**
+     * //插入试题及信息记录
+     * @param uQuestionID 如果是修改，则记录删除题目的questionID，并保持修改后的questionID不变；如果新增，则自动生成
+     * @param question
+     * @param gradeNo
+     * @param subjectNo
+     * @param questionType
+     * @param difficulty
+     */
+
+    void addOneQuestionAndInfo(String uQuestionID,String question,String gradeNo,String subjectNo,String questionType,Float difficulty);
 
     String exportToHTML(HttpServletResponse response , VQuestionandinfo questionandinfo,String url);//导出至html，返回导出路径+html文件名
 

@@ -187,7 +187,7 @@ public class EquestionServiceImpl implements EquestionService {
 //        EQuestionsDTO questionsDTO=new EQuestionsDTO();
         equestionDao.delQuestion(eQuestionsDTO.getQuestionid());
         equestionInfoDao.delQuestionInfo(eQuestionsDTO.getQuestionid());
-        this.addOneQuestionAndInfo(eQuestionsDTO.getQuestion(), eQuestionInfoDTO.getGradeno(), eQuestionInfoDTO.getSubjectno(), eQuestionInfoDTO.getQuestiontype(), eQuestionInfoDTO.getDifficulty());
+        this.addOneQuestionAndInfo(eQuestionsDTO.getQuestionid(),eQuestionsDTO.getQuestion(), eQuestionInfoDTO.getGradeno(), eQuestionInfoDTO.getSubjectno(), eQuestionInfoDTO.getQuestiontype(), eQuestionInfoDTO.getDifficulty());
     }
 
     @Override
@@ -207,11 +207,16 @@ public class EquestionServiceImpl implements EquestionService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
-    public void addOneQuestionAndInfo(String question, String gradeNo, String subjectNo, String questionType, Float difficulty) {
+    public void addOneQuestionAndInfo(String uQuestionID, String question, String gradeNo, String subjectNo, String questionType, Float difficulty) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
-        String questionID = UUID.randomUUID().toString();
+        String questionID="";
+        if (null != uQuestionID && uQuestionID.length() > 0) {
+            questionID = uQuestionID;
+        } else {
+            questionID = UUID.randomUUID().toString();
+        }
 
         int questionLength = EConstants.questionLength;
         String subQuestion;
@@ -307,7 +312,7 @@ public class EquestionServiceImpl implements EquestionService {
     @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
     public void addQuestionAndInfoList(List<String> list, String gradeno, String subjectno, String questionType, Float difficulty) {
         for (String string : list) {
-            this.addOneQuestionAndInfo(string, gradeno, subjectno, questionType, Float.parseFloat("0"));
+            this.addOneQuestionAndInfo(null,string, gradeno, subjectno, questionType, Float.parseFloat("0"));
         }
     }
 }

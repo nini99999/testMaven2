@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by jenny on 2017/10/17.
@@ -79,7 +80,7 @@ public class EpaperQuestionController {
     public Map addPaperQuestion(VPaperQuestionAndInfo vPaperQuestionAndInfo) {
         Map resultMap = new HashMap();
         try {
-            epaperQuestionService.addPaperQuestionAndInfo(vPaperQuestionAndInfo);
+            epaperQuestionService.addPaperQuestionAndInfo(null, vPaperQuestionAndInfo);
             resultMap.put("success", true);
             resultMap.put("msg", "添加成功!");
         } catch (Exception e) {
@@ -95,8 +96,16 @@ public class EpaperQuestionController {
     public Map mergePaperQuestion(VPaperQuestionAndInfo vPaperQuestionAndInfo) {
         Map resultMap = new HashMap();
         try {
+            /**
+             * 如questionID为空，说明执行新增操作；则需把新增的questionID返回页面，供知识点选择功能点调用（生成题目id、知识点ID的对应关系并保存数据库）
+             */
+
+            if (null == vPaperQuestionAndInfo.getQuestionid() || vPaperQuestionAndInfo.getQuestionid().length() == 0) {
+                vPaperQuestionAndInfo.setQuestionid(UUID.randomUUID().toString());
+            }
             epaperQuestionService.mergePaperQuestionAndInfo(vPaperQuestionAndInfo);
             resultMap.put("success", true);
+            resultMap.put("questionID",vPaperQuestionAndInfo.getQuestionid());
             resultMap.put("msg", "添加成功!");
         } catch (Exception e) {
             e.printStackTrace();

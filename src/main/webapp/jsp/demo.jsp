@@ -14,7 +14,7 @@
 
     <title>TreePanel示例</title>
 
-    <link rel="stylesheet" type="text/css" href="<%=path%>/extjs/resources/css/ext-all.css"/>
+    <link rel="stylesheet" type="text/css" href="<%=path%>/extjs/resources/css/ext-all-gray.css"/>
     <link rel="stylesheet" type="text/css" href="<%=path%>/extjs/resources/css/ItemSelector.css">
     <script type="text/javascript" src="<%=path%>/extjs/examples/shared/include-ext.js"></script>
     <!-- 	<script type="text/javascript" src="extjs/examples/shared/options-toolbar.js"></script> -->
