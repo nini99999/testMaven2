@@ -3,7 +3,7 @@ package com.extjs.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "E_QUESTION_KNOWLEDGE", schema = "C##TEST", catalog = "")
+@Table(name = "E_QUESTION_KNOWLEDGE")
 public class EQuestionKnowledge {
     private String id;
     private String questionid;

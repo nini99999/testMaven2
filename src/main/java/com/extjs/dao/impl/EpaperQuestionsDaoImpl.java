@@ -21,6 +21,8 @@ public class EpaperQuestionsDaoImpl implements EpaperQuestionsDao {
     @Autowired
     private SessionFactory sessionFactory;
 
+
+
     @Override
     public List<EPaperQuestions> getPaperQuestions(EPaperQuestions ePaperQuestions) {
         StringBuilder sb = new StringBuilder();
@@ -64,12 +66,12 @@ public class EpaperQuestionsDaoImpl implements EpaperQuestionsDao {
         if (null != ePaperQuestions.getQuestionid() && ePaperQuestions.getQuestionid().length() > 0) {
             query = session.createQuery("delete from EPaperQuestions where questionid='" + ePaperQuestions.getQuestionid() + "'");
             query.executeUpdate();
-                session.flush();
+            session.flush();
         } else {
             if (null != ePaperQuestions.getId() && ePaperQuestions.getId().length() > 0) {
                 query = session.createQuery("delete from epaperquestions where id='" + ePaperQuestions.getId() + "'");
                 query.executeUpdate();
-            session.flush();
+                session.flush();
 
             }
         }
@@ -101,9 +103,9 @@ public class EpaperQuestionsDaoImpl implements EpaperQuestionsDao {
             if (null != vPaperQuestionAndInfo.getSubjectno() && !"".equals(vPaperQuestionAndInfo.getSubjectno())) {
                 hql.append(" and subjectno='" + vPaperQuestionAndInfo.getSubjectno() + "'");
             }
-//            if (null != vPaperQuestionAndInfo.getQuestionid() && !"".equals(vPaperQuestionAndInfo.getQuestionid())) {
-//                hql.append(" and questionid='" + vPaperQuestionAndInfo.getQuestionid() + "'");
-//            }
+            if (null != vPaperQuestionAndInfo.getQuestionid() && !"".equals(vPaperQuestionAndInfo.getQuestionid())) {
+                hql.append(" and questionid='" + vPaperQuestionAndInfo.getQuestionid() + "'");
+            }
 //            if (null != vPaperQuestionAndInfo.getQuestiontype() && vPaperQuestionAndInfo.getQuestiontype().length() > 0 && !"noselected".equals(vPaperQuestionAndInfo.getQuestiontype())) {
 //                hql.append(" and questiontype='" + vPaperQuestionAndInfo.getQuestiontype() + "'");
 //            }

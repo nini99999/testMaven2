@@ -4,10 +4,7 @@ import com.extjs.dao.EstudentDao;
 import com.extjs.dao.EtestpaperDao;
 import com.extjs.dao.EwrongStudentDao;
 import com.extjs.model.*;
-import com.extjs.service.EpaperQuestionService;
-import com.extjs.service.EstudentService;
-import com.extjs.service.EtestpaperService;
-import com.extjs.service.EwrongStudentService;
+import com.extjs.service.*;
 import com.extjs.util.ExportToHtml;
 import com.extjs.util.ReflectionUtil;
 import com.extjs.util.SysException;
@@ -19,10 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by jenny on 2017/5/22.
@@ -38,7 +32,20 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
     private EtestpaperService etestpaperService;
     @Autowired
     private EpaperQuestionService epaperQuestionService;
+    @Autowired
+    private EquestionService equestionService;
 
+
+    @Override
+    public EWrongStudentDTO getWrongStudentByID(String id) {
+        EWrongStudentDTO wrongStudentDTO = new EWrongStudentDTO();
+        wrongStudentDTO.setId(id);
+        List<EWrongStudent> wrongStudentList = ewrongStudentDao.queryEWrongStudent(wrongStudentDTO);
+        for (EWrongStudent wrongStudent : wrongStudentList) {
+            ReflectionUtil.copyProperties(wrongStudent, wrongStudentDTO);
+        }
+        return wrongStudentDTO;
+    }
 
     @Override
     public List<EWrongStudentDTO> queryWrongStudent(EWrongStudentDTO eWrongStudentDTO) {
@@ -125,8 +132,8 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
     }
 
     @Override
-    public List<RWrongQuestion> getWrongsByDateArea(String beginDate, String endDate, String subjectno,String gradeno) {
-        List<RWrongQuestion> wrongStudentDTOS = ewrongStudentDao.getWrongsByDateArea(beginDate, endDate, subjectno,gradeno);
+    public List<RWrongQuestion> getWrongsByDateArea(String beginDate, String endDate, String subjectno, String gradeno) {
+        List<RWrongQuestion> wrongStudentDTOS = ewrongStudentDao.getWrongsByDateArea(beginDate, endDate, subjectno, gradeno);
         return wrongStudentDTOS;
     }
 
@@ -188,14 +195,14 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
 
         /*****查询指定试卷的所有题目,形成HashMap*****/
         HashMap<String, VPaperQuestionAndInfo> questionMap = new HashMap<>();
-        VPaperQuestionAndInfo paperQuestionAndInfo = new VPaperQuestionAndInfo();
-        paperQuestionAndInfo.setPaperid(paperid);
-        List<VPaperQuestionAndInfo> paperQuestionAndInfoList = epaperQuestionService.getPaperQuestionAndInfo(paperQuestionAndInfo);
-        for (VPaperQuestionAndInfo vPaperQuestionAndInfo : paperQuestionAndInfoList) {
-            questionMap.put(vPaperQuestionAndInfo.getQuestionid(), vPaperQuestionAndInfo);
-        }
+//        VPaperQuestionAndInfo paperQuestionAndInfo = new VPaperQuestionAndInfo();
+//        paperQuestionAndInfo.setPaperid(paperid);
+//        List<VPaperQuestionAndInfo> paperQuestionAndInfoList = epaperQuestionService.getPaperQuestionAndInfo(paperQuestionAndInfo);
+//        for (VPaperQuestionAndInfo vPaperQuestionAndInfo : paperQuestionAndInfoList) {
+//            questionMap.put(vPaperQuestionAndInfo.getQuestionid(), vPaperQuestionAndInfo);
+//        }
         /*****查询学生(或班级的)指定试卷错题记录（含questionid）*****/
-        paperQuestionAndInfoList = new ArrayList<>();
+
         EWrongStudentDTO wrongStudentDTO = new EWrongStudentDTO();
 
         wrongStudentDTO.setTestpaperno(paperid);
@@ -208,11 +215,25 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
 
         List<EWrongStudentDTO> wrongStudentDTOList = this.queryWrongStudent(wrongStudentDTO);
         VPaperQuestionAndInfo vPaperQuestionAndInfo = new VPaperQuestionAndInfo();
+        VPaperQuestionAndInfo paperQuestionAndInfo = new VPaperQuestionAndInfo();
+        List<VPaperQuestionAndInfo> resultList = new ArrayList<>();
+        List<VPaperQuestionAndInfo> paperQuestionAndInfoList;
         for (EWrongStudentDTO eWrongStudentDTO : wrongStudentDTOList) {//循环获取题目集合
-            vPaperQuestionAndInfo = questionMap.get(eWrongStudentDTO.getQuestionid());
-            paperQuestionAndInfoList.add(vPaperQuestionAndInfo);
+//            vPaperQuestionAndInfo = questionMap.get(eWrongStudentDTO.getQuestionid());
+            paperQuestionAndInfo = new VPaperQuestionAndInfo();
+            vPaperQuestionAndInfo = new VPaperQuestionAndInfo();
+            paperQuestionAndInfo.setPaperid(paperid);
+            paperQuestionAndInfo.setQuestionid(eWrongStudentDTO.getQuestionid());
+
+            paperQuestionAndInfoList = epaperQuestionService.getPaperQuestionAndInfo(paperQuestionAndInfo);
+            for (VPaperQuestionAndInfo paperQuestionAndInfo1 : paperQuestionAndInfoList) {
+
+                ReflectionUtil.copyProperties(paperQuestionAndInfo1, vPaperQuestionAndInfo);
+            }
+            vPaperQuestionAndInfo.setId(eWrongStudentDTO.getStudentid());//把学生id赋值到主键中，供后续方法调用
+            resultList.add(vPaperQuestionAndInfo);
         }
-        return paperQuestionAndInfoList;
+        return resultList;
     }
 
     @Override
@@ -220,11 +241,50 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
 
         List<VPaperQuestionAndInfo> paperQuestionAndInfoList = this.getQuestionsByWrong(userName, paperid, classno);
         StringBuilder stringBuilder = new StringBuilder("");
+        int i = 0;
+        String studentName="";
+        String cid="";
         for (VPaperQuestionAndInfo paperQuestionAndInfo : paperQuestionAndInfoList) {
-            stringBuilder.append("(" + paperQuestionAndInfo.getPaperquestionno() + ")." + paperQuestionAndInfo.getQuestion());
+
+            if (cid.equals(paperQuestionAndInfo.getId())){
+                i++;
+            }else {
+                i=1;
+                cid=paperQuestionAndInfo.getId();
+            }
+
+            studentName=estudentService.getStudentByID(paperQuestionAndInfo.getId()).getStudentname();
+            stringBuilder.append("<p><strong>--------学生：").append(studentName).append(",错题：(" + i + ").--------</strong></p>" + paperQuestionAndInfo.getQuestion());
+            //查询错题原因、分析和解决策略
+//            EStudentDTO studentDTO = estudentService.getStudentByUserName(userName);//查询学生id
+//            EWrongStudent wrongStudent = ewrongStudentDao.getByUnique(paperQuestionAndInfo.getQuestionid(), studentDTO.getId());
+            EWrongStudent wrongStudent = ewrongStudentDao.getByUnique(paperQuestionAndInfo.getQuestionid(), paperQuestionAndInfo.getId());
+            //paperQuestionAndInfo中的id存放的是学生id
+            if (null != wrongStudent.getReason() && wrongStudent.getReason().length() > 0) {
+                stringBuilder.append("<p>【错题原因】</p><p>").append(wrongStudent.getReason()).append("</p>");
+            }
+            if (null != wrongStudent.getAnalysis() && wrongStudent.getAnalysis().length() > 0) {
+                stringBuilder.append("<p>【错因分析】</p><p>").append(wrongStudent.getAnalysis()).append("</p>");
+            }
+            if (null!=wrongStudent.getSolution()&&wrongStudent.getSolution().length()>0){
+                stringBuilder.append("<p>【解决策略】</p><p>").append(wrongStudent.getSolution()).append("</p>");
+            }
+//            stringBuilder.append("<p>【错题原因】</p><p>").append(wrongStudent.getReason()).append("</p><p>【错因分析】</p><p>").append(wrongStudent.getAnalysis())
+//                    .append("</p><p>【解决策略】</p><p>").append(wrongStudent.getSolution()).append("</p>");
         }
         ExportToHtml exportToHtml = new ExportToHtml();
 
         return exportToHtml.exportToHtml(response, stringBuilder, url);
+    }
+
+    @Override
+    public void saveWrong(EWrongStudentDTO eWrongStudentDTO) throws SysException {
+        try {
+            EWrongStudent eWrongStudent = new EWrongStudent();
+            ReflectionUtil.copyProperties(eWrongStudentDTO, eWrongStudent);
+            ewrongStudentDao.saveWrongAnalysis(eWrongStudent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

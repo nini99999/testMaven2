@@ -31,6 +31,9 @@ public class EWrongStudentDTO {
     private String studentid;
     private String classno;
     private String questionid;
+    private String reason;
+    private String analysis;
+    private String solution;
 
 
     public String getId() {
@@ -149,5 +152,29 @@ public class EWrongStudentDTO {
 
     public void setQuestionid(String questionid) {
         this.questionid = questionid;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getAnalysis() {
+        return analysis;
+    }
+
+    public void setAnalysis(String analysis) {
+        this.analysis = analysis;
+    }
+
+    public String getSolution() {
+        return solution;
+    }
+
+    public void setSolution(String solution) {
+        this.solution = solution;
     }
 }

@@ -110,13 +110,13 @@ public class EConstants {
     public static final String defaultTeacherRole = "教师";//默认教师角色
 
     public static final String answerIdentifier = "【答案】";//试题导入中的答案标识符
-    public static final Integer maxMark=750;//正式考试的最大成绩
+    public static final Integer maxMark = 750;//正式考试的最大成绩
 
-    public static final String[] markArea = {"0,399", "400,450", "451,500", "501,550", "551,600", "601,650","651,700","701,750"};
+    public static final String[] markArea = {"0,399", "400,450", "451,500", "501,550", "551,600", "601,650", "651,700", "701,750"};
     public static final String[] subjectMarkArea = {"0,79", "80,89", "90,99", "100,109", "110,119", "120,129", "130,150"};
     public static final String[] nation = {"汉族", "壮族", "满族", "回族", "苗族", "维吾尔族", "土家族", "彝族", "蒙古族", "藏族", "布依族", "侗族", "瑶族", "朝鲜族", "白族", "哈尼族",
             "哈萨克族", "黎族", "傣族", "畲族", "傈僳族", "仡佬族", "东乡族", "高山族", "拉祜族", "水族", "佤族", "纳西族", "羌族", "土族", "仫佬族", "锡伯族",
             "柯尔克孜族", "达斡尔族", "景颇族", "毛南族", "撒拉族", "布朗族", "塔吉克族", "阿昌族", "普米族", "鄂温克族", "怒族", "京族", "基诺族", "德昂族", "保安族",
             "俄罗斯族", "裕固族", "乌孜别克族", "门巴族", "鄂伦春族", "独龙族", "塔塔尔族", "赫哲族", "珞巴族"};
-
+    public static final String[] wrongReason = {"概念模糊", "思路错误", "运算错误", "审题错误", "粗心大意", "其它原因"};
 }

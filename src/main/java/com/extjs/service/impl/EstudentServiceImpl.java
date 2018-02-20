@@ -93,7 +93,7 @@ public class EstudentServiceImpl implements EstudentService {
     public EStudentDTO getStudentByUserName(String userName) {
         EStudent student = estudentDao.getStudentByUserName(userName);
         EStudentDTO studentDTO = new EStudentDTO();
-        if (null != studentDTO) {
+        if (null != student) {
             ReflectionUtil.copyProperties(student, studentDTO);
             EConstants eConstants = new EConstants();
             studentDTO.setStudystate(eConstants.studyStateMap.get(studentDTO.getStudystate()));

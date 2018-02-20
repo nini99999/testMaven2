@@ -19,6 +19,9 @@ public class EWrongStudent {
     private String testpoint;
     private String studentid;
     private String questionid;
+    private String reason;
+    private String analysis;
+    private String solution;
 
     @Id
     @Column(name = "ID", nullable = false, length = 64)
@@ -118,5 +121,32 @@ public class EWrongStudent {
 
     public void setQuestionid(String questionid) {
         this.questionid = questionid;
+    }
+    @Basic
+    @Column(name = "reason", nullable = true, length = 200)
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+    @Basic
+    @Column(name = "analysis", nullable = true, length = 200)
+    public String getAnalysis() {
+        return analysis;
+    }
+
+    public void setAnalysis(String analysis) {
+        this.analysis = analysis;
+    }
+    @Basic
+    @Column(name = "solution", nullable = true, length = 200)
+    public String getSolution() {
+        return solution;
+    }
+
+    public void setSolution(String solution) {
+        this.solution = solution;
     }
 }

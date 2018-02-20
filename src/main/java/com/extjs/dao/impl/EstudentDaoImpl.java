@@ -93,7 +93,11 @@ public class EstudentDaoImpl implements EstudentDao {
             String hql = "from EStudent where username=:str";
             Session session = sessionFactory.getCurrentSession();
             Query query = session.createQuery(hql).setString("str", userName);
-            eStudent = (EStudent) query.uniqueResult();
+            if (query.list().size() > 0) {
+                eStudent = (EStudent) query.uniqueResult();
+            }else {
+
+            }
         }
         return eStudent;
     }

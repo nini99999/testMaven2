@@ -3,10 +3,12 @@ package com.extjs.service.impl;
 import com.extjs.dao.EKnowledgeDao;
 import com.extjs.model.EKnowledge;
 import com.extjs.model.EQuestionKnowledge;
+import com.extjs.model.EWrongKnowledgeDTO;
 import com.extjs.service.EKnowledgeService;
 import com.extjs.service.EQuestionKnowledgeService;
 import com.extjs.util.ReflectionUtil;
 import com.extjs.util.SysException;
+import com.sun.org.apache.bcel.internal.generic.FLOAD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -114,6 +116,33 @@ public class EKnowledgeServiceImpl implements EKnowledgeService {
                 ReflectionUtil.copyProperties(eKnowledge, result);
             }
         }
+
+        return result;
+    }
+
+    @Override
+    public List<EKnowledge> getKnowledgeGrasping(String studentID, String rootID) throws SysException {
+        List<EKnowledge> result = new ArrayList<>();
+        //获取tree
+        List<EKnowledge> knowledges = this.getKnowledgeContainsChilds(rootID);
+        Float grasping = 0.0f;
+        for (EKnowledge knowledge : knowledges) {
+            //获取分子-指定学生、知识点的错题数
+            EWrongKnowledgeDTO wrongKnowledgeDTO = new EWrongKnowledgeDTO();
+            wrongKnowledgeDTO.setKnowledgeID(knowledge.getId());
+            wrongKnowledgeDTO.setStudentID(studentID);
+            int wrongNums = eKnowledgeDao.getWrongKnowledge(wrongKnowledgeDTO).size();
+            //获取指定知识点、且学生参与过的题目数量
+            int paperKnowledgeNums = eKnowledgeDao.getPaperKnowledge(knowledge.getId(), studentID).size();
+            if (paperKnowledgeNums == 0) {
+                knowledge.setGrasping(0.0f);
+            } else {
+                grasping = (float) wrongNums / paperKnowledgeNums;
+                knowledge.setGrasping(grasping);
+            }
+            result.add(knowledge);
+        }
+
 
         return result;
     }

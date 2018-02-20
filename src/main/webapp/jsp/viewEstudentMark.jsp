@@ -564,14 +564,6 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" type="button" onclick="addWrongStudent();">
-                    <span class="glyphicon glyphicon-floppy-save"></span> 保存
-                </button>
-                <button class="btn btn-primary" type="button" data-dismiss="modal">
-                    <span class="glyphicon glyphicon-log-out"></span> 关闭
-                </button>
-            </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>

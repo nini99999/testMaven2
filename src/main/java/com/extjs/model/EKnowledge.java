@@ -16,6 +16,7 @@ public class EKnowledge {
     private String creator;
     private Date createdate;
     private boolean onChecked;
+    private Float grasping;
 //    private List<EKnowledge> children;
 
     @Id
@@ -105,6 +106,15 @@ public class EKnowledge {
 
     public void setOnChecked(boolean onChecked) {
         this.onChecked = onChecked;
+    }
+
+    @Transient
+    public Float getGrasping() {
+        return grasping;
+    }
+
+    public void setGrasping(Float grasping) {
+        this.grasping = grasping;
     }
 
 //    @Transient

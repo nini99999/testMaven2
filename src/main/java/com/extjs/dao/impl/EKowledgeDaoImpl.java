@@ -2,6 +2,8 @@ package com.extjs.dao.impl;
 
 import com.extjs.dao.EKnowledgeDao;
 import com.extjs.model.EKnowledge;
+import com.extjs.model.EPaperKnowledgeDTO;
+import com.extjs.model.EWrongKnowledgeDTO;
 import com.extjs.util.ReflectionUtil;
 import com.extjs.util.SysException;
 import org.hibernate.Query;
@@ -151,5 +153,58 @@ public class EKowledgeDaoImpl implements EKnowledgeDao {
 
 
         return knowledge;
+    }
+
+    @Override
+    public List<EWrongKnowledgeDTO> getWrongKnowledge(EWrongKnowledgeDTO wrongKnowledgeDTO) {
+        List<EWrongKnowledgeDTO> wrongKnowledgeDTOS = new ArrayList<>();
+        StringBuilder hql = new StringBuilder("select * from v_wrong_knowledge where 1=1");
+        if (null != wrongKnowledgeDTO.getKnowledgeID() && wrongKnowledgeDTO.getKnowledgeID().length() > 0) {
+            hql.append(" and knowledgeid = '" + wrongKnowledgeDTO.getKnowledgeID() + "' ");
+        }
+        if (null != wrongKnowledgeDTO.getStudentID() && wrongKnowledgeDTO.getStudentID().length() > 0) {
+            hql.append(" and studentid='" + wrongKnowledgeDTO.getStudentID() + "'");
+        }
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery(hql.toString()).addScalar("QUESTIONID", StringType.INSTANCE)
+                .addScalar("STUDENTID", StringType.INSTANCE)
+                .addScalar("KNOWLEDGEID", StringType.INSTANCE);
+        List list = query.list();
+        EWrongKnowledgeDTO eWrongKnowledgeDTO = new EWrongKnowledgeDTO();
+        for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
+            eWrongKnowledgeDTO = new EWrongKnowledgeDTO();
+            Object[] objects = (Object[]) iterator.next();
+            eWrongKnowledgeDTO.setQuestionID(objects[0].toString());
+            eWrongKnowledgeDTO.setStudentID(objects[1].toString());
+            eWrongKnowledgeDTO.setKnowledgeID(objects[2].toString());
+            wrongKnowledgeDTOS.add(eWrongKnowledgeDTO);
+        }
+        return wrongKnowledgeDTOS;
+    }
+
+    @Override
+    public List<EPaperKnowledgeDTO> getPaperKnowledge(String knowledgeID, String studentID) {
+        List<EPaperKnowledgeDTO> paperKnowledgeDTOS = new ArrayList<>();
+        StringBuilder hql = new StringBuilder("select * from v_paper_knowledge where 1=1");
+        if (null != knowledgeID && knowledgeID.length() > 0) {
+            hql.append(" and knowledgeid = '" + knowledgeID + "'");
+        }
+        if (null != studentID && studentID.length() > 0) {
+            hql.append(" and paperid IN (SELECT TPNO FROM E_STUDENT_MARK WHERE STUDENTNO = '" + studentID + "')");
+        }
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery(hql.toString()).addScalar("QUESTIONID", StringType.INSTANCE)
+                .addScalar("PAPERID", StringType.INSTANCE).addScalar("KNOWLEDGEID", StringType.INSTANCE);
+        List list = query.list();
+        EPaperKnowledgeDTO paperKnowledgeDTO = new EPaperKnowledgeDTO();
+        for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
+            paperKnowledgeDTO = new EPaperKnowledgeDTO();
+            Object[] objects = (Object[]) iterator.next();
+            paperKnowledgeDTO.setQuestionID(objects[0].toString());
+            paperKnowledgeDTO.setPaperID(objects[1].toString());
+            paperKnowledgeDTO.setKnowledgeID(objects[2].toString());
+            paperKnowledgeDTOS.add(paperKnowledgeDTO);
+        }
+        return paperKnowledgeDTOS;
     }
 }

@@ -27,19 +27,42 @@ public class EwrongStudentDaoImpl implements EwrongStudentDao {
 
 
     @Override
+    public EWrongStudent getByUnique(String questionID, String studentID) {
+        EWrongStudent result = new EWrongStudent();
+        StringBuilder sb = new StringBuilder("from EWrongStudent where 1=1");
+        if (null != questionID && questionID.length() > 0) {
+            sb.append(" and questionid='" + questionID + "'").append(" and studentid='" + studentID + "'");
+        }
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(sb.toString());
+        List<EWrongStudent> wrongStudents = query.list();
+        if (wrongStudents.size() == 1) {
+            for (EWrongStudent wrongStudent : wrongStudents) {
+                result = wrongStudent;
+            }
+        }
+        return result;
+    }
+
+    @Override
     public List<EWrongStudent> queryEWrongStudent(EWrongStudentDTO wrongStudent) {
         StringBuilder sb = new StringBuilder("from EWrongStudent where 1=1");
-        if (null != wrongStudent.getStudentid() && wrongStudent.getStudentid().length() > 0) {
-            sb.append(" and studentid='" + wrongStudent.getStudentid() + "'");
-        }
-        if (null != wrongStudent.getTestpaperno() && !"".equals(wrongStudent.getTestpaperno())) {
-            sb.append(" and testpaperno='" + wrongStudent.getTestpaperno() + "'");
-        }
-        if (null != wrongStudent.getCountryid() && !"".equals(wrongStudent.getCountryid())) {
-            sb.append(" and countryid='" + wrongStudent.getCountryid() + "'");
-        }
-        if (null != wrongStudent.getClassno() && wrongStudent.getClassno().length() > 0) {
-            sb.append(" and studentid in (select id from EStudent where classno='" + wrongStudent.getClassno() + "')");
+        if (null != wrongStudent.getId() && wrongStudent.getId().length() > 0) {
+            sb.append(" and id='" + wrongStudent.getId() + "'");
+        } else {
+
+            if (null != wrongStudent.getStudentid() && wrongStudent.getStudentid().length() > 0) {
+                sb.append(" and studentid='" + wrongStudent.getStudentid() + "'");
+            }
+            if (null != wrongStudent.getTestpaperno() && !"".equals(wrongStudent.getTestpaperno())) {
+                sb.append(" and testpaperno='" + wrongStudent.getTestpaperno() + "'");
+            }
+            if (null != wrongStudent.getCountryid() && !"".equals(wrongStudent.getCountryid())) {
+                sb.append(" and countryid='" + wrongStudent.getCountryid() + "'");
+            }
+            if (null != wrongStudent.getClassno() && wrongStudent.getClassno().length() > 0) {
+                sb.append(" and studentid in (select id from EStudent where classno='" + wrongStudent.getClassno() + "')");
+            }
         }
         sb.append(" order by countryid,testpaperno,questionno");
         Session session = sessionFactory.getCurrentSession();
@@ -105,5 +128,18 @@ public class EwrongStudentDaoImpl implements EwrongStudentDao {
             query.executeUpdate();
             session.flush();
         }
+    }
+
+    @Override
+    public void saveWrongAnalysis(EWrongStudent wrongStudent) {
+        StringBuilder stringBuilder = new StringBuilder("update EWrongStudent set reason='");
+        stringBuilder.append(wrongStudent.getReason() + "',")
+                .append(" analysis='" + wrongStudent.getAnalysis() + "',")
+                .append(" solution='" + wrongStudent.getSolution() + "'")
+                .append(" where id='" + wrongStudent.getId() + "'");
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(stringBuilder.toString());
+        query.executeUpdate();
+//        session.flush();
     }
 }

@@ -50,7 +50,7 @@ public class EStudentMark {
     }
 
     @Basic
-    @Column(name = "TPNAME", nullable = true, length = 20)
+    @Column(name = "TPNAME", nullable = true, length = 128)
     public String getTpname() {
         return tpname;
     }

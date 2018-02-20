@@ -309,6 +309,7 @@
                 });
 
                 $('#gradeno').selectpicker('refresh');
+                getEclassList();
 
             },
 
@@ -350,7 +351,7 @@
                     $('#classno').val('noselected');
                 }
 
-
+                getStudentList();
             },
 
             error: function (data) {

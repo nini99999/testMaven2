@@ -455,6 +455,7 @@
         var params = {};
         params.id = strid;
         params.questionID = questionID;
+        console.log(params);
         $.ajax({
             url: "/knowledge/getTree", // 请求的URL
             dataType: 'json',

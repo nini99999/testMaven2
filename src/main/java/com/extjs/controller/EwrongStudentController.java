@@ -2,12 +2,14 @@ package com.extjs.controller;
 
 import com.extjs.model.*;
 import com.extjs.service.*;
+import com.extjs.util.EConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
@@ -30,6 +32,38 @@ public class EwrongStudentController {
     private EwrongStudentService ewrongStudentService;
     @Autowired
     private EstudentService estudentService;
+
+    @RequestMapping("/getReason")
+    @ResponseBody
+    public Map getNation() {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        String[] strings = EConstants.wrongReason;
+        resultMap.put("wrongReason", strings);
+        return resultMap;
+    }
+
+    @RequestMapping(value = "/saveAnalysis", method = RequestMethod.POST)
+    @ResponseBody
+    public Map saveAnalysis(EWrongStudentDTO wrongStudentDTO) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        try {
+            ewrongStudentService.saveWrong(wrongStudentDTO);
+            resultMap.put("success", true);
+            resultMap.put("msg", "保存成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultMap;
+    }
+
+    @RequestMapping("/getWrongStudentByID")
+    @ResponseBody
+    public Map<String, Object> getWrongStudentByID(String id) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        EWrongStudentDTO wrongStudentDTO = ewrongStudentService.getWrongStudentByID(id);
+        resultMap.put("data", wrongStudentDTO);
+        return resultMap;
+    }
 
     @RequestMapping("/viewWrongStudent")
     @ResponseBody
@@ -189,11 +223,11 @@ public class EwrongStudentController {
 
     @RequestMapping("/exportWrongQuestions")
     @ResponseBody
-    public void exportWrongQuestions(HttpServletRequest request, HttpServletResponse response,String classno, String paperid) {
+    public void exportWrongQuestions(HttpServletRequest request, HttpServletResponse response, String classno, String paperid) {
         String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/" + request.getContextPath();
         try {
 
-            String path = ewrongStudentService.exportHTML(response, this.getCurrentUser(),  classno, paperid, url);
+            String path = ewrongStudentService.exportHTML(response, this.getCurrentUser(), classno, paperid, url);
         } catch (Exception e) {
             e.printStackTrace();
         }

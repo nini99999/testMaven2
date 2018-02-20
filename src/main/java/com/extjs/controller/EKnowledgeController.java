@@ -35,6 +35,19 @@ public class EKnowledgeController {
         return resultMap;
     }
 
+    @RequestMapping("/getTreeWithGrasping")
+    @ResponseBody
+    public Map getTreeWithGrasping(String studentID, String rootID) {
+        Map resultMap = new HashMap();
+        try {
+            List<EKnowledge> knowledges = eKnowledgeService.getKnowledgeGrasping(studentID, rootID);
+            resultMap.put("data",knowledges);
+            resultMap.put("total",knowledges.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultMap;
+    }
 //    @RequestMapping("/getNextChilds")
 //    @ResponseBody
 //    public List<EKnowledge> getNextChilds(String parentID) {

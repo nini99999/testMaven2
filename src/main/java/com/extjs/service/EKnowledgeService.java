@@ -52,5 +52,13 @@ public interface EKnowledgeService {
      */
     EKnowledge createRootNode(String parentID, String gradeno, String subjectno) throws SysException;
 
+    /**
+     * 获取指定学生、知识点树的掌握情况
+     * @param studentID
+     * @param rootID
+     * @return
+     * @throws SysException
+     */
+    List<EKnowledge> getKnowledgeGrasping(String studentID,String rootID) throws SysException;
 
 }

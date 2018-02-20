@@ -15,6 +15,7 @@ import java.util.List;
  * Created by jenny on 2017/5/22.
  */
 public interface EwrongStudentService {
+    EWrongStudentDTO getWrongStudentByID(String id);
 
     List<EWrongStudentDTO> queryWrongStudent(EWrongStudentDTO eWrongStudentDTO);
 
@@ -39,11 +40,12 @@ public interface EwrongStudentService {
 
     /**
      * 根据考试日期，获取指定日期内的错题信息
+     *
      * @param beginDate
      * @param endDate
      * @return
      */
-    List<RWrongQuestion> getWrongsByDateArea(String beginDate, String endDate,String subjectno,String gradeno);
+    List<RWrongQuestion> getWrongsByDateArea(String beginDate, String endDate, String subjectno, String gradeno);
 
     void saveOrUpdateWrongStudent(EWrongStudentDTO eWrongStudentDTO);
 
@@ -67,7 +69,7 @@ public interface EwrongStudentService {
      * @param paperid
      * @return
      */
-    List<VPaperQuestionAndInfo> getQuestionsByWrong(String studentid, String paperid,String classno);
+    List<VPaperQuestionAndInfo> getQuestionsByWrong(String studentid, String paperid, String classno);
 
     /**
      * 按查询条件导出至html
@@ -81,5 +83,11 @@ public interface EwrongStudentService {
      * @return
      * @throws SysException
      */
-    String exportHTML(HttpServletResponse response, String studentid, String classno, String paperid,String url) throws SysException;
+    String exportHTML(HttpServletResponse response, String studentid, String classno, String paperid, String url) throws SysException;
+
+    /**
+     * 更新部分字段
+     * @param eWrongStudentDTO
+     */
+    void saveWrong(EWrongStudentDTO eWrongStudentDTO) throws SysException;
 }
