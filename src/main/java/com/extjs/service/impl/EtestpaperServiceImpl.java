@@ -2,10 +2,7 @@ package com.extjs.service.impl;
 
 import com.extjs.dao.EpaperQTypeDao;
 import com.extjs.dao.EtestpaperDao;
-import com.extjs.model.EPaperQTypeDTO;
-import com.extjs.model.ESubjectQTypeDTO;
-import com.extjs.model.ETestpaper;
-import com.extjs.model.ETestpaperDTO;
+import com.extjs.model.*;
 import com.extjs.service.EpaperQTypeService;
 import com.extjs.service.EsubjectQTypeService;
 import com.extjs.service.EtestpaperService;
@@ -34,20 +31,20 @@ public class EtestpaperServiceImpl implements EtestpaperService {
     private EsubjectQTypeService esubjectQTypeService;
 
     @Override
-    public List<ETestpaperDTO> queryEtestpaper(ETestpaperDTO eTestpaperDTO) {
+    public List<ETestpaperDTO> queryEtestpaper(ETestpaperDTO eTestpaperDTO,Page page) {
         List<ETestpaperDTO> eTestpaperDTOList = new ArrayList<ETestpaperDTO>();
-        List<ETestpaper> eTestpaperList = etestpaperDao.queryEtestPaper(eTestpaperDTO);
+        List<ETestpaper> eTestpaperList = etestpaperDao.queryEtestPaper(eTestpaperDTO,page);
+        EConstants eConstants = new EConstants();
         for (ETestpaper eTestpaper : eTestpaperList) {
-            EConstants eConstants = new EConstants();
 //            eTestpaper.setExamtype(eConstants.examType.get(eTestpaper.getExamtype()));
             eTestpaperDTO = new ETestpaperDTO();
-
             ReflectionUtil.copyProperties(eTestpaper, eTestpaperDTO);
             eTestpaperDTO.setExamtypename(eConstants.examType.get(eTestpaperDTO.getExamtype()));
             eTestpaperDTOList.add(eTestpaperDTO);
         }
         return eTestpaperDTOList;
     }
+
 
     @Override
     public ETestpaperDTO getTestPaperByTPNO(String tpno) {
@@ -118,7 +115,7 @@ public class EtestpaperServiceImpl implements EtestpaperService {
     public HashMap<String, ETestpaperDTO> getEtestPaper() {
         HashMap resultMap = new HashMap<String, ETestpaperDTO>();
         ETestpaperDTO etestpaperDTO = new ETestpaperDTO();
-        List<ETestpaperDTO> testpaperDTOList = this.queryEtestpaper(etestpaperDTO);
+        List<ETestpaperDTO> testpaperDTOList = this.queryEtestpaper(etestpaperDTO,null);
         for (ETestpaperDTO testpaperDTO : testpaperDTOList) {
             resultMap.put(testpaperDTO.getTpno(), testpaperDTO);
         }
@@ -140,7 +137,7 @@ public class EtestpaperServiceImpl implements EtestpaperService {
         eTestpaperDTO.setSchoolno(school);
         eTestpaperDTO.setGradeno(grade);
         eTestpaperDTO.setSubjectno(subject);
-        List<ETestpaperDTO> eTestpaperDTOList = this.queryEtestpaper(eTestpaperDTO);
+        List<ETestpaperDTO> eTestpaperDTOList = this.queryEtestpaper(eTestpaperDTO,null);
         Date date = new Date(System.currentTimeMillis());
         str = grade + "#" + subject + "#" + date.toString() + "--" + String.valueOf(eTestpaperDTOList.size());
         return str;
@@ -149,5 +146,11 @@ public class EtestpaperServiceImpl implements EtestpaperService {
     @Override
     public void delEtestpaper(ETestpaperDTO eTestpaperDTO) {
         etestpaperDao.delEtestPaper(eTestpaperDTO);
+    }
+
+    @Override
+    public int getTotalCount(ETestpaperDTO eTestpaperDTO) {
+        int res=etestpaperDao.getTotalCount(eTestpaperDTO);
+        return res;
     }
 }

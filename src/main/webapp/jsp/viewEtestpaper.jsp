@@ -35,6 +35,7 @@
     function indexFormatter(value, row, index) {
         return index + 1;
     }
+
     function operateFormatter(value, row, index) {
 
         return [
@@ -44,6 +45,7 @@
             '</a> '
         ].join('');
     }
+
     function childFormatter(value, row, index) {
         return [
 
@@ -55,6 +57,7 @@
             '</a>'
         ].join('');
     }
+
     window.operateEvent = {
         'click .edit': function (e, value, row, index) {
             //修改操作
@@ -69,7 +72,7 @@
             $('#c_examtype').selectpicker('val', row.examtype);
             $('#testdate').val(row.testdate);
 //            $('#testdate').datetimepicker('val', row.testdate);
-            console.log('testdate',row.testdate);
+            console.log('testdate', row.testdate);
             $("#myModal").modal('show');
 
         },
@@ -88,6 +91,7 @@
 
         }
     }
+
     function getExamType() {
         $.ajax({
             url: "/etestpaper/getExamType",
@@ -119,6 +123,7 @@
             }
         })
     }
+
     function getTermList() {
         $.ajax({
             url: "/etestpaper/getTermList",
@@ -206,6 +211,7 @@
             }
         })
     }
+
     function openAddModal() {
         var str_grade = $('#gradeno').val();
         if ("noselected" == str_grade) {
@@ -218,6 +224,83 @@
             $('#c_tpname').val(null);
 
         }
+    }
+
+    function init_table() {
+
+        $("#ds_table").bootstrapTable('destroy');
+        $("#ds_table").bootstrapTable({
+            method: "get",
+            catch: false,
+            // toolbar: "#bs_t",
+            idField: "id",
+
+            queryParams: function (params) {
+
+                return {
+                    schoolno: $('#schoolno').val(),
+                    gradeno: $('#gradeno').val(),
+                    subjectno: $('#subjectno').val(),
+                    term: $('#term').val(),
+                    tpname: $('#tpname').val(),
+                    examtype: $('#examtype').val(),
+                    pageno: (params.offset / params.limit) + 1,
+                    pagesize: params.limit
+
+                }
+            },
+
+            url: "/etestpaper/viewTestPaper",
+            striped: true,
+            clickToSelect: true,
+            pagination: true, //是否显示分页（*）
+            sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1, //初始化加载第一页，默认第一页
+            pageSize: 10, //每页的记录行数（*）
+            pageList: [10, 20, 50, 100],
+//            showColumns:true,
+            columns: [{
+                checkbox: true
+            }, {
+                field: "index",
+                title: "序号",
+                align: "center",
+                formatter: function (value, row, index) {
+
+                    return index + 1;
+                }
+            }, {
+                field: "tpno",
+                title: "试卷编码",
+                align: "center"
+            }, {
+                field: "tpname",
+                title: "试卷名称",
+                align: "center"
+            }, {
+                field: "testdate",
+                title: "考试日期",
+                align: "center"
+            }, {
+                field: "examtypename",
+                title: "考试类型",
+                align: "center"
+            }, {
+                field: "creator",
+                title: "创建日期",
+                align: "center"
+            }, {
+                field: "createdate",
+                title: "创建日期",
+                align: "center"
+            }, {
+                field: "edit",
+                title: "编辑",
+                align: "center",
+                formatter: operateFormatter,
+                events: operateEvent
+            }]
+        });
     }
 
     function getChildTable(index, row, $detail) {
@@ -287,39 +370,40 @@
         });
     }
 
-    function queryEtestpaper() {
-        var params = {};
-        params.schoolno = $('#schoolno').val();
-        params.gradeno = $('#gradeno').val();
-        params.subjectno = $('#subjectno').val();
-        params.term = $('#term').val();
-        params.tpname = $('#tpname').val();
-        params.examtype = $('#examtype').val();
-        $.ajax({
-            url: "/etestpaper/viewTestPaper",
-// 数据发送方式
-            type: "post",
-// 接受数据格式
-            dataType: "json",
-// 要传递的数据
-            data: params,
-// 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
+    //     function queryEtestpaper() {
+    //         var params = {};
+    //         params.schoolno = $('#schoolno').val();
+    //         params.gradeno = $('#gradeno').val();
+    //         params.subjectno = $('#subjectno').val();
+    //         params.term = $('#term').val();
+    //         params.tpname = $('#tpname').val();
+    //         params.examtype = $('#examtype').val();
+    //         $.ajax({
+    //             url: "/etestpaper/viewTestPaper",
+    // // 数据发送方式
+    //             type: "post",
+    // // 接受数据格式
+    //             dataType: "json",
+    // // 要传递的数据
+    //             data: params,
+    // // 回调函数，接受服务器端返回给客户端的值，即result值
+    //             success: function (data) {
+    //
+    // //alert(data.total);
+    //                 //$("#ds_table").bootstrapTable('refresh', data);//刷新ds_table的数据
+    //                 $("#ds_table").bootstrapTable('destroy');
+    //                 $("#ds_table").bootstrapTable({data: data.data});//刷新ds_table的数据
+    // //                $("#ds_table").bootstrapTable('refresh', data.data);
+    //             },
+    //
+    //             error: function (data) {
+    // //                console.log(data);
+    //                 alert("查询失败" + data);
+    //
+    //             }
+    //         })
+    //     }
 
-//alert(data.total);
-                //$("#ds_table").bootstrapTable('refresh', data);//刷新ds_table的数据
-                $("#ds_table").bootstrapTable('destroy');
-                $("#ds_table").bootstrapTable({data: data.data});//刷新ds_table的数据
-//                $("#ds_table").bootstrapTable('refresh', data.data);
-            },
-
-            error: function (data) {
-//                console.log(data);
-                alert("查询失败" + data);
-
-            }
-        })
-    }
     function addEtestpaper() {
         var params = {};
 
@@ -347,7 +431,8 @@
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {//调用url成功时有效
                 if (data.success == true) {
-                    queryEtestpaper();
+                    // queryEtestpaper();
+                    init_table();
 //重置输入框为空
 //                    $('#schoolno').val(null);
 //                    $('#subjectno').val(null);
@@ -368,6 +453,7 @@
             }
         })
     }
+
     function addPaperQT() {
         var params = {};
         params.id = $('#l_id').val();
@@ -414,6 +500,7 @@
             }
         })
     }
+
     function delEtestpaper() {
         var selects = $("#ds_table").bootstrapTable('getSelections');
 //        console.log(JSON.stringify(selects));
@@ -431,7 +518,8 @@
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {//调用url成功时有效
                 if (data.success == true) {
-                    queryEtestpaper();
+                    // queryEtestpaper();
+                    init_table();
                 } else {
                     alert(data.msg);
                 }
@@ -468,7 +556,7 @@
                     <select id="examtype" name="examtype" class="selectpicker fit-width">
                     </select>
                     <input id="tpname" name="tpname" class="form-control" style="width: 150px;" placeholder="试卷名称："/>
-                    <button class="btn btn-primary" type="button" onclick="queryEtestpaper();">
+                    <button class="btn btn-primary" type="button" onclick="init_table();">
                         <span class="glyphicon glyphicon-eye-open"></span> 查询
                     </button>
                     <!-- 按钮触发模态框 -->
@@ -484,27 +572,7 @@
 
     </div>
     <div id="bs_t" style="float: none;display: block;margin-left: auto;margin-right: auto;">
-        <table class="table table-striped" id="ds_table" align="center"
-               striped="true"
-               data-height="500" data-detail-view="true" data-detail-formatter="getChildTable"
-               data-pagination="true" sidePagination="server" data-click-to-select="true">
-            <thead>
-            <tr>
-                <th data-field="estate" data-checkbox="true"></th>
-                <th data-field="index" data-align="center" data-formatter="indexFormatter">序号</th>
-                <th data-field="tpno" data-align="center" data-sortable="true">试卷编号</th>
-                <th data-field="tpname" data-align="center" data-sortable="true">试卷名称</th>
-                <th data-field="examtypename" data-align="center" data-sortable="true">考试类型</th>
-                <th data-field="testdate" data-align="center" data-sortable="true">考试日期</th>
-                <th data-field="creator" data-align="center">创建人</th>
-                <th data-field="createdate" data-align="center">创建日期</th>
-                <th data-field="bs_rowid" data-align="center" data-formatter="operateFormatter"
-                    data-events="operateEvent">
-                    编辑
-                </th>
-
-            </tr>
-            </thead>
+        <table class="table table-striped" id="ds_table">
         </table>
     </div>
 </div>
@@ -526,20 +594,20 @@
                 <input id="tpno" name="tpno" class="btn-default" hidden>
 
 
-
-                    <div class="form-group">
-                        <label for="testdate">考试日期：</label>
-                        <!--指定 date标记-->
-                        <div class="input-group date col-xs-6">
-                            <input id='testdate' type='text' class="form-control" readonly/>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                        </div>
-                        <hr/>
-                        <label for="c_tpname">试卷名称：</label><input id="c_tpname" name="c_tpname" class="form-control" style="width: 50%">
-                        <hr/>
-                        <label for="c_examtype">考试类型：</label>
-                        <select id="c_examtype" name="c_examtype" class="selectpicker"></select>
+                <div class="form-group">
+                    <label for="testdate">考试日期：</label>
+                    <!--指定 date标记-->
+                    <div class="input-group date col-xs-6">
+                        <input id='testdate' type='text' class="form-control" readonly/>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
+                    <hr/>
+                    <label for="c_tpname">试卷名称：</label><input id="c_tpname" name="c_tpname" class="form-control"
+                                                              style="width: 50%">
+                    <hr/>
+                    <label for="c_examtype">考试类型：</label>
+                    <select id="c_examtype" name="c_examtype" class="selectpicker"></select>
+                </div>
 
 
             </div>

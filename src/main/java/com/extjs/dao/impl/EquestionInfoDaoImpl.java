@@ -92,7 +92,7 @@ public class EquestionInfoDaoImpl implements EquestionInfoDao {
         StringBuilder stringBuilder = new StringBuilder("SELECT QUESTIONID from (SELECT ROWNUM as rn,t.* FROM (SELECT DISTINCT V_Questionandinfo.questionid ");
         stringBuilder.append(this.getHql(questionandinfo)).append(") t)");
 
-        if (null != page.getPageno() && page.getPageno() > 0 && null != page.getPagesize() && page.getPagesize() > 0) {
+        if (null!=page&&null != page.getPageno() && page.getPageno() > 0 && null != page.getPagesize() && page.getPagesize() > 0) {
             int beginRow = (page.getPageno() - 1) * page.getPagesize() + 1;
             int endRow = page.getPagesize() + beginRow - 1;
             stringBuilder.append(" where rn between " + beginRow + " and " + endRow);

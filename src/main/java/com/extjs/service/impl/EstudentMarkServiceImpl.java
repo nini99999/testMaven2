@@ -129,7 +129,7 @@ public class EstudentMarkServiceImpl implements EstudentMarkService {
         if (null != eStudentMark.getTpno() && eStudentMark.getTpno().length() > 0) {//获取试卷名称、考试日期
             ETestpaperDTO testpaperDTO = new ETestpaperDTO();
             testpaperDTO.setTpno(eStudentMark.getTpno());
-            List<ETestpaperDTO> testpaperDTOList = etestpaperService.queryEtestpaper(testpaperDTO);
+            List<ETestpaperDTO> testpaperDTOList = etestpaperService.queryEtestpaper(testpaperDTO,null);
             for (ETestpaperDTO eTestpaperDTO : testpaperDTOList) {
                 eStudentMark.setTpname(eTestpaperDTO.getTpname());
                 eStudentMark.setTestdate(eTestpaperDTO.getTestdate());

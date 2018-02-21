@@ -30,7 +30,7 @@ public class EStudentMarkDaoImpl implements EStudentMarkDao {
         String hql = this.getHql(eStudentMark);
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(hql);
-        if (null != page.getPageno() && page.getPageno() > 0 && null != page.getPagesize() && page.getPagesize() > 0) {
+        if (null!=page&&null != page.getPageno() && page.getPageno() > 0 && null != page.getPagesize() && page.getPagesize() > 0) {
             query.setFirstResult((page.getPageno() - 1) * page.getPagesize());
             query.setMaxResults(page.getPagesize());
         }

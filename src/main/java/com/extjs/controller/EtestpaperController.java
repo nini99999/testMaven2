@@ -3,6 +3,7 @@ package com.extjs.controller;
 import com.extjs.dao.EpaperQTypeDao;
 import com.extjs.model.EPaperQTypeDTO;
 import com.extjs.model.ETestpaperDTO;
+import com.extjs.model.Page;
 import com.extjs.service.EpaperQTypeService;
 import com.extjs.service.EtestpaperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class EtestpaperController {
 
     @RequestMapping("/viewTestPaper")
     @ResponseBody
-    public Map queryTestPaper(ETestpaperDTO eTestpaperDTO) {
+    public Map queryTestPaper(ETestpaperDTO eTestpaperDTO, Page page) {
         if ("noselected".equals(eTestpaperDTO.getGradeno())) {
             eTestpaperDTO.setGradeno(null);
         }
@@ -79,9 +80,10 @@ public class EtestpaperController {
         }
         Map<String, Object> resultMap = new HashMap<String, Object>();
         List<ETestpaperDTO> eTestpaperDTOList = new ArrayList<ETestpaperDTO>();
-        eTestpaperDTOList = etestpaperService.queryEtestpaper(eTestpaperDTO);
-        resultMap.put("data", eTestpaperDTOList);
-        resultMap.put("total", eTestpaperDTOList.size());
+        eTestpaperDTOList = etestpaperService.queryEtestpaper(eTestpaperDTO, page);
+        int totalCount = etestpaperService.getTotalCount(eTestpaperDTO);
+        resultMap.put("rows", eTestpaperDTOList);
+        resultMap.put("total", totalCount);
         return resultMap;
     }
 

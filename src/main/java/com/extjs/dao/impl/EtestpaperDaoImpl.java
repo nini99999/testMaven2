@@ -3,6 +3,7 @@ package com.extjs.dao.impl;
 import com.extjs.dao.EtestpaperDao;
 import com.extjs.model.ETestpaper;
 import com.extjs.model.ETestpaperDTO;
+import com.extjs.model.Page;
 import com.extjs.util.ReflectionUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -28,7 +29,24 @@ public class EtestpaperDaoImpl implements EtestpaperDao {
     /**
      * if creator="All",不根据创建人进行查询
      */
-    public List<ETestpaper> queryEtestPaper(ETestpaperDTO eTestpaperDTO) {
+    public List<ETestpaper> queryEtestPaper(ETestpaperDTO eTestpaperDTO, Page page) {
+        String hql = this.getHql(eTestpaperDTO) + " order by schoolno,gradeno,term,subjectno,tpno";
+        List<ETestpaper> eTestpaperList = null;
+        Session session = sessionFactory.getCurrentSession();
+        try {
+            Query query = session.createQuery(hql);
+            if (null != page && null != page.getPageno() && page.getPageno() > 0 && null != page.getPagesize() && page.getPagesize() > 0) {
+                query.setFirstResult((page.getPageno() - 1) * page.getPagesize());
+                query.setMaxResults(page.getPagesize());
+            }
+            eTestpaperList = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return eTestpaperList;
+    }
+
+    private String getHql(ETestpaperDTO eTestpaperDTO) {
         StringBuilder sb = new StringBuilder();
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
@@ -61,16 +79,8 @@ public class EtestpaperDaoImpl implements EtestpaperDao {
         if (null != eTestpaperDTO.getStartDate() && eTestpaperDTO.getStartDate().length() > 0 && null != eTestpaperDTO.getEndDate() && eTestpaperDTO.getEndDate().length() > 0) {
             sb.append(" and testdate BETWEEN to_date('" + eTestpaperDTO.getStartDate() + "', 'yyyy-mm-dd') AND to_date('" + eTestpaperDTO.getEndDate() + "', 'yyyy-mm-dd')");
         }
-        sb.append(" order by schoolno,gradeno,term,subjectno,tpno");
-        List<ETestpaper> eTestpaperList = null;
-        Session session = sessionFactory.getCurrentSession();
-        try {
-            Query query = session.createQuery(sb.toString());
-            eTestpaperList = query.list();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return eTestpaperList;
+//        sb.append(" order by schoolno,gradeno,term,subjectno,tpno");
+        return sb.toString();
     }
 
     @Override
@@ -85,7 +95,7 @@ public class EtestpaperDaoImpl implements EtestpaperDao {
             }
         }
         eTestpaperDTO.setCreator("All");
-        List<ETestpaper> eTestpaperList = this.queryEtestPaper(eTestpaperDTO);
+        List<ETestpaper> eTestpaperList = this.queryEtestPaper(eTestpaperDTO, new Page());
 
         for (ETestpaper eTestpaper : eTestpaperList) {
             result = eTestpaper;
@@ -121,5 +131,14 @@ public class EtestpaperDaoImpl implements EtestpaperDao {
         ReflectionUtil.copyProperties(eTestpaperDTO, eTestpaper);
         session.delete(eTestpaper);
         session.flush();
+    }
+
+    @Override
+    public int getTotalCount(ETestpaperDTO eTestpaperDTO) {
+        String hql = "select count(*) " + this.getHql(eTestpaperDTO);
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(hql);
+        int res = Integer.parseInt(query.uniqueResult().toString());
+        return res;
     }
 }
