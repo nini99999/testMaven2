@@ -1,9 +1,6 @@
 package com.extjs.controller;
 
-import com.extjs.model.EQuestionAndInfoVO;
-import com.extjs.model.EQuestionInfoDTO;
-import com.extjs.model.EQuestionsDTO;
-import com.extjs.model.VQuestionandinfo;
+import com.extjs.model.*;
 import com.extjs.service.EquestionService;
 import com.extjs.util.EConstants;
 
@@ -37,14 +34,14 @@ public class EquestionController {
     public Map queryOneQuestion(String questionID) {
         String question = equestionService.getOneQuestion(questionID);
         Map resultMap = new HashMap();
-        resultMap.put("data",question);
-        resultMap.put("tatal",1);
+        resultMap.put("data", question);
+        resultMap.put("tatal", 1);
         return resultMap;
     }
 
     @RequestMapping("/viewQuestionList")
     @ResponseBody
-    public Map queryQuestions(VQuestionandinfo questionandinfo) {
+    public Map queryQuestions(VQuestionandinfo questionandinfo, Page page) {
 //        URL url=this.getClass().getClassLoader().getResource("/");
 //        String uu=request.getSession().getServletContext().getContextPath();
 //        uu=request.getSession().getServletContext().getRealPath("/");
@@ -54,9 +51,11 @@ public class EquestionController {
 //        EQuestionsDTO questionsDTO=new EQuestionsDTO();
         Map resultMap = new HashMap();
 //        List<EQuestionsDTO> questionandinfoList = equestionService.getQuestionList(questionsDTO);
-        List<VQuestionandinfo> questionandinfoList = equestionService.getQuestionAndInfoList(questionandinfo);
-        resultMap.put("data", questionandinfoList);
-        resultMap.put("total", questionandinfoList.size());
+        List<VQuestionandinfo> questionandinfoList = equestionService.getQuestionAndInfoList(questionandinfo, page);
+        int totalCount=equestionService.getTotalCount(questionandinfo);
+        resultMap.put("rows", questionandinfoList);
+//        resultMap.put("data", questionandinfoList);
+        resultMap.put("total", totalCount);
         return resultMap;
     }
 
@@ -110,7 +109,7 @@ public class EquestionController {
         // Map resultMap = new HashMap();
         String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/" + request.getContextPath();
 
-        String path = equestionService.exportToHTML(response, questionandinfo,url);
+        String path = equestionService.exportToHTML(response, questionandinfo, url);
         // resultMap.put("data", path);
         // resultMap.put("total", 1);
 

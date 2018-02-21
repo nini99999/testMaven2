@@ -83,7 +83,8 @@
             data: params,
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {
-                queryQuestions();
+                // queryQuestions();
+                init_table();
                 alert("记录已保存！");
             }
             ,
@@ -104,7 +105,7 @@
             $("#myModal").modal('show');
             $('#sid').val(row.id);
             $('#squestionid').val(row.questionid);
-
+            $('#mdifficulty').val(row.difficulty);
             $('#mgradeno').selectpicker('val', row.gradeno);
             $('#msubjectno').selectpicker('val', row.subjectno);
 
@@ -203,7 +204,8 @@
 // 回调函数，接受服务器端返回给客户端的值，即result值
                 success: function (data) {
                     if (data.success == true) {
-                        queryQuestions();
+                        // queryQuestions();
+                        init_table();
                         BootstrapDialog.show({
                             type: BootstrapDialog.TYPE_SUCCESS,
                             title: '维护题目及信息_操作提示：',
@@ -229,57 +231,57 @@
         }
     }
 
-    function queryQuestions() {
-        var questionColumns = [];
-        var params = {};
-        params.gradeno = $('#gradeno').val();
-        params.subjectno = $('#subjectno').val();
-        params.questiontype = $('#questiontype').val();
-        params.difficulty = $('#difficulty').val();
-//        params.konwledge = $('#konwledge').val();
-        $.ajax({
-            url: "/equestions/viewQuestionList",
-// 数据发送方式
-            type: "get",
-// 接受数据格式
-            dataType: "json",
-// 要传递的数据
-            data: params,
-// 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
-//                console.log(data.data);
-                $('#ds_table').bootstrapTable('destroy');
-                $('#ds_table').bootstrapTable({data: data.data});//刷新ds_table的数据
-            },
-            error: function (data) {
-                alert("查询失败" + data);
-            }
-        })
-    }
+    //     function queryQuestions() {
+    //         var questionColumns = [];
+    //         var params = {};
+    //         params.gradeno = $('#gradeno').val();
+    //         params.subjectno = $('#subjectno').val();
+    //         params.questiontype = $('#questiontype').val();
+    //         params.difficulty = $('#difficulty').val();
+    // //        params.konwledge = $('#konwledge').val();
+    //         $.ajax({
+    //             url: "/equestions/viewQuestionList",
+    // // 数据发送方式
+    //             type: "get",
+    // // 接受数据格式
+    //             dataType: "json",
+    // // 要传递的数据
+    //             data: params,
+    // // 回调函数，接受服务器端返回给客户端的值，即result值
+    //             success: function (data) {
+    // //                console.log(data.data);
+    //                 $('#ds_table').bootstrapTable('destroy');
+    //                 $('#ds_table').bootstrapTable({data: data.data});//刷新ds_table的数据
+    //             },
+    //             error: function (data) {
+    //                 alert("查询失败" + data);
+    //             }
+    //         })
+    //     }
 
-    function downloadFile(fileName) {
-        var params = {};
-        params.fileName = fileName;
-        $.ajax({
-            url: "/equestions/downloadFile",
-// 数据发送方式
-            type: "post",
-// 接受数据格式
-            dataType: "json",
-// 要传递的数据
-            data: params,
-// 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
-//                console.log(data.data);
-//                $('#ds_table').bootstrapTable('destroy');
-//                $('#ds_table').bootstrapTable({data: data.data});//刷新ds_table的数据
-                console.log("下载成功！" + data);
-            },
-            error: function (data) {
-                console.log("System Error", data);
-            }
-        })
-    }
+    //     function downloadFile(fileName) {
+    //         var params = {};
+    //         params.fileName = fileName;
+    //         $.ajax({
+    //             url: "/equestions/downloadFile",
+    // // 数据发送方式
+    //             type: "post",
+    // // 接受数据格式
+    //             dataType: "json",
+    // // 要传递的数据
+    //             data: params,
+    // // 回调函数，接受服务器端返回给客户端的值，即result值
+    //             success: function (data) {
+    // //                console.log(data.data);
+    // //                $('#ds_table').bootstrapTable('destroy');
+    // //                $('#ds_table').bootstrapTable({data: data.data});//刷新ds_table的数据
+    //                 console.log("下载成功！" + data);
+    //             },
+    //             error: function (data) {
+    //                 console.log("System Error", data);
+    //             }
+    //         })
+    //     }
 
     function exportQuestions() {
         document.getElementById("exportForm").submit();
@@ -587,12 +589,73 @@
         })
     }
 
+    function init_table() {
+
+        $("#ds_table").bootstrapTable('destroy');
+        $("#ds_table").bootstrapTable({
+            method: "get",
+            catch: false,
+            // toolbar: "#bs_t",
+            idField: "id",
+
+            queryParams: function (params) {
+
+                return {
+                    pageno: (params.offset / params.limit) + 1,
+                    pagesize: params.limit,
+                    subjectno: $('#subjectno').val(),
+                    questiontype: $('#questiontype').val(),
+                    difficulty: $('#difficulty').val(),
+                    gradeno: $('#gradeno').val()
+                }
+            },
+            // url: "/studentMark/queryEstudentMark",
+            url: "/equestions/viewQuestionList",
+            striped: true,
+            clickToSelect: true,
+            pagination: true, //是否显示分页（*）
+            sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1, //初始化加载第一页，默认第一页
+            pageSize: 10, //每页的记录行数（*）
+            pageList: [10, 20, 50, 100],
+//            showColumns:true,
+            columns: [{
+                checkbox: true
+            }, {
+                field: "index",
+                title: "序号",
+                align: "center",
+                formatter: function (value, row, index) {
+
+                    return index + 1;
+                }
+            }, {
+                field: "question",
+                title: "题目",
+                align: "center"
+            }, {
+                field: "editQuestion",
+                title: "编辑",
+                align: "center",
+                formatter: operateFormatter,
+                events: operateEvent
+            }, {
+                field: "questionAnswer",
+                title: "答案",
+                align: "center",
+                formatter: answerFormatter,
+                events: operateEvent
+            }]
+        });
+    }
+
     $(function () {
 
         queryEgradeListBYschool();
         getsubjectList();
         getTermList();
-        queryQuestions();
+        // queryQuestions();
+        // init_table();
         var form = document.getElementById('mForm');
         form.onsubmit = function () {
             kfSubmit();
@@ -726,7 +789,7 @@
                     <input id="konwledge" type="text" placeholder="知识点：" hidden/>
 
                     <input id="difficulty" type="text" placeholder="难度系数：" hidden/>
-                    <button class="btn btn-primary" type="button" onclick="queryQuestions()">
+                    <button class="btn btn-primary" type="button" onclick="init_table()">
                         <span class="glyphicon glyphicon-eye-open"></span>查询
                     </button>
 
@@ -741,20 +804,18 @@
 </form>
 
 <div id="bs_t" style="float: none;display: block;margin-bottom:0;margin-left: auto;margin-right: auto;width: 99%">
-    <table class="table table-striped" id="ds_table" align="center"
-           striped="true"
-           data-pagination="true" sidePagination="server" data-click-to-select="true">
-        <thead>
-        <tr>
+    <table class="table table-striped" id="ds_table">
+        <%--<thead>--%>
+        <%--<tr>--%>
 
-            <th data-field="index" data-align="center" data-formatter="indexFormatter">序号</th>
-            <th data-field="question">题目</th>
-            <th data-field="id" data-align="center" data-formatter="operateFormatter" data-events="operateEvent">编辑
-            </th>
-            <th data-field="answer" data-align="center" data-formatter="answerFormatter" data-events="operateEvent">答案
-            </th>
-        </tr>
-        </thead>
+        <%--<th data-field="index" data-align="center" data-formatter="indexFormatter">序号</th>--%>
+        <%--<th data-field="question">题目</th>--%>
+        <%--<th data-field="id" data-align="center" data-formatter="operateFormatter" data-events="operateEvent">编辑--%>
+        <%--</th>--%>
+        <%--<th data-field="answer" data-align="center" data-formatter="answerFormatter" data-events="operateEvent">答案--%>
+        <%--</th>--%>
+        <%--</tr>--%>
+        <%--</thead>--%>
     </table>
 </div>
 </div>

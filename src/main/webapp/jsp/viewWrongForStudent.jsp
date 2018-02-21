@@ -534,7 +534,7 @@
             <th data-field="estate" data-checkbox="true"></th>
             <%--<th data-field="index" data-align="center" data-formatter="indexFormatter">序号</th>--%>
             <%--<th data-field="studentname" data-align="center">学生姓名</th>--%>
-            <th data-field="testpapername" data-align="center">试卷名称</th>
+            <%--<th data-field="testpapername" data-align="center">试卷名称</th>--%>
             <th data-field="questionno" data-align="center">错题号</th>
             <th data-field="testdate" data-align="center">考试日期</th>
             <th data-field="reason">错题原因</th>

@@ -95,9 +95,9 @@ public class EquestionServiceImpl implements EquestionService {
      * }
      */
     @Override
-    public List<VQuestionandinfo> getQuestionAndInfoList(VQuestionandinfo questionandinfo) {
+    public List<VQuestionandinfo> getQuestionAndInfoList(VQuestionandinfo questionandinfo,Page page) {
 
-        List<VQuestionandinfo> questionandinfoList = equestionInfoDao.getQuestionAndInfos(questionandinfo);
+        List<VQuestionandinfo> questionandinfoList = equestionInfoDao.getQuestionAndInfos(questionandinfo,page);
         List<VQuestionandinfo> ResultQuestionandinfos = new ArrayList<>();
         VQuestionandinfo c_questionandinfo;
         String question = "";
@@ -295,7 +295,7 @@ public class EquestionServiceImpl implements EquestionService {
 //
 //    }
     public String exportToHTML(HttpServletResponse response, VQuestionandinfo questionandinfo, String url) {
-        List<VQuestionandinfo> questionandinfoList = this.getQuestionAndInfoList(questionandinfo);
+        List<VQuestionandinfo> questionandinfoList = this.getQuestionAndInfoList(questionandinfo,null);
         StringBuilder stringBuilder = new StringBuilder("");
         int i = 0;
         for (VQuestionandinfo vQuestionandinfo : questionandinfoList) {
@@ -314,5 +314,11 @@ public class EquestionServiceImpl implements EquestionService {
         for (String string : list) {
             this.addOneQuestionAndInfo(null,string, gradeno, subjectno, questionType, Float.parseFloat("0"));
         }
+    }
+
+    @Override
+    public int getTotalCount(VQuestionandinfo questionandinfo) {
+        int res=equestionInfoDao.getTotalCount(questionandinfo);
+        return res;
     }
 }

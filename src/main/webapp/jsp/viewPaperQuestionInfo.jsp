@@ -403,7 +403,7 @@
 //                getTestPaperList();
 //                var res=$('#gradeno').val();
 //                return res;
-                getsubjectList();
+//                 getsubjectList();
             },
             error: function (data) {
                 alert("查询年级失败" + data);
@@ -428,11 +428,12 @@
                     $('#subjectno.selectpicker').append("<option value=" + data.data[i].subjectno + ">" + data.data[i].subjectname + "</option>");
                     $('#msubjectno.selectpicker').append("<option value=" + data.data[i].subjectno + ">" + data.data[i].subjectname + "</option>");
                 });
+                $('#subjectno').selectpicker('render');
                 $('#subjectno').selectpicker('refresh');
                 $('#msubjectno').selectpicker('refresh');
 //                queryQTypeBySubject($('#subjectno').val());
 //                getTestPaperList();
-                getTestPaperList();
+//                 getTestPaperList();
             },
             error: function (data) {
                 alert("查询学科失败" + data);
@@ -454,11 +455,11 @@
         $(document).ready(function () {
             $('#reservation').daterangepicker(null, function (start, end, label) {
 //                console.log(start.toISOString(), end.toISOString(), label);
-                getTestPaperList();
+//                 getTestPaperList();
             });
         });
         document.getElementById("reservation").value = getCurrentMonth();
-        queryEgradeListBYschool();
+        // queryEgradeListBYschool();
     }
 
     function exportQuestions() {
@@ -640,6 +641,8 @@
 
     $(function () {
         initDateSelect();
+        queryEgradeListBYschool();
+        getsubjectList();
 
         var form = document.getElementById('mForm');
 
@@ -767,7 +770,7 @@
                        style="width: 200px"
                        name="reservation"
                        id="reservation"
-                       class="form-control"/>
+                       class="form-control" onchange="getTestPaperList()"/>
                 <div style="float: left">
                     <select id="gradeno" name="gradeno" class="selectpicker fit-width" onchange="getTestPaperList()">
                     </select>

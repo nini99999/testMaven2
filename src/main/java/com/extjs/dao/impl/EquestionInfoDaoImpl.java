@@ -2,10 +2,12 @@ package com.extjs.dao.impl;
 
 import com.extjs.dao.EquestionInfoDao;
 import com.extjs.model.EQuestionInfo;
+import com.extjs.model.Page;
 import com.extjs.model.VQuestionandinfo;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.type.StringType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -60,9 +62,55 @@ public class EquestionInfoDaoImpl implements EquestionInfoDao {
     }
 
     @Override
-    public List<VQuestionandinfo> getQuestionAndInfos(VQuestionandinfo questionandinfo) {
+    public List<VQuestionandinfo> getQuestionAndInfos(VQuestionandinfo questionandinfo, Page page) {
+//        StringBuilder stringBuilder = new StringBuilder("select * " + this.getHql(questionandinfo));
+//        if (null != page.getPageno() && page.getPageno() > 0 && null != page.getPagesize() && page.getPagesize() > 0) {
+//            int beginRow = (page.getPageno() - 1) * page.getPagesize() + 1;
+//            int endRow = page.getPagesize() + beginRow - 1;
+//            stringBuilder.append(" and rownum between " + beginRow + " and " + endRow + " order by questionid,questionno");
+////            query.setFirstResult((page.getPageno() - 1) * page.getPagesize());
+////            query.setMaxResults(page.getPagesize());
+//        }
+        List<String> list = this.getQuestionIDS(questionandinfo, page);
+        StringBuilder stringBuilder = new StringBuilder("select * from V_Questionandinfo where questionid in(:questionIDS) order by questionid,questionno");
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery(stringBuilder.toString()).addEntity(VQuestionandinfo.class).setParameterList("questionIDS", list);
+
+        List<VQuestionandinfo> res = query.list();
+        return res;
+    }
+
+    /**
+     * 根据查询条件查询出指定页数的questionID，并拼接成字符串返回
+     *
+     * @param questionandinfo
+     * @param page
+     * @return
+     */
+    private List<String> getQuestionIDS(VQuestionandinfo questionandinfo, Page page) {
+//        SELECT QUESTIONID from (SELECT ROWNUM as rn,t.* FROM (SELECT DISTINCT V_Questionandinfo.questionid FROM V_QUESTIONANDINFO) t) WHERE rn BETWEEN 2 AND 3
+        StringBuilder stringBuilder = new StringBuilder("SELECT QUESTIONID from (SELECT ROWNUM as rn,t.* FROM (SELECT DISTINCT V_Questionandinfo.questionid ");
+        stringBuilder.append(this.getHql(questionandinfo)).append(") t)");
+
+        if (null != page.getPageno() && page.getPageno() > 0 && null != page.getPagesize() && page.getPagesize() > 0) {
+            int beginRow = (page.getPageno() - 1) * page.getPagesize() + 1;
+            int endRow = page.getPagesize() + beginRow - 1;
+            stringBuilder.append(" where rn between " + beginRow + " and " + endRow);
+        }
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createSQLQuery(stringBuilder.toString()).addScalar("QUESTIONID", StringType.INSTANCE);
+        List<String> list = query.list();
+//        StringBuilder sb = new StringBuilder("");
+//        for (String string : list) {
+//            sb.append(string).append(",");
+//        }
+//        return sb.toString().substring(0, sb.toString().length() - 1);
+        return list;
+    }
+
+    private String getHql(VQuestionandinfo questionandinfo) {
         StringBuilder sb = new StringBuilder();
-        sb.append("from VQuestionandinfo where 1=1");
+        sb.append("from V_Questionandinfo  where 1=1");
         if (null != questionandinfo.getId() && !"".equals(questionandinfo.getId())) {
             sb.append(" and id='" + questionandinfo.getId() + "'");
         } else {
@@ -91,10 +139,19 @@ public class EquestionInfoDaoImpl implements EquestionInfoDao {
                 sb.append(" and question like '%" + questionandinfo.getQuestion() + "%'");
             }
         }
-        sb.append(" order by questionid,questionno");
+//        sb.append(" order by questionid,questionno");
+
+        return sb.toString();
+    }
+
+    @Override
+    public int getTotalCount(VQuestionandinfo questionandinfo) {
+        int res = 0;
+        StringBuilder stringBuilder = new StringBuilder("select count(distinct QUESTIONID) ");
+        stringBuilder.append(this.getHql(questionandinfo));
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery(sb.toString());
-        List<VQuestionandinfo> res = query.list();
+        Query query = session.createSQLQuery(stringBuilder.toString());
+        res = Integer.parseInt(query.uniqueResult().toString());
         return res;
     }
 }

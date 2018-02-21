@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface EquestionService {
 //    List<EQuestionsDTO> getQuestionList(EQuestionsDTO eQuestionsDTO);//获取试题集合
-    List<VQuestionandinfo> getQuestionAndInfoList(VQuestionandinfo questionandinfo);//根据视图查询试题及试题信息
+    List<VQuestionandinfo> getQuestionAndInfoList(VQuestionandinfo questionandinfo,Page page);//根据视图查询试题及试题信息
 
     String getOneQuestion(String questionID);//获取一道试题题干,返回html格式文本
 
@@ -41,4 +41,6 @@ public interface EquestionService {
     String exportToHTML(HttpServletResponse response , VQuestionandinfo questionandinfo,String url);//导出至html，返回导出路径+html文件名
 
     void addQuestionAndInfoList(List<String> list,String gradeno,String subjectno,String questionType,Float difficulty);
+
+    int getTotalCount(VQuestionandinfo questionandinfo);//查询指定条件的总记录数
 }
