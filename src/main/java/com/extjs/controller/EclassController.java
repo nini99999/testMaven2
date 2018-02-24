@@ -24,7 +24,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("eclass")
-public class EcalssController {
+public class EclassController {
     @Autowired
     private EclassService eclassService;
 

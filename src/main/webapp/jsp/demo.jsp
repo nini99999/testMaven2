@@ -12,7 +12,7 @@
 <head>
     <base href="<%=basePath%>">
 
-    <title>TreePanel示例</title>
+    <title>ILearns-精准教学管理系统</title>
 
     <link rel="stylesheet" type="text/css" href="<%=path%>/extjs/resources/css/ext-all-gray.css"/>
     <link rel="stylesheet" type="text/css" href="<%=path%>/extjs/resources/css/ItemSelector.css">

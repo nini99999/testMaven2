@@ -83,6 +83,7 @@ public class EtestpaperController {
         eTestpaperDTOList = etestpaperService.queryEtestpaper(eTestpaperDTO, page);
         int totalCount = etestpaperService.getTotalCount(eTestpaperDTO);
         resultMap.put("rows", eTestpaperDTOList);
+        resultMap.put("data",eTestpaperDTOList);
         resultMap.put("total", totalCount);
         return resultMap;
     }

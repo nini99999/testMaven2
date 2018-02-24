@@ -31,7 +31,7 @@ public class EstudentMarkController {
         int totalCount = estudentMarkService.getTotalCount(eStudentMark);
 //        page.setTotalCount(totalCount);
         List<EStudentMark> eStudentMarkList = estudentMarkService.queryEStudentMark(eStudentMark, page);
-//        resultMap.put("data", eStudentMarkList);
+        resultMap.put("data", eStudentMarkList);
         resultMap.put("total", totalCount);
         resultMap.put("rows", eStudentMarkList);
         return resultMap;

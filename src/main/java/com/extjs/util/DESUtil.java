@@ -97,28 +97,49 @@ public class DESUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String source = "123456";
+        String source = "123";
         System.out.println("原文: " + source);
         String encryptData = md5(source);
         System.out.println("加密后: " + encryptData);
     }
-
-    public static String md5(String value ){
-            MessageDigest digest;
-            try {
-                digest = MessageDigest.getInstance("MD5");
-                digest.update(value.getBytes("UTF8"));
-                StringBuilder ret=new StringBuilder(digest.digest().length<<1);
-                for(int i=0;i<digest.digest().length;i++){
-                    ret.append(Character.forDigit((digest.digest()[i]>>4)&0xf,16));
-                    ret.append(Character.forDigit(digest.digest()[i]&0xf,16));
-                }
-                String md5Password = new String(ret);
-                return  (md5Password);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return  null;
+//
+//    public static String md5(String value ){
+//            MessageDigest digest;
+//            try {
+//                digest = MessageDigest.getInstance("MD5");
+//                digest.update(value.getBytes("UTF8"));
+//                StringBuilder ret=new StringBuilder(digest.digest().length<<1);
+//                for(int i=0;i<digest.digest().length;i++){
+//                    ret.append(Character.forDigit((digest.digest()[i]>>4)&0xf,16));
+//                    ret.append(Character.forDigit(digest.digest()[i]&0xf,16));
+//                }
+//                String md5Password = new String(ret);
+//                return  (md5Password);
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            return  null;
+//        }
+    public static String md5(String s) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] bytes = md.digest(s.getBytes("utf-8"));
+            return toHex(bytes);
         }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String toHex(byte[] bytes) {
+
+        final char[] HEX_DIGITS = "0123456789ABCDEF".toCharArray();
+        StringBuilder ret = new StringBuilder(bytes.length * 2);
+        for (int i=0; i<bytes.length; i++) {
+            ret.append(HEX_DIGITS[(bytes[i] >> 4) & 0x0f]);
+            ret.append(HEX_DIGITS[bytes[i] & 0x0f]);
+        }
+        return ret.toString();
+    }
 }

@@ -33,22 +33,25 @@
             <security:concurrency-control max-sessions="1" expired-url="/loginlogout/toLogin"/>
         </security:session-management>
     </security:http>
-    <!-- 指定一个自定义的authentication-manager :customUserDetailsService -->
+     <!--指定一个自定义的authentication-manager :customUserDetailsService -->
     <security:authentication-manager alias="authenticationManager">
         <security:authentication-provider ref="authenticationProvider">
         </security:authentication-provider>
     </security:authentication-manager>
+    <!--<security:authentication-manager  alias="authenticationManager">-->
+        <!--<security:authentication-provider user-service-ref="customUserDetailsService">-->
+            <!--<security:password-encoder ref="passwordEncoder"/>-->
+        <!--</security:authentication-provider>-->
+    <!--</security:authentication-manager>-->
     <bean id="authenticationProvider"
           class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
         <property name="hideUserNotFoundExceptions" value="false"/>
         <property name="userDetailsService" ref="customUserDetailsService"/>
-        <!--<beans:property name="passwordEncoder" ref="passwordEncode" />-->
-        <!--<beans:property name="saltSource" ref="saltSource" />-->
-        <property name="messageSource" ref="messageSource"/>
-        <!--<property name="userCache" ref="userCache" />-->
-        <!--<property name="messageSource" ref="messageSource" />-->
         <!--<property name="passwordEncoder" ref="passwordEncode" />-->
         <!--<property name="saltSource" ref="saltSource" />-->
+        <property name="messageSource" ref="messageSource"/>
+        <!--<property name="userCache" ref="userCache" />-->
+
     </bean>
     <bean id="customUserDetailsService" class="com.extjs.service.impl.CustomUserDetailsService"/>
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">

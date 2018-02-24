@@ -27,7 +27,7 @@
 		Ext.create('Ext.window.Window',
 				{
 
-					title: '管理平台',
+					title: 'ILearns精准教学管理系统',
 					width: 360,
 					height: 140,
 					closable:false,

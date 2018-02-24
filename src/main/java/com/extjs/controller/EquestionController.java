@@ -54,7 +54,7 @@ public class EquestionController {
         List<VQuestionandinfo> questionandinfoList = equestionService.getQuestionAndInfoList(questionandinfo, page);
         int totalCount=equestionService.getTotalCount(questionandinfo);
         resultMap.put("rows", questionandinfoList);
-//        resultMap.put("data", questionandinfoList);
+        resultMap.put("data", questionandinfoList);
         resultMap.put("total", totalCount);
         return resultMap;
     }

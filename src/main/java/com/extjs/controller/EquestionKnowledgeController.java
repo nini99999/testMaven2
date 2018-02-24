@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("QuestionKnowledge")
-public class EQuestionKnowledgeController {
+public class EquestionKnowledgeController {
     @Autowired
     private EQuestionKnowledgeService eQuestionKnowledgeService;
 
