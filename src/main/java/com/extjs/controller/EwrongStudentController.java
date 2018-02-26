@@ -67,7 +67,7 @@ public class EwrongStudentController {
 
     @RequestMapping("/viewWrongStudent")
     @ResponseBody
-    public Map<String, Object> queryWrongStudent(String tpno, String student, String classno) {
+    public Map<String, Object> queryWrongStudent(String tpno, String student, String classno, Page page) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
         try {
@@ -83,9 +83,11 @@ public class EwrongStudentController {
                 }
             }
             wrongStudentDTO.setTestpaperno(tpno.trim());
-            List<EWrongStudentDTO> wrongStudentDTOS = ewrongStudentService.queryWrongStudent(wrongStudentDTO);
+            List<EWrongStudentDTO> wrongStudentDTOS = ewrongStudentService.queryWrongStudent(wrongStudentDTO, page);
+            int total=ewrongStudentService.getTotalCount(wrongStudentDTO);
             resultMap.put("data", wrongStudentDTOS);
-            resultMap.put("total", wrongStudentDTOS.size());
+            resultMap.put("rows", wrongStudentDTOS);
+            resultMap.put("total", total);
         } catch (Exception e) {
             e.printStackTrace();
         }

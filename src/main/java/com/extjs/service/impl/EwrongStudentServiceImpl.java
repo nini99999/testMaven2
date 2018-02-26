@@ -40,7 +40,7 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
     public EWrongStudentDTO getWrongStudentByID(String id) {
         EWrongStudentDTO wrongStudentDTO = new EWrongStudentDTO();
         wrongStudentDTO.setId(id);
-        List<EWrongStudent> wrongStudentList = ewrongStudentDao.queryEWrongStudent(wrongStudentDTO);
+        List<EWrongStudent> wrongStudentList = ewrongStudentDao.queryEWrongStudent(wrongStudentDTO,null);
         for (EWrongStudent wrongStudent : wrongStudentList) {
             ReflectionUtil.copyProperties(wrongStudent, wrongStudentDTO);
         }
@@ -48,9 +48,9 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
     }
 
     @Override
-    public List<EWrongStudentDTO> queryWrongStudent(EWrongStudentDTO eWrongStudentDTO) {
+    public List<EWrongStudentDTO> queryWrongStudent(EWrongStudentDTO eWrongStudentDTO,Page page) {
 
-        List<EWrongStudent> eWrongStudents = ewrongStudentDao.queryEWrongStudent(eWrongStudentDTO);
+        List<EWrongStudent> eWrongStudents = ewrongStudentDao.queryEWrongStudent(eWrongStudentDTO,page);
 
         List<EWrongStudentDTO> eWrongStudentDTOList = new ArrayList<EWrongStudentDTO>();
         for (EWrongStudent eWrongStudent : eWrongStudents) {
@@ -78,7 +78,7 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
         if (null != studentID && studentID.length() > 0) {
             EWrongStudentDTO eWrongStudentDTO = new EWrongStudentDTO();
             eWrongStudentDTO.setStudentid(studentID);
-            List<EWrongStudent> eWrongStudents = ewrongStudentDao.queryEWrongStudent(eWrongStudentDTO);
+            List<EWrongStudent> eWrongStudents = ewrongStudentDao.queryEWrongStudent(eWrongStudentDTO,null);
             for (EWrongStudent eWrongStudent : eWrongStudents) {
                 resultMap.put(eWrongStudent.getQuestionno(), eWrongStudent.getQuestionno());
             }
@@ -92,7 +92,7 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
         if (null != studentID && studentID.length() > 0) {
             EWrongStudentDTO eWrongStudentDTO = new EWrongStudentDTO();
             eWrongStudentDTO.setStudentid(studentID);
-            List<EWrongStudent> eWrongStudents = ewrongStudentDao.queryEWrongStudent(eWrongStudentDTO);
+            List<EWrongStudent> eWrongStudents = ewrongStudentDao.queryEWrongStudent(eWrongStudentDTO,null);
             for (EWrongStudent eWrongStudent : eWrongStudents) {
                 resultMap.put(eWrongStudent.getQuestionid(), eWrongStudent.getId());
             }
@@ -213,7 +213,7 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
             wrongStudentDTO.setStudentid(estudentService.getStudentByUserName(userName).getId());
         }
 
-        List<EWrongStudentDTO> wrongStudentDTOList = this.queryWrongStudent(wrongStudentDTO);
+        List<EWrongStudentDTO> wrongStudentDTOList = this.queryWrongStudent(wrongStudentDTO,null);
         VPaperQuestionAndInfo vPaperQuestionAndInfo = new VPaperQuestionAndInfo();
         VPaperQuestionAndInfo paperQuestionAndInfo = new VPaperQuestionAndInfo();
         List<VPaperQuestionAndInfo> resultList = new ArrayList<>();
@@ -286,5 +286,11 @@ public class EwrongStudentServiceImpl implements EwrongStudentService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public int getTotalCount(EWrongStudentDTO eWrongStudentDTO) {
+        int res=ewrongStudentDao.getTotalCount(eWrongStudentDTO);
+        return res;
     }
 }

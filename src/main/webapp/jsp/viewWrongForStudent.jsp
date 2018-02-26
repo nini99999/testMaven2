@@ -33,12 +33,18 @@
     <script src="<%=path%>/bootstrap/bootstrap-table.js"></script>
     <script src="<%=path%>/bootstrap/bootstrap-table-zh-CN.js"></script>
     <script src="<%=path%>/utils/xdate.js"></script>
+    <script type="text/javascript" src="<%=path%>/UEditor/ueditor.config.js"></script>
+    <!-- UEditor编辑器源码文件 -->
+    <script type="text/javascript" src="<%=path%>/UEditor/ueditor.all.js"></script>
+    <script type="text/javascript" charset="utf-8"
+            src="<%=path%>/UEditor/kityformula-plugin/addKityFormulaDialog.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%=path%>/UEditor/kityformula-plugin/getKfContent.js"></script>
+    <script type="text/javascript" charset="utf-8"
+            src="<%=path%>/UEditor/kityformula-plugin/defaultFilterFix.js"></script>
 
     <script src="<%=path%>/bootstrap/tableExport.js"></script>
     <script src="<%=path%>/bootstrap/bootstrap-table-export.js"></script>
-    <%--<link rel="stylesheet" type="text/css" media="all" href="<%=path%>/bootstrap/bootstrap-editable.css"/>--%>
-    <%--<script src="<%=path%>/bootstrap/bootstrap-editable.min.js"></script>--%>
-    <%--<script src="<%=path%>/bootstrap/bootstrap-table-editable.js"></script>--%>
+
     <style type="text/css">
         td {
             width: 100%;
@@ -56,7 +62,8 @@
     </style>
 </head>
 <script type="text/javascript">
-
+    var ue;
+    var ue_solution;
 
     function indexFormatter(value, row, index) {
         return index + 1;
@@ -75,16 +82,54 @@
             getReason();
             setSelected(row.id);
             //init修改操作
+            ue = UE.getEditor('analysis', {
+                toolbars: [[
+                    'source', '|', 'bold', 'italic', 'underline', '|', 'fontsize', '|', 'fontfamily', '|', 'kityformula', 'simpleupload', 'preview'
+                ]]
+            });
+            ue.ready(function () {
+                if (null != row.analysis) {
+                    ue.setContent(row.analysis);
+                } else {
+                    ue.setContent('');
+                }
+                ue.setHeight(250);
+//               console.log(ue.getContent()) ;
+            });
+            ue_solution = UE.getEditor('solution', {
+                toolbars: [[
+                    'source', '|', 'bold', 'italic', 'underline', '|', 'fontsize', '|', 'fontfamily', '|', 'kityformula', 'simpleupload', 'preview'
+                ]]
+            });
+            ue_solution.ready(function () {
+                if (null != row.solution) {
+                    ue_solution.setContent(row.solution);
+                } else {
+                    ue_solution.setContent('');
+                }
+                ue_solution.setHeight(250);
+//               console.log(ue.getContent()) ;
+            });
             $("#wid").val(row.id);
             $("#reason").val(row.reason);
-            $("#solution").val(row.solution);
-            $("#analysis").val(row.analysis);
+
             $("#wrongModal").modal('show');
 //            $('#wrongModal').on('show.bs.modal', function () {
 //               setSelected(row.id);
 //
 //            })
         }
+    }
+    function getContent() {
+        ue.getKfContent(function (content) {
+            getSolutionContent(content);
+        });
+    }
+
+    function getSolutionContent(ueContent) {
+        ue_solution.getKfContent(function (content) {
+            saveAnalysis(ueContent, content);
+        });
     }
 
     function queryQuestions() {
@@ -118,34 +163,63 @@
         }
     }
 
-    function queryWrongStudent() {
-        var params = {};
+    function init_table() {
 
-//        params.countryid = countryid.value;
-        params.tpno = $("#paperid").val();
-        params.student = 'forStudent';
+        $("#ds_table").bootstrapTable('destroy');
+        $("#ds_table").bootstrapTable({
+            method: "get",
+            catch: false,
+            // toolbar: "#bs_t",
+            idField: "id",
 
-        $.ajax({
-            url: "/ewrongStudent/viewWrongStudent",
-// 数据发送方式
-            type: "get",
-// 接受数据格式
-            dataType: "json",
-// 要传递的数据
-            data: params,
-// 回调函数，接受服务器端返回给客户端的值，即result值
-            success: function (data) {
-                $("#ds_table").bootstrapTable('destroy');
-                $("#ds_table").bootstrapTable({data: data.data});//刷新ds_table的数据
+            queryParams: function (params) {
 
+                return {
+                    pageno: (params.offset / params.limit) + 1,
+                    pagesize: params.limit,
+                    tpno: $("#paperid").val(),
+                    student: 'forStudent'
+                }
             },
-
-            error: function (data) {
-
-                alert("查询学生错题失败" + data);
-
-            }
-        })
+            url: "/ewrongStudent/viewWrongStudent",
+            striped: true,
+            clickToSelect: true,
+            pagination: true, //是否显示分页（*）
+            sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1, //初始化加载第一页，默认第一页
+            pageSize: 10, //每页的记录行数（*）
+            pageList: [10, 20, 50, 100],
+//            showColumns:true,
+            columns: [{
+                checkbox: true
+            }, {
+                field: "questionno",
+                title: "错题号",
+                align: "center"
+            }, {
+                field: "testdate",
+                title: "考试日期",
+                align: "center"
+            }, {
+                field: "reason",
+                title: "错因",
+                align: "center"
+            }, {
+                field: "analysis",
+                title: "错因分析",
+                align: "center"
+            }, {
+                field: "solution",
+                title: "解决策略",
+                align: "center"
+            }, {
+                field: "wrongAnalysis",
+                title: "错题解析",
+                align: "center",
+                formatter: operateFormatter,
+                events: operateEvent
+            }]
+        });
     }
 
     function addWrongStudent() {
@@ -169,7 +243,7 @@
             success: function (data) {//调用url成功时有效
                 if (data.success == true) {
 
-                    queryWrongStudent();
+                    init_table();
                     $('#myModal').modal('hide');
                     alert("保存成功!");
                 } else {
@@ -227,7 +301,7 @@
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {//调用url成功时有效
                 if (data.success == true) {
-                    queryWrongStudent();
+                    init_table();
                     alert('记录已删除');
                 } else {
                     alert('删除失败！');
@@ -418,7 +492,7 @@
 //                $('#reason').multiselect('updateButtonText');
                 var rs = data.data.reason;
                 console.log(rs);
-                if (null!=rs) {
+                if (null != rs) {
                     console.log("rs", rs);
                     var arr = rs.split(",");
                     var sel = document.getElementById("reason");
@@ -438,12 +512,12 @@
         })
     }
 
-    function saveAnalysis() {
+    function saveAnalysis(analysis,solution) {
         var params = {};
         params.id = $("#wid").val();
         params.reason = ($("#reason").val()).toString();
-        params.analysis = $("#analysis").val();
-        params.solution = $("#solution").val();
+        params.analysis = analysis;
+        params.solution = solution;
         console.log(params);
         $.ajax({
 
@@ -458,7 +532,7 @@
 // 回调函数，接受服务器端返回给客户端的值，即result值
             success: function (data) {//调用url成功时有效
                 if (data.success == true) {
-                    queryWrongStudent();
+                    init_table();
                     alert("保存成功!");
                 } else {
                     alert(data.msg);
@@ -508,7 +582,7 @@
 
     <div id="b_toobar">
 
-        <button class="btn btn-primary" type="button" onclick="queryWrongStudent();">
+        <button class="btn btn-primary" type="button" onclick="init_table();">
             <span class="glyphicon glyphicon-eye-open"></span> 查询错题
         </button>
         <!-- 按钮触发模态框 -->
@@ -523,30 +597,8 @@
         </button>
     </div>
 
-    <table class="table table-striped" width="95%" id="ds_table" align="center"
-           striped="true" data-show-export="true"
-           data-export-types="['json','xml','png','csv','txt','sql','doc','excel','xlsx','pdf']"
-           data-export-datatype="all"
-           data-pagination="true" sidePagination="server" data-pagelist="10,50"
+    <table class="table table-striped" width="95%" id="ds_table"
            data-click-to-select="true" style="table-layout: fixed">
-        <thead>
-        <tr>
-            <th data-field="estate" data-checkbox="true"></th>
-            <%--<th data-field="index" data-align="center" data-formatter="indexFormatter">序号</th>--%>
-            <%--<th data-field="studentname" data-align="center">学生姓名</th>--%>
-            <%--<th data-field="testpapername" data-align="center">试卷名称</th>--%>
-            <th data-field="questionno" data-align="center">错题号</th>
-            <th data-field="testdate" data-align="center">考试日期</th>
-            <th data-field="reason">错题原因</th>
-            <th data-field="analysis" data-align="center">错因分析</th>
-            <th data-field="solution" data-align="center">解决策略</th>
-            <th data-field="wrongAnalysis" data-align="center" data-formatter="operateFormatter"
-                data-events="operateEvent">
-                错题分析维护
-            </th>
-
-        </tr>
-        </thead>
     </table>
 
 </div>
@@ -611,23 +663,31 @@
                 </h4>
             </div>
             <div class="modal-body">
+                <input id="wid" name="wid" class="form-control" type="hidden"/>
+                <div style="z-index:9999999999999999999;position:relative">
+                    <label for="reason">错题原因:</label>
+                    <select id="reason" name="reason" class="form-control"
+                            multiple="multiple">
+                    </select>
+                </div>
                 <form role="form">
                     <div class="form-group">
-                        <input id="wid" name="wid" class="form-control" type="hidden"/>
-                        <label for="reason">错题原因:</label> <select id="reason" name="reason" class="form-control"
-                                                                  multiple="multiple">
-                    </select>
+
                         <hr/>
                         <label for="analysis">错因分析:</label>
-                        <textarea id="analysis" name="analysis" class="form-control" rows="6"></textarea>
+                        <script id="analysis" name="content" type="text/plain"></script>
+                        <%--<textarea id="analysis" name="analysis" class="form-control" rows="6"></textarea>--%>
+                        <hr/>
+                        <hr/>
                         <label for="solution">解决策略:</label>
-                        <textarea id="solution" name="solution" class="form-control" rows="6"></textarea>
+                        <script id="solution" name="solution" type="text/plain"></script>
+                        <%--<textarea id="solution" name="solution" class="form-control" rows="6"></textarea>--%>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
 
-                <button class="btn btn-primary" type="button" onclick="saveAnalysis();">
+                <button class="btn btn-primary" type="button" onclick="getContent();">
                     <span class="glyphicon glyphicon-floppy-save"></span> 保存
                 </button>
                 <button class="btn btn-primary" type="button" data-dismiss="modal">
@@ -646,6 +706,6 @@
 //        getReason();
         getEsubjects();
         initDateSelect();
-        queryWrongStudent();
+        init_table();
     });
 </script>

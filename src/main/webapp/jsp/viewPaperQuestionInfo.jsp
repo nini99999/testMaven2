@@ -124,7 +124,18 @@
 // 回调函数，接受服务器端返回给客户端的值，即result值
                 success: function (data) {
 //                    console.log('3sd',data);
-                    $('#answer').val(data.questionAnswer);
+//                     $('#answer').val(data.questionAnswer);
+                    ue = UE.getEditor('answerEditor', {
+                        toolbars: [[
+                            'source', '|', 'bold', 'italic', 'underline', '|', 'fontsize', '|', 'fontfamily', '|', 'kityformula', 'simpleupload', 'preview'
+                        ]]
+                    });
+                    ue.ready(function () {
+                        ue.setContent(data.questionAnswer);
+                        ue.setHeight(300);
+//               console.log(ue.getContent()) ;
+                    });
+
                     $("#answerModal").modal('show');
                     $('#qid').val(row.questionid);
                 }
@@ -136,11 +147,16 @@
             })
         }
     }
+    function getContentAnswer() {
+        ue.getKfContent(function (content) {
+            saveAnswer(content);
+        });
+    }
 
-    function saveAnswer() {
+    function saveAnswer(content) {
         var params = {};
         params.id = $('#qid').val();
-        params.answer = $('#answer').val();
+        params.answer = content;
         $.ajax({
             url: "/paperQuestion/saveAnswer",
 // 数据发送方式
@@ -669,21 +685,23 @@
                     &times;
                 </button>
                 <h4 class="modal-title" id="answerModalModalLabel">
-                    答案维护
+                    答案及解析维护
                 </h4>
             </div>
             <div class="modal-body">
                 <form role="form">
                     <div class="form-group">
                         <input id="qid" name="qid" class="form-control" type="hidden"/>
-                        <label for="answer">本题答案</label>
-                        <textarea id="answer" name="answer" class="form-control" rows="6"></textarea>
+                        <label for="answerEditor">答案及解析</label>
+                        <script id="answerEditor" name="content" type="text/plain"></script>
+
+                        <%--<textarea id="answer" name="answer" class="form-control" rows="6"></textarea>--%>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
 
-                <button class="btn btn-primary" type="button" onclick="saveAnswer();">
+                <button class="btn btn-primary" type="button" onclick="getContentAnswer();">
                     <span class="glyphicon glyphicon-floppy-save"></span> 保存
                 </button>
                 <button class="btn btn-primary" type="button" data-dismiss="modal">

@@ -45,7 +45,19 @@ public class EwrongStudentDaoImpl implements EwrongStudentDao {
     }
 
     @Override
-    public List<EWrongStudent> queryEWrongStudent(EWrongStudentDTO wrongStudent) {
+    public List<EWrongStudent> queryEWrongStudent(EWrongStudentDTO wrongStudent, Page page) {
+        String string = this.getHql(wrongStudent) + " order by countryid,testpaperno,questionno";
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(string);
+        if (null != page && null != page.getPageno() && page.getPageno() > 0 && null != page.getPagesize() && page.getPagesize() > 0) {
+            query.setFirstResult((page.getPageno() - 1) * page.getPagesize());
+            query.setMaxResults(page.getPagesize());
+        }
+        List<EWrongStudent> wrongStudents = query.list();
+        return wrongStudents;
+    }
+
+    private String getHql(EWrongStudentDTO wrongStudent) {
         StringBuilder sb = new StringBuilder("from EWrongStudent where 1=1");
         if (null != wrongStudent.getId() && wrongStudent.getId().length() > 0) {
             sb.append(" and id='" + wrongStudent.getId() + "'");
@@ -64,11 +76,9 @@ public class EwrongStudentDaoImpl implements EwrongStudentDao {
                 sb.append(" and studentid in (select id from EStudent where classno='" + wrongStudent.getClassno() + "')");
             }
         }
-        sb.append(" order by countryid,testpaperno,questionno");
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery(sb.toString());
-        List<EWrongStudent> wrongStudents = query.list();
-        return wrongStudents;
+//    sb.append(" order by countryid,testpaperno,questionno");
+        return sb.toString();
+
     }
 
     @Override
@@ -141,5 +151,15 @@ public class EwrongStudentDaoImpl implements EwrongStudentDao {
         Query query = session.createQuery(stringBuilder.toString());
         query.executeUpdate();
 //        session.flush();
+    }
+
+    @Override
+    public int getTotalCount(EWrongStudentDTO wrongStudentDTO) {
+        StringBuilder stringBuilder = new StringBuilder("select count(*) ");
+        stringBuilder.append(this.getHql(wrongStudentDTO));
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery(stringBuilder.toString());
+        int res = Integer.parseInt(query.uniqueResult().toString());
+        return res;
     }
 }

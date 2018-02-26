@@ -2,6 +2,7 @@ package com.extjs.dao;
 
 import com.extjs.model.EWrongStudent;
 import com.extjs.model.EWrongStudentDTO;
+import com.extjs.model.Page;
 import com.extjs.model.RWrongQuestion;
 
 import java.util.List;
@@ -12,13 +13,14 @@ import java.util.List;
 public interface EwrongStudentDao {
     /**
      * 根据约束查询学生错题
+     *
      * @param questionID
      * @param userName
      * @return
      */
     EWrongStudent getByUnique(String questionID, String studentID);
 
-    List<EWrongStudent> queryEWrongStudent(EWrongStudentDTO wrongStudentDTO);
+    List<EWrongStudent> queryEWrongStudent(EWrongStudentDTO wrongStudentDTO,Page page);
 
     /**
      * 根据日期区间查询错误信息
@@ -36,4 +38,6 @@ public interface EwrongStudentDao {
     void delEWrongStudent(EWrongStudent wrongStudent);
 
     void saveWrongAnalysis(EWrongStudent wrongStudent);
+
+    int getTotalCount(EWrongStudentDTO wrongStudentDTO);
 }

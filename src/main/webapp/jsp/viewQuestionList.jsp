@@ -69,10 +69,17 @@
         ].join('');
     }
 
-    function saveAnswer() {
+    function getContentAnswer() {
+        ue.getKfContent(function (content) {
+           saveAnswer(content);
+        });
+    }
+
+    function saveAnswer(content) {
+
         var params = {};
         params.id = $('#qid').val();
-        params.answer = $('#answer').val();
+        params.answer = content;
         $.ajax({
             url: "/paperQuestion/saveAnswer",
 // 数据发送方式
@@ -145,8 +152,19 @@
                 data: params,
 // 回调函数，接受服务器端返回给客户端的值，即result值
                 success: function (data) {
-//                    console.log('3sd',data);
-                    $('#answer').val(data.questionAnswer);
+
+                    ue = UE.getEditor('answerEditor', {
+                        toolbars: [[
+                            'source', '|', 'bold', 'italic', 'underline', '|', 'fontsize', '|', 'fontfamily', '|', 'kityformula', 'simpleupload', 'preview'
+                        ]]
+                    });
+                    ue.ready(function () {
+                        ue.setContent(data.questionAnswer);
+                        ue.setHeight(300);
+//               console.log(ue.getContent()) ;
+                    });
+
+                    // $('#answer').val(data.questionAnswer);
                     $("#answerModal").modal('show');
                     $('#qid').val(row.questionid);
                 }
@@ -160,7 +178,6 @@
     }
 
     function moidfQuestion() {
-//        console.log('SSS');
         kfSubmit();
     }
 
@@ -231,57 +248,7 @@
         }
     }
 
-    //     function queryQuestions() {
-    //         var questionColumns = [];
-    //         var params = {};
-    //         params.gradeno = $('#gradeno').val();
-    //         params.subjectno = $('#subjectno').val();
-    //         params.questiontype = $('#questiontype').val();
-    //         params.difficulty = $('#difficulty').val();
-    // //        params.konwledge = $('#konwledge').val();
-    //         $.ajax({
-    //             url: "/equestions/viewQuestionList",
-    // // 数据发送方式
-    //             type: "get",
-    // // 接受数据格式
-    //             dataType: "json",
-    // // 要传递的数据
-    //             data: params,
-    // // 回调函数，接受服务器端返回给客户端的值，即result值
-    //             success: function (data) {
-    // //                console.log(data.data);
-    //                 $('#ds_table').bootstrapTable('destroy');
-    //                 $('#ds_table').bootstrapTable({data: data.data});//刷新ds_table的数据
-    //             },
-    //             error: function (data) {
-    //                 alert("查询失败" + data);
-    //             }
-    //         })
-    //     }
 
-    //     function downloadFile(fileName) {
-    //         var params = {};
-    //         params.fileName = fileName;
-    //         $.ajax({
-    //             url: "/equestions/downloadFile",
-    // // 数据发送方式
-    //             type: "post",
-    // // 接受数据格式
-    //             dataType: "json",
-    // // 要传递的数据
-    //             data: params,
-    // // 回调函数，接受服务器端返回给客户端的值，即result值
-    //             success: function (data) {
-    // //                console.log(data.data);
-    // //                $('#ds_table').bootstrapTable('destroy');
-    // //                $('#ds_table').bootstrapTable({data: data.data});//刷新ds_table的数据
-    //                 console.log("下载成功！" + data);
-    //             },
-    //             error: function (data) {
-    //                 console.log("System Error", data);
-    //             }
-    //         })
-    //     }
 
     function exportQuestions() {
         document.getElementById("exportForm").submit();
@@ -641,7 +608,7 @@
                 events: operateEvent
             }, {
                 field: "questionAnswer",
-                title: "答案",
+                title: "答案解析",
                 align: "center",
                 formatter: answerFormatter,
                 events: operateEvent
@@ -661,11 +628,6 @@
             kfSubmit();
             return false;
         };
-
-//        $("#myModal").on("hidden.bs.modal", function () {
-//            $(this).removeData("bs.modal");
-//            console.log('ccccc');
-//        });
     })
 </script>
 <body>
@@ -680,21 +642,22 @@
                     &times;
                 </button>
                 <h4 class="modal-title" id="answerModalModalLabel">
-                    答案维护
+                    答案及解析维护
                 </h4>
             </div>
             <div class="modal-body">
+                <input id="qid" name="qid" class="form-control" type="hidden"/>
                 <form role="form">
-                    <div class="form-group">
-                        <input id="qid" name="qid" class="form-control" type="hidden"/>
-                        <label for="answer">本题答案</label>
-                        <textarea id="answer" name="answer" class="form-control" rows="6"></textarea>
+                    <div style="width:96%;height: 366px">
+                        <label for="answerEditor">答案与解析</label>
+                        <script id="answerEditor" name="content" type="text/plain"></script>
                     </div>
+                    <hr/>
                 </form>
             </div>
             <div class="modal-footer">
 
-                <button class="btn btn-primary" type="button" onclick="saveAnswer();">
+                <button class="btn btn-primary" type="button" onclick="getContentAnswer();">
                     <span class="glyphicon glyphicon-floppy-save"></span> 保存
                 </button>
                 <button class="btn btn-primary" type="button" data-dismiss="modal">

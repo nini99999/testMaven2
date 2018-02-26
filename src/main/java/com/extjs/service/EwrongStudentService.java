@@ -1,9 +1,6 @@
 package com.extjs.service;
 
-import com.extjs.model.EWrongStudent;
-import com.extjs.model.EWrongStudentDTO;
-import com.extjs.model.RWrongQuestion;
-import com.extjs.model.VPaperQuestionAndInfo;
+import com.extjs.model.*;
 import com.extjs.util.SysException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +14,7 @@ import java.util.List;
 public interface EwrongStudentService {
     EWrongStudentDTO getWrongStudentByID(String id);
 
-    List<EWrongStudentDTO> queryWrongStudent(EWrongStudentDTO eWrongStudentDTO);
+    List<EWrongStudentDTO> queryWrongStudent(EWrongStudentDTO eWrongStudentDTO,Page page);
 
     HashMap<Integer, Integer> getQuestionno(String studentID);//获取指定学生已存在的错题
 
@@ -90,4 +87,6 @@ public interface EwrongStudentService {
      * @param eWrongStudentDTO
      */
     void saveWrong(EWrongStudentDTO eWrongStudentDTO) throws SysException;
+
+    int getTotalCount(EWrongStudentDTO eWrongStudentDTO);
 }
