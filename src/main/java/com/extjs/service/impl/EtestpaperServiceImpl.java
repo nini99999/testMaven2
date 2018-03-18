@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.*;
@@ -31,9 +33,9 @@ public class EtestpaperServiceImpl implements EtestpaperService {
     private EsubjectQTypeService esubjectQTypeService;
 
     @Override
-    public List<ETestpaperDTO> queryEtestpaper(ETestpaperDTO eTestpaperDTO,Page page) {
+    public List<ETestpaperDTO> queryEtestpaper(ETestpaperDTO eTestpaperDTO, Page page) {
         List<ETestpaperDTO> eTestpaperDTOList = new ArrayList<ETestpaperDTO>();
-        List<ETestpaper> eTestpaperList = etestpaperDao.queryEtestPaper(eTestpaperDTO,page);
+        List<ETestpaper> eTestpaperList = etestpaperDao.queryEtestPaper(eTestpaperDTO, page);
         EConstants eConstants = new EConstants();
         for (ETestpaper eTestpaper : eTestpaperList) {
 //            eTestpaper.setExamtype(eConstants.examType.get(eTestpaper.getExamtype()));
@@ -48,9 +50,9 @@ public class EtestpaperServiceImpl implements EtestpaperService {
 
     @Override
     public ETestpaperDTO getTestPaperByTPNO(String tpno) {
-        ETestpaperDTO testpaperDTO=new ETestpaperDTO();
-        ETestpaper testpaper=etestpaperDao.getTestPaper(tpno,null);
-        ReflectionUtil.copyProperties(testpaper,testpaperDTO);
+        ETestpaperDTO testpaperDTO = new ETestpaperDTO();
+        ETestpaper testpaper = etestpaperDao.getTestPaper(tpno, null);
+        ReflectionUtil.copyProperties(testpaper, testpaperDTO);
 
         return testpaperDTO;
     }
@@ -62,6 +64,7 @@ public class EtestpaperServiceImpl implements EtestpaperService {
     }
 
     @Override
+    @Transactional(rollbackFor = {Exception.class}, propagation = Propagation.REQUIRED)
     /**
      * 添加或修改
      * 添加时，自动添加指定学科下对应的所有题型至"试卷题型对应关系表"
@@ -95,6 +98,7 @@ public class EtestpaperServiceImpl implements EtestpaperService {
                     ePaperQTypeDTO = new EPaperQTypeDTO();
                     ePaperQTypeDTO.setTpno(eTestpaperDTO.getTpno());
                     ePaperQTypeDTO.setQuestiontype(subjectQTypeDTO.getQuestiontype());
+
                     ePaperQTypeDTOList.add(ePaperQTypeDTO);
 
                 }
@@ -115,7 +119,7 @@ public class EtestpaperServiceImpl implements EtestpaperService {
     public HashMap<String, ETestpaperDTO> getEtestPaper() {
         HashMap resultMap = new HashMap<String, ETestpaperDTO>();
         ETestpaperDTO etestpaperDTO = new ETestpaperDTO();
-        List<ETestpaperDTO> testpaperDTOList = this.queryEtestpaper(etestpaperDTO,null);
+        List<ETestpaperDTO> testpaperDTOList = this.queryEtestpaper(etestpaperDTO, null);
         for (ETestpaperDTO testpaperDTO : testpaperDTOList) {
             resultMap.put(testpaperDTO.getTpno(), testpaperDTO);
         }
@@ -137,7 +141,7 @@ public class EtestpaperServiceImpl implements EtestpaperService {
         eTestpaperDTO.setSchoolno(school);
         eTestpaperDTO.setGradeno(grade);
         eTestpaperDTO.setSubjectno(subject);
-        List<ETestpaperDTO> eTestpaperDTOList = this.queryEtestpaper(eTestpaperDTO,null);
+        List<ETestpaperDTO> eTestpaperDTOList = this.queryEtestpaper(eTestpaperDTO, null);
         Date date = new Date(System.currentTimeMillis());
         str = grade + "#" + subject + "#" + date.toString() + "--" + String.valueOf(eTestpaperDTOList.size());
         return str;
@@ -150,7 +154,7 @@ public class EtestpaperServiceImpl implements EtestpaperService {
 
     @Override
     public int getTotalCount(ETestpaperDTO eTestpaperDTO) {
-        int res=etestpaperDao.getTotalCount(eTestpaperDTO);
+        int res = etestpaperDao.getTotalCount(eTestpaperDTO);
         return res;
     }
 }

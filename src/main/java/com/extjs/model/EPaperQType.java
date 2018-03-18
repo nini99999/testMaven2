@@ -14,7 +14,7 @@ public class EPaperQType {
     private String tpno;
     private String questiontype;
     private String creator;
-    private Integer mark;
+    private Float mark;
     private String description;
     private Integer questionnum;
     private Date createdate;
@@ -68,15 +68,17 @@ public class EPaperQType {
     public void setCreatedate(Date createdate) {
         this.createdate = createdate;
     }
-
-    public Integer getMark() {
+    @Basic
+    @Column(name = "MARK", nullable = true)
+    public Float getMark() {
         return mark;
     }
 
-    public void setMark(Integer mark) {
+    public void setMark(Float mark) {
         this.mark = mark;
     }
-
+    @Basic
+    @Column(name = "DESCRIPTION", nullable = true)
     public String getDescription() {
         return description;
     }
@@ -84,7 +86,8 @@ public class EPaperQType {
     public void setDescription(String description) {
         this.description = description;
     }
-
+    @Basic
+    @Column(name = "QUESTIONNUM", nullable = true)
     public Integer getQuestionnum() {
         return questionnum;
     }

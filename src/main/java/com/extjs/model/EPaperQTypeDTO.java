@@ -14,7 +14,7 @@ public class EPaperQTypeDTO {
     private String questiontype;
     private String questiontypename;
     private String description;
-    private Integer mark;
+    private Float mark;
     private Integer questionnum;
     private String creator;
     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
@@ -90,11 +90,11 @@ public class EPaperQTypeDTO {
         this.questionnum = questionnum;
     }
 
-    public Integer getMark() {
+    public Float getMark() {
         return mark;
     }
 
-    public void setMark(Integer mark) {
+    public void setMark(Float mark) {
         this.mark = mark;
     }
 

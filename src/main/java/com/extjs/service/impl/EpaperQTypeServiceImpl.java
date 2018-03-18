@@ -63,7 +63,12 @@ public class EpaperQTypeServiceImpl implements EpaperQTypeService {
             UUID uuid = UUID.randomUUID();
             ePaperQTypeDTO.setId(uuid.toString());
         }
-
+        if (null == ePaperQTypeDTO.getQuestionnum()) {
+            ePaperQTypeDTO.setQuestionnum(0);
+        }
+        if (null == ePaperQTypeDTO.getMark()) {
+            ePaperQTypeDTO.setMark(0.0f);
+        }
         Date date = new Date(System.currentTimeMillis());
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication()

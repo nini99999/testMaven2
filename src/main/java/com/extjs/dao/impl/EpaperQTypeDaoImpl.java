@@ -42,10 +42,13 @@ public class EpaperQTypeDaoImpl implements EpaperQTypeDao {
     @Override
     public void modifEpaperQType(EPaperQTypeDTO ePaperQTypeDTO) {
         Session session = sessionFactory.getCurrentSession();
-
+        if (Float.isNaN(ePaperQTypeDTO.getMark()) || ePaperQTypeDTO.getMark() < 0) {
+            ePaperQTypeDTO.setMark(0.0f);
+        }
         EPaperQType ePaperQType = new EPaperQType();
         ReflectionUtil.copyProperties(ePaperQTypeDTO, ePaperQType);
-        session.saveOrUpdate(ePaperQType);
+        session.merge(ePaperQType);
+//        session.saveOrUpdate(ePaperQType);
         session.flush();
 
     }

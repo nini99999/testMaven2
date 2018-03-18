@@ -598,8 +598,7 @@
                 }
             }, {
                 field: "question",
-                title: "题目",
-                align: "center"
+                title: "题目"
             }, {
                 field: "editQuestion",
                 title: "编辑",
